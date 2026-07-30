@@ -1537,6 +1537,106 @@ footer {
   box-shadow: 0 0 8px var(--accent-amber-glow);
 }
 
+/* Read & Listen Section Styles */
+.read-listen-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 24px;
+  position: relative;
+  z-index: 2;
+  margin-top: 32px;
+}
+
+.media-card {
+  background: var(--panel-bg);
+  border: 1px solid var(--border-dim);
+  border-radius: 6px;
+  padding: 36px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+.media-card:hover {
+  border-color: var(--accent-amber-dim);
+  background: var(--panel-bg-hover);
+  transform: translateY(-4px);
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.6);
+}
+
+.media-card-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--accent-amber);
+  background: var(--accent-amber-glow);
+  border: 1px solid var(--accent-amber-dim);
+  padding: 4px 12px;
+  border-radius: 3px;
+  margin-bottom: 20px;
+  width: fit-content;
+}
+
+.pulse-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--accent-amber);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--accent-amber);
+  animation: pulseGlow 1.5s infinite;
+}
+
+.media-card-title {
+  font-size: 1.35rem;
+  color: var(--text-main);
+  text-transform: none;
+  font-weight: 600;
+  line-height: 1.3;
+  margin-bottom: 14px;
+}
+
+.media-card-desc {
+  font-size: 0.92rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin-bottom: 28px;
+  flex-grow: 1;
+}
+
+.media-card-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  border-top: 1px solid var(--border-dim);
+  padding-top: 24px;
+}
+
+.media-btn-read {
+  font-size: 0.76rem;
+  padding: 10px 16px;
+}
+
+.media-btn-spotify {
+  font-size: 0.76rem;
+  padding: 10px 16px;
+  background: #1DB954;
+  border-color: #1DB954;
+  color: #000;
+  font-weight: 600;
+}
+
+.media-btn-spotify:hover {
+  background: #1ed760;
+  border-color: #1ed760;
+  color: #000;
+  box-shadow: 0 0 16px rgba(29, 185, 84, 0.4);
+}
+
+
 /* Reduced Motion Override */
 @media (prefers-reduced-motion: reduce) {
   html {
