@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel — Ziddi Founder Quotes Manager</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Barlow+Condensed:wght@600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg-ink: #070B11;
+      --panel-bg: #0F1622;
+      --panel-bg-hover: #151F2F;
+      --accent-amber: #FFB23F;
+      --accent-amber-dim: #9C6721;
+      --accent-amber-glow: rgba(255, 178, 63, 0.15);
+      --accent-green: #6FCF97;
+      --accent-red: #D9695C;
+      --text-main: #F0F2F5;
+      --text-muted: #8E9CAE;
+      --border-dim: #1D2A3A;
+      --border-bright: #31465F;
+      --font-logo: 'Archivo Black', sans-serif;
+      --font-heading: 'Barlow Condensed', sans-serif;
+      --font-mono: 'IBM Plex Mono', monospace;
+      --font-body: 'Inter', sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg-ink);
+      color: var(--text-main);
+      font-family: var(--font-body);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    header {
+      background: var(--panel-bg);
+      border-bottom: 1px solid var(--border-dim);
+      padding: 18px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo {
+      font-family: var(--font-logo);
+      font-size: 1.2rem;
+      color: var(--text-main);
+      text-decoration: none;
+    }
+
+    .logo span { color: var(--accent-amber); }
+
+    .admin-badge {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      background: var(--accent-amber-glow);
+      color: var(--accent-amber);
+      border: 1px solid var(--accent-amber-dim);
+      padding: 2px 8px;
+      border-radius: 3px;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 12px;
+    }
+
+    .btn {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      padding: 10px 18px;
+      border-radius: 4px;
+      cursor: pointer;
+      border: 1px solid var(--border-bright);
+      background: transparent;
+      color: var(--text-main);
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+    }
+
+    .btn:hover {
+      border-color: var(--accent-amber);
+      color: var(--accent-amber);
+    }
+
+    .btn-solid {
+      background: var(--accent-amber);
+      color: var(--bg-ink);
+      border-color: var(--accent-amber);
+      font-weight: 600;
+    }
+
+    .btn-solid:hover {
+      background: #e59e35;
+      color: var(--bg-ink);
+    }
+
+    .btn-danger {
+      border-color: var(--accent-red);
+      color: var(--accent-red);
+    }
+
+    .btn-danger:hover {
+      background: var(--accent-red);
+      color: #fff;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 30px auto;
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+    }
+
+    @media (max-width: 900px) {
+      .container { grid-template-columns: 1fr; }
+    }
+
+    .panel-box {
+      background: var(--panel-bg);
+      border: 1px solid var(--border-dim);
+      border-radius: 6px;
+      padding: 24px;
+    }
+
+    .panel-title {
+      font-family: var(--font-heading);
+      font-size: 1.4rem;
+      letter-spacing: 0.05em;
+      color: var(--accent-amber);
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border-dim);
+      padding-bottom: 12px;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    label {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    input, textarea, select {
+      width: 100%;
+      background: #090E16;
+      border: 1px solid var(--border-bright);
+      color: var(--text-main);
+      padding: 12px;
+      border-radius: 4px;
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      transition: border-color 0.2s ease;
+    }
+
+    input:focus, textarea:focus, select:focus {
+      outline: none;
+      border-color: var(--accent-amber);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 90px;
+    }
+
+    /* Live Preview Card */
+    .preview-card {
+      background: #090E16;
+      border: 1px solid var(--border-dim);
+      border-radius: 6px;
+      padding: 24px;
+      position: relative;
+      margin-top: 15px;
+    }
+
+    .preview-tag {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--accent-amber);
+      display: block;
+      margin-bottom: 12px;
+    }
+
+    .preview-text {
+      font-size: 1.15rem;
+      color: var(--text-main);
+      margin-bottom: 12px;
+      font-style: italic;
+    }
+
+    .preview-author {
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      color: var(--accent-amber);
+    }
+
+    /* Quotes List */
+    .quotes-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      max-height: 520px;
+      overflow-y: auto;
+      padding-right: 6px;
+    }
+
+    .quote-item {
+      background: #090E16;
+      border: 1px solid var(--border-dim);
+      border-radius: 4px;
+      padding: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      transition: border-color 0.2s ease;
+    }
+
+    .quote-item:hover {
+      border-color: var(--border-bright);
+    }
+
+    .quote-item-details {
+      flex: 1;
+    }
+
+    .quote-item-cat {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      color: var(--accent-amber);
+      margin-bottom: 4px;
+      display: block;
+    }
+
+    .quote-item-text {
+      font-size: 0.92rem;
+      color: var(--text-main);
+      margin-bottom: 6px;
+    }
+
+    .quote-item-author {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .quote-item-actions {
+      display: flex;
+      gap: 6px;
+    }
+
+    .btn-sm {
+      padding: 4px 8px;
+      font-size: 0.7rem;
+    }
+
+    /* Export Box */
+    .export-box {
+      margin-top: 24px;
+      background: rgba(255, 178, 63, 0.05);
+      border: 1px solid var(--accent-amber-dim);
+      border-radius: 6px;
+      padding: 20px;
+    }
+
+    .export-title {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: var(--accent-amber);
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+
+    .export-instructions {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      margin-bottom: 14px;
+    }
+
+    .export-btns {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: var(--accent-green);
+      color: var(--bg-ink);
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      font-weight: bold;
+      padding: 12px 20px;
+      border-radius: 4px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+      opacity: 0;
+      transform: translateY(10px);
+      transition: all 0.3s ease;
+      pointer-events: none;
+      z-index: 1000;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand">
+      <a href="index.html" class="logo">ZIDDI<span>·</span>FOUNDER</a>
+      <span class="admin-badge">QUOTES ADMIN</span>
+    </div>
+    <div class="header-actions">
+      <a href="index.html#quotes" class="btn" target="_blank">🌐 View Live Quotes</a>
+    </div>
+  </header>
+
+  <div class="container">
+    
+    <!-- Left Column: Add / Edit Form -->
+    <div class="panel-box">
+      <div class="panel-title">
+        <span id="formModeTitle">➕ ADD NEW QUOTE</span>
+        <button class="btn btn-sm" id="resetFormBtn" style="display:none;">Reset Form</button>
+      </div>
+
+      <form id="quoteForm">
+        <input type="hidden" id="editIndex" value="-1">
+
+        <div class="form-group">
+          <label for="quoteCategoryInput">CATEGORY / TAG</label>
+          <input type="text" id="quoteCategoryInput" placeholder="e.g. SYSTEMS & WILLPOWER // 06" required>
+        </div>
+
+        <div class="form-group">
+          <label for="quoteTextInput">QUOTE TEXT (HINDI / ENGLISH)</label>
+          <textarea id="quoteTextInput" placeholder="Type your motivational quote here..." required></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="quoteAuthorInput">AUTHOR / SOURCE</label>
+          <input type="text" id="quoteAuthorInput" placeholder="e.g. — Ziddi Founder Rules" required>
+        </div>
+
+        <button type="submit" class="btn btn-solid" style="width: 100%;" id="saveQuoteBtn">
+          ✨ Add Quote to List
+        </button>
+      </form>
+
+      <!-- Live Preview -->
+      <div style="margin-top: 24px;">
+        <label>LIVE PREVIEW</label>
+        <div class="preview-card">
+          <span class="preview-tag" id="prevCat">SYSTEMS & WILLPOWER // 01</span>
+          <p class="preview-text" id="prevText">"Your quote preview will appear here in real-time as you type..."</p>
+          <span class="preview-author" id="prevAuthor">— Ziddi Founder</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Column: Quotes Manager & Export -->
+    <div class="panel-box">
+      <div class="panel-title">
+        <span>📚 ALL QUOTES (<span id="quoteCount">0</span>)</span>
+      </div>
+
+      <div class="quotes-list" id="quotesList">
+        <!-- Dynamically rendered quotes -->
+      </div>
+
+      <!-- Export & Sync Section -->
+      <div class="export-box">
+        <div class="export-title">💾 SAVE CHANGES TO WEBSITE</div>
+        <p class="export-instructions">
+          After adding or editing quotes, click <strong>Copy quotes.json</strong> below, replace the text inside <code>quotes.json</code>, and push with GitHub Desktop!
+        </p>
+        <div class="export-btns">
+          <button class="btn btn-solid" id="copyJsonBtn">📋 Copy quotes.json Content</button>
+          <button class="btn" id="downloadJsonBtn">📥 Download quotes.json File</button>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="toast" id="toast">Copied to clipboard!</div>
+
+  <script>
+    let quotes = [];
+    
+    // DOM Elements
+    const quoteForm = document.getElementById('quoteForm');
+    const editIndex = document.getElementById('editIndex');
+    const quoteCategoryInput = document.getElementById('quoteCategoryInput');
+    const quoteTextInput = document.getElementById('quoteTextInput');
+    const quoteAuthorInput = document.getElementById('quoteAuthorInput');
+    const saveQuoteBtn = document.getElementById('saveQuoteBtn');
+    const formModeTitle = document.getElementById('formModeTitle');
+    const resetFormBtn = document.getElementById('resetFormBtn');
+    
+    const prevCat = document.getElementById('prevCat');
+    const prevText = document.getElementById('prevText');
+    const prevAuthor = document.getElementById('prevAuthor');
+    
+    const quotesList = document.getElementById('quotesList');
+    const quoteCount = document.getElementById('quoteCount');
+    const copyJsonBtn = document.getElementById('copyJsonBtn');
+    const downloadJsonBtn = document.getElementById('downloadJsonBtn');
+    const toast = document.getElementById('toast');
+
+    // Initial Load
+    document.addEventListener('DOMContentLoaded', () => {
+      fetchQuotes();
+      setupLivePreview();
+    });
+
+    function fetchQuotes() {
+      fetch('quotes.json')
+        .then(res => res.json())
+        .then(data => {
+          quotes = data;
+          renderQuotesList();
+        })
+        .catch(err => {
+          console.warn('Failed to fetch quotes.json, using default list', err);
+          quotes = [
+            {
+              "text": "जिद्द से बिज़नेस शुरू होता है, लेकिन सिस्टम से बिज़नेस स्केल होता है।",
+              "author": "— Ziddi Founder Mindset",
+              "category": "SYSTEMS & WILLPOWER // 01"
+            },
+            {
+              "text": "Your business should run on structured processes, not on your constant daily presence.",
+              "author": "— Operations Blueprint",
+              "category": "PROCESS ARCHITECTURE // 02"
+            }
+          ];
+          renderQuotesList();
+        });
+    }
+
+    function renderQuotesList() {
+      quoteCount.textContent = quotes.length;
+      quotesList.innerHTML = '';
+
+      quotes.forEach((q, index) => {
+        const div = document.createElement('div');
+        div.className = 'quote-item';
+        div.innerHTML = `
+          <div class="quote-item-details">
+            <span class="quote-item-cat">${escapeHtml(q.category || '')}</span>
+            <p class="quote-item-text">"${escapeHtml(q.text)}"</p>
+            <span class="quote-item-author">${escapeHtml(q.author || '')}</span>
+          </div>
+          <div class="quote-item-actions">
+            <button class="btn btn-sm" onclick="editQuote(${index})">✏️ Edit</button>
+            <button class="btn btn-sm btn-danger" onclick="deleteQuote(${index})">🗑️ Delete</button>
+          </div>
+        `;
+        quotesList.appendChild(div);
+      });
+    }
+
+    function setupLivePreview() {
+      const update = () => {
+        prevCat.textContent = quoteCategoryInput.value || 'SYSTEMS & WILLPOWER // 01';
+        prevText.textContent = quoteTextInput.value ? `"${quoteTextInput.value}"` : '"Your quote preview will appear here in real-time as you type..."';
+        prevAuthor.textContent = quoteAuthorInput.value || '— Ziddi Founder';
+      };
+
+      quoteCategoryInput.addEventListener('input', update);
+      quoteTextInput.addEventListener('input', update);
+      quoteAuthorInput.addEventListener('input', update);
+    }
+
+    // Form Submit (Add or Edit)
+    quoteForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      const newQuote = {
+        text: quoteTextInput.value.trim(),
+        author: quoteAuthorInput.value.trim() || '— Ziddi Founder',
+        category: quoteCategoryInput.value.trim() || `MOTIVATION // ${(quotes.length + 1).toString().padStart(2, '0')}`
+      };
+
+      const idx = parseInt(editIndex.value, 10);
+      if (idx >= 0 && idx < quotes.length) {
+        quotes[idx] = newQuote;
+        showToast('Quote updated successfully!');
+      } else {
+        quotes.push(newQuote);
+        showToast('New quote added!');
+      }
+
+      resetForm();
+      renderQuotesList();
+    });
+
+    window.editQuote = function(index) {
+      const q = quotes[index];
+      editIndex.value = index;
+      quoteCategoryInput.value = q.category || '';
+      quoteTextInput.value = q.text || '';
+      quoteAuthorInput.value = q.author || '';
+
+      formModeTitle.textContent = `✏️ EDIT QUOTE #${index + 1}`;
+      saveQuoteBtn.textContent = '💾 Update Quote';
+      resetFormBtn.style.display = 'inline-block';
+
+      // Trigger preview update
+      quoteCategoryInput.dispatchEvent(new Event('input'));
+    };
+
+    window.deleteQuote = function(index) {
+      if (confirm(`Are you sure you want to delete quote #${index + 1}?`)) {
+        quotes.splice(index, 1);
+        renderQuotesList();
+        showToast('Quote deleted!');
+        if (parseInt(editIndex.value, 10) === index) {
+          resetForm();
+        }
+      }
+    };
+
+    resetFormBtn.addEventListener('click', resetForm);
+
+    function resetForm() {
+      editIndex.value = -1;
+      quoteForm.reset();
+      formModeTitle.textContent = '➕ ADD NEW QUOTE';
+      saveQuoteBtn.textContent = '✨ Add Quote to List';
+      resetFormBtn.style.display = 'none';
+      quoteCategoryInput.dispatchEvent(new Event('input'));
+    }
+
+    // Export Actions
+    copyJsonBtn.addEventListener('click', () => {
+      const jsonString = JSON.stringify(quotes, null, 2);
+      navigator.clipboard.writeText(jsonString).then(() => {
+        showToast('JSON copied to clipboard!');
+      }).catch(() => {
+        alert('Failed to copy. Please manually export.');
+      });
+    });
+
+    downloadJsonBtn.addEventListener('click', () => {
+      const jsonString = JSON.stringify(quotes, null, 2);
+      const blob = new Blob([jsonString], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'quotes.json';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showToast('quotes.json downloaded!');
+    });
+
+    function showToast(msg) {
+      toast.textContent = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2500);
+    }
+
+    function escapeHtml(str) {
+      return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+    }
+  </script>
+</body>
+</html>
