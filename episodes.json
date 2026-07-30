@@ -1,0 +1,11 @@
+[
+  {
+    "id": "ep-00",
+    "episodeTag": "EPISODE 00",
+    "title": "Willpower Got You to ₹10 Cr. Systems Take You to ₹100 Cr.",
+    "description": "Why clean thinking can't fix broken operational architecture, and how to transition from daily willpower to DMAIC systems.",
+    "readTime": "2 min",
+    "spotifyUrl": "https://spotify.com",
+    "articleContent": "<h2>The Willpower Ceiling</h2>\n<p>Most ₹10–100 Cr founders are trapped in a self-built execution loop. In the early stage of a business, your personal grit, speed, and willpower are your greatest superpowers.</p>\n<p>However, as operational complexity grows, relying on willpower creates massive high-stress drag. You become the single point of approval, the emergency responder, and the bottleneck for every decision.</p>\n<h3>The DMAIC Transition</h3>\n<p>To scale past ₹10 Cr toward ₹100 Cr without burning out, you must swap willpower for structured business engineering:</p>\n<ul>\n  <li><strong>Define:</strong> Map exact operational boundaries where your presence is required vs where SOPs can take over.</li>\n  <li><strong>Measure:</strong> Track your calendar audit over 14 days to isolate micro-interruptions.</li>\n  <li><strong>Analyze:</strong> Identify root causes for recurring floor emergencies.</li>\n  <li><strong>Improve:</strong> Build lightweight, unambiguous SOPs and AI automations.</li>\n  <li><strong>Control:</strong> Stress-test your business by stepping out of daily operations.</li>\n</ul>\n<blockquote>\"A fix solves a problem today. A system makes the problem impossible to recur.\"</blockquote>"
+  }
+]

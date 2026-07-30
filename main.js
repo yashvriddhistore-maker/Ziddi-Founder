@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initScrollAnimations();
   initQuizEngine();
   initQuotesEngine();
+  initEpisodesEngine();
   initSmoothScroll();
 });
 
@@ -214,21 +215,6 @@ function initQuotesEngine() {
       text: `"Your business should run on structured processes, not on your constant daily presence."`,
       author: "— Operations Blueprint",
       category: "PROCESS ARCHITECTURE // 02"
-    },
-    {
-      text: `"हर बार खुद आग बुझाने की जगह, उस सिस्टम और SOP को ठीक करो जो फेल हुआ है।"`,
-      author: "— DMAIC Engineering",
-      category: "ROOT-CAUSE DIAGNOSIS // 03"
-    },
-    {
-      text: `"If revenue only moves when you personally push, you haven't built an enterprise — you've built high-stress drag."`,
-      author: "— Systems Coaching Audit",
-      category: "SCALABILITY CHECK // 04"
-    },
-    {
-      text: `"कठिन सिस्टम निर्णय आज लोगे तो कल आज़ादी मिलेगी। आज improvising चुनोगे तो कल बिज़नेस का ग़ुलाम रहना पड़ेगा।"`,
-      author: "— Founder Rules",
-      category: "LONG-TERM FREEDOM // 05"
     }
   ];
 
@@ -248,7 +234,6 @@ function initQuotesEngine() {
 
   if (!quoteText || !prevBtn || !nextBtn) return;
 
-  // Attempt to fetch dynamic quotes.json from GitHub/Server
   fetch('quotes.json')
     .then(res => {
       if (!res.ok) throw new Error('Network error loading quotes.json');
@@ -262,7 +247,6 @@ function initQuotesEngine() {
       }
     })
     .catch(() => {
-      // If fetch fails (e.g. offline or file:// protocol), keep default fallback quotes
       rebuildDots();
     });
 
@@ -291,7 +275,6 @@ function initQuotesEngine() {
       if (quoteText) quoteText.textContent = item.text.startsWith('"') ? item.text : `"${item.text}"`;
       if (quoteAuthor) quoteAuthor.textContent = item.author;
 
-      // Update active dot
       if (dotsContainer) {
         const dots = dotsContainer.querySelectorAll('.dot');
         dots.forEach((dot, idx) => {
@@ -313,7 +296,6 @@ function initQuotesEngine() {
     renderQuote(prevIdx);
   }
 
-  // Button Listeners
   nextBtn.addEventListener('click', () => {
     nextQuote();
     resetAutoPlay();
@@ -324,7 +306,6 @@ function initQuotesEngine() {
     resetAutoPlay();
   });
 
-  // Dots click listener
   if (dotsContainer) {
     dotsContainer.addEventListener('click', (e) => {
       if (e.target.classList.contains('dot')) {
@@ -337,14 +318,12 @@ function initQuotesEngine() {
     });
   }
 
-  // Copy Quote Functionality
   if (copyBtn) {
     copyBtn.addEventListener('click', () => {
       const textToCopy = `${quotes[currentIndex].text}\n${quotes[currentIndex].author}`;
       navigator.clipboard.writeText(textToCopy).then(() => {
         showCopyToast();
       }).catch(() => {
-        // Fallback for clipboard write
         const textarea = document.createElement('textarea');
         textarea.value = textToCopy;
         document.body.appendChild(textarea);
@@ -364,7 +343,6 @@ function initQuotesEngine() {
     }, 2000);
   }
 
-  // Auto-play quotes every 6 seconds
   function startAutoPlay() {
     autoPlayTimer = setInterval(nextQuote, 6000);
   }
@@ -374,12 +352,116 @@ function initQuotesEngine() {
     startAutoPlay();
   }
 
-  // Pause auto-play when user hovers over quote card
   if (quoteCard) {
     quoteCard.addEventListener('mouseenter', () => clearInterval(autoPlayTimer));
     quoteCard.addEventListener('mouseleave', () => startAutoPlay());
   }
 
-  // Start auto-play on init
   startAutoPlay();
+}
+
+/**
+ * 5. Read & Listen Episodes & Article Reader Modal Engine
+ */
+function initEpisodesEngine() {
+  const episodesGrid = document.getElementById('episodesGrid');
+  const articleModalOverlay = document.getElementById('articleModalOverlay');
+  const closeArticleModalBtn = document.getElementById('closeArticleModalBtn');
+  const modalCloseFooterBtn = document.getElementById('modalCloseFooterBtn');
+  
+  const modalTag = document.getElementById('modalTag');
+  const modalTitle = document.getElementById('modalTitle');
+  const modalReadTime = document.getElementById('modalReadTime');
+  const modalSpotifyLink = document.getElementById('modalSpotifyLink');
+  const modalBody = document.getElementById('modalBody');
+
+  if (!episodesGrid) return;
+
+  let episodesData = [];
+
+  // Default fallback data if episodes.json fails to fetch
+  const defaultEpisodes = [
+    {
+      "id": "ep-00",
+      "episodeTag": "EPISODE 00",
+      "title": "Willpower Got You to ₹10 Cr. Systems Take You to ₹100 Cr.",
+      "description": "Why clean thinking can't fix broken operational architecture, and how to transition from daily willpower to DMAIC systems.",
+      "readTime": "2 min",
+      "spotifyUrl": "https://spotify.com",
+      "articleContent": "<h2>The Willpower Ceiling</h2><p>Most ₹10–100 Cr founders are trapped in a self-built execution loop. In the early stage of a business, your personal grit, speed, and willpower are your greatest superpowers.</p><p>However, as operational complexity grows, relying on willpower creates massive high-stress drag. You become the single point of approval, the emergency responder, and the bottleneck for every decision.</p><h3>The DMAIC Transition</h3><p>To scale past ₹10 Cr toward ₹100 Cr without burning out, you must swap willpower for structured business engineering:</p><ul><li><strong>Define:</strong> Map exact operational boundaries where your presence is required vs where SOPs can take over.</li><li><strong>Measure:</strong> Track your calendar audit over 14 days to isolate micro-interruptions.</li><li><strong>Analyze:</strong> Identify root causes for recurring floor emergencies.</li><li><strong>Improve:</strong> Build lightweight, unambiguous SOPs and AI automations.</li><li><strong>Control:</strong> Stress-test your business by stepping out of daily operations.</li></ul><blockquote>\"A fix solves a problem today. A system makes the problem impossible to recur.\"</blockquote>"
+    }
+  ];
+
+  fetch('episodes.json')
+    .then(res => {
+      if (!res.ok) throw new Error('Failed to load episodes.json');
+      return res.json();
+    })
+    .then(data => {
+      if (Array.isArray(data) && data.length > 0) {
+        episodesData = data;
+      } else {
+        episodesData = defaultEpisodes;
+      }
+      renderEpisodes();
+    })
+    .catch(() => {
+      episodesData = defaultEpisodes;
+      renderEpisodes();
+    });
+
+  function renderEpisodes() {
+    episodesGrid.innerHTML = '';
+    episodesData.forEach((ep, index) => {
+      const card = document.createElement('div');
+      card.className = 'media-card reveal-on-scroll revealed';
+      card.innerHTML = `
+        <div class="media-card-badge">
+          <span class="pulse-dot"></span> ${escapeHtml(ep.episodeTag || 'EPISODE ' + index)}
+        </div>
+        <h3 class="media-card-title">${escapeHtml(ep.title || '')}</h3>
+        <p class="media-card-desc">${escapeHtml(ep.description || '')}</p>
+        
+        <div class="media-card-actions">
+          <button class="btn btn-ghost media-btn-read" onclick="openArticleReader('${ep.id || index}')">
+            <span>📄</span> Read Article <small>(${escapeHtml(ep.readTime || '2 min')})</small>
+          </button>
+          <a href="${escapeHtml(ep.spotifyUrl || '#')}" target="_blank" rel="noopener" class="btn btn-solid media-btn-spotify">
+            <span>🎧</span> Listen Track on Spotify
+          </a>
+        </div>
+      `;
+      episodesGrid.appendChild(card);
+    });
+  }
+
+  window.openArticleReader = function(epId) {
+    const ep = episodesData.find(e => e.id === epId) || episodesData[0];
+    if (!ep) return;
+
+    if (modalTag) modalTag.innerHTML = `<span class="pulse-dot"></span> ${escapeHtml(ep.episodeTag || '')}`;
+    if (modalTitle) modalTitle.textContent = ep.title || '';
+    if (modalReadTime) modalReadTime.textContent = ep.readTime || '2 min';
+    if (modalSpotifyLink) modalSpotifyLink.href = ep.spotifyUrl || 'https://spotify.com';
+    if (modalBody) modalBody.innerHTML = ep.articleContent || '<p>Article content coming soon.</p>';
+
+    if (articleModalOverlay) articleModalOverlay.classList.add('open');
+  };
+
+  function closeModal() {
+    if (articleModalOverlay) articleModalOverlay.classList.remove('open');
+  }
+
+  if (closeArticleModalBtn) closeArticleModalBtn.addEventListener('click', closeModal);
+  if (modalCloseFooterBtn) modalCloseFooterBtn.addEventListener('click', closeModal);
+
+  if (articleModalOverlay) {
+    articleModalOverlay.addEventListener('click', (e) => {
+      if (e.target === articleModalOverlay) closeModal();
+    });
+  }
+
+  function escapeHtml(str) {
+    return (str || '').replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+  }
 }

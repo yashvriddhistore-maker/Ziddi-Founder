@@ -492,27 +492,32 @@
       <h2>Read & Listen</h2>
       <p class="section-subtitle">Free Playbooks & Audio for Every Founder. <br><span style="color: var(--accent-amber); font-size: 0.88rem; font-family: var(--font-mono); display: inline-block; margin-top: 6px;">(Dedicated 1:1 Architecture Strictly Limited to 12 Clients/Year.)</span></p>
       
-      <div class="read-listen-grid">
-        <!-- Card 1 -->
-        <div class="media-card reveal-on-scroll">
-          <div class="media-card-badge">
-            <span class="pulse-dot"></span> EPISODE 00
-          </div>
-          <h3 class="media-card-title">Willpower Got You to ₹10 Cr. Systems Take You to ₹100 Cr.</h3>
-          <p class="media-card-desc">Why clean thinking can't fix broken operational architecture, and how to transition from daily willpower to DMAIC systems.</p>
-          
-          <div class="media-card-actions">
-            <a href="#" class="btn btn-ghost media-btn-read" onclick="alert('Article coming soon! Stay tuned.'); return false;">
-              <span>📄</span> Read Article <small>(2 min)</small>
-            </a>
-            <a href="https://spotify.com" target="_blank" rel="noopener" class="btn btn-solid media-btn-spotify">
-              <span>🎧</span> Listen Track on Spotify
-            </a>
-          </div>
-        </div>
+      <div class="read-listen-grid" id="episodesGrid">
+        <!-- Dynamically loaded from episodes.json -->
       </div>
     </div>
   </section>
+
+  <!-- Article Reader Modal -->
+  <div class="article-modal-overlay" id="articleModalOverlay">
+    <div class="article-modal-card">
+      <div class="article-modal-header">
+        <span class="media-card-badge" id="modalTag"><span class="pulse-dot"></span> EPISODE 00</span>
+        <button class="article-modal-close" id="closeArticleModalBtn" aria-label="Close Reader">✕</button>
+      </div>
+      <h2 class="article-modal-title" id="modalTitle">Article Title</h2>
+      <div class="article-modal-meta">
+        <span>⏱️ <span id="modalReadTime">2 min</span> read</span> · 
+        <a href="#" id="modalSpotifyLink" target="_blank" rel="noopener" style="color: #1DB954; text-decoration: none;">🎧 Listen on Spotify</a>
+      </div>
+      <div class="article-modal-body" id="modalBody">
+        <!-- Article HTML content -->
+      </div>
+      <div class="article-modal-footer">
+        <button class="btn btn-solid" id="modalCloseFooterBtn">Close Reader</button>
+      </div>
+    </div>
+  </div>
 
   <!-- Field Notes Section -->
   <section class="section section-tight" id="notes">
@@ -562,7 +567,7 @@
       </div>
       <div class="footer-bottom">
         <span>© 2026 Ziddi Founder. All rights reserved.</span>
-        <span>DMAIC-Based 1:1 Operations Audits · <a href="admin.html" style="color: var(--accent-amber); text-decoration: none;">⚡ Quotes Admin</a></span>
+        <span>DMAIC-Based 1:1 Operations Audits · <a href="admin.html" style="color: var(--accent-amber); text-decoration: none;">⚡ Admin Panel</a></span>
       </div>
     </div>
   </footer>

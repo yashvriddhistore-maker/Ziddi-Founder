@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Panel — Ziddi Founder Quotes Manager</title>
+  <title>Admin Panel — Ziddi Founder Content Manager</title>
   
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -110,7 +110,7 @@
       display: none;
     }
 
-    /* Main Admin UI (Hidden until unlocked) */
+    /* Main Admin UI */
     .admin-ui {
       display: none;
     }
@@ -122,6 +122,8 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      flex-wrap: wrap;
+      gap: 15px;
     }
 
     .brand {
@@ -147,6 +149,33 @@
       border: 1px solid var(--accent-amber-dim);
       padding: 2px 8px;
       border-radius: 3px;
+    }
+
+    .nav-tabs {
+      display: flex;
+      gap: 10px;
+      background: #090E16;
+      padding: 4px;
+      border-radius: 6px;
+      border: 1px solid var(--border-dim);
+    }
+
+    .tab-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      padding: 8px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn.active {
+      background: var(--accent-amber);
+      color: var(--bg-ink);
+      font-weight: 600;
     }
 
     .header-actions {
@@ -202,7 +231,7 @@
       margin: 30px auto;
       padding: 0 20px;
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1.1fr 0.9fr;
       gap: 30px;
     }
 
@@ -295,8 +324,8 @@
       color: var(--accent-amber);
     }
 
-    /* Quotes List */
-    .quotes-list {
+    /* List Items */
+    .items-list {
       display: flex;
       flex-direction: column;
       gap: 12px;
@@ -305,7 +334,7 @@
       padding-right: 6px;
     }
 
-    .quote-item {
+    .item-card {
       background: #090E16;
       border: 1px solid var(--border-dim);
       border-radius: 4px;
@@ -317,15 +346,13 @@
       transition: border-color 0.2s ease;
     }
 
-    .quote-item:hover {
+    .item-card:hover {
       border-color: var(--border-bright);
     }
 
-    .quote-item-details {
-      flex: 1;
-    }
+    .item-details { flex: 1; }
 
-    .quote-item-cat {
+    .item-tag {
       font-family: var(--font-mono);
       font-size: 0.68rem;
       color: var(--accent-amber);
@@ -333,27 +360,22 @@
       display: block;
     }
 
-    .quote-item-text {
-      font-size: 0.92rem;
+    .item-title {
+      font-size: 0.95rem;
       color: var(--text-main);
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .item-desc {
+      font-size: 0.85rem;
+      color: var(--text-muted);
       margin-bottom: 6px;
     }
 
-    .quote-item-author {
-      font-family: var(--font-mono);
-      font-size: 0.75rem;
-      color: var(--text-muted);
-    }
+    .item-actions { display: flex; gap: 6px; }
 
-    .quote-item-actions {
-      display: flex;
-      gap: 6px;
-    }
-
-    .btn-sm {
-      padding: 4px 8px;
-      font-size: 0.7rem;
-    }
+    .btn-sm { padding: 4px 8px; font-size: 0.7rem; }
 
     /* Export Box */
     .export-box {
@@ -403,10 +425,10 @@
       z-index: 1000;
     }
 
-    .toast.show {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    .toast.show { opacity: 1; transform: translateY(0); }
+
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
   </style>
 </head>
 <body>
@@ -416,7 +438,7 @@
     <div class="lock-card">
       <span class="lock-icon">🔒</span>
       <h2>ADMIN ACCESS LOCKED</h2>
-      <p>Enter your Founder Password to access the quotes manager.</p>
+      <p>Enter your Founder Password to access the content admin panel.</p>
       
       <form id="lockForm">
         <input type="password" id="passInput" class="lock-input" placeholder="••••••••" autofocus required>
@@ -431,100 +453,182 @@
     <header>
       <div class="brand">
         <a href="index.html" class="logo">ZIDDI<span>·</span>FOUNDER</a>
-        <span class="admin-badge">QUOTES ADMIN</span>
+        <span class="admin-badge">ADMIN PANEL</span>
       </div>
+
+      <div class="nav-tabs">
+        <button class="tab-btn active" onclick="switchTab('episodesTab', this)">🎧 Playbooks & Articles</button>
+        <button class="tab-btn" onclick="switchTab('quotesTab', this)">💬 Quotes Manager</button>
+      </div>
+
       <div class="header-actions">
         <button class="btn btn-sm" id="lockBtn">🔒 Lock Admin</button>
-        <a href="index.html#quotes" class="btn" target="_blank">🌐 View Live Quotes</a>
+        <a href="index.html" class="btn" target="_blank">🌐 View Website</a>
       </div>
     </header>
 
-    <div class="container">
-      
-      <!-- Left Column: Add / Edit Form -->
-      <div class="panel-box">
-        <div class="panel-title">
-          <span id="formModeTitle">➕ ADD NEW QUOTE</span>
-          <button class="btn btn-sm" id="resetFormBtn" style="display:none;">Reset Form</button>
+    <!-- TAB 1: PLAYBOOKS & ARTICLES MANAGER -->
+    <div class="tab-content active" id="episodesTab">
+      <div class="container">
+        
+        <!-- Left: Form -->
+        <div class="panel-box">
+          <div class="panel-title">
+            <span id="epFormModeTitle">➕ ADD NEW PLAYBOOK / ARTICLE</span>
+            <button class="btn btn-sm" id="resetEpFormBtn" style="display:none;">Reset Form</button>
+          </div>
+
+          <form id="epForm">
+            <input type="hidden" id="epEditId" value="">
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+              <div class="form-group">
+                <label for="epTagInput">EPISODE / PLAYBOOK TAG</label>
+                <input type="text" id="epTagInput" placeholder="e.g. EPISODE 01" required>
+              </div>
+
+              <div class="form-group">
+                <label for="epReadTimeInput">READ TIME</label>
+                <input type="text" id="epReadTimeInput" placeholder="e.g. 3 min" value="3 min" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="epTitleInput">ARTICLE TITLE</label>
+              <input type="text" id="epTitleInput" placeholder="e.g. Systems Over Willpower" required>
+            </div>
+
+            <div class="form-group">
+              <label for="epDescInput">SHORT CARD DESCRIPTION</label>
+              <textarea id="epDescInput" placeholder="Short 1-2 sentence snippet for card view..." required style="min-height: 60px;"></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="epSpotifyInput">SPOTIFY TRACK URL</label>
+              <input type="url" id="epSpotifyInput" placeholder="https://open.spotify.com/track/..." required>
+            </div>
+
+            <div class="form-group">
+              <label for="epContentInput">FULL ARTICLE CONTENT (HTML / MARKDOWN TEXT)</label>
+              <textarea id="epContentInput" placeholder="Write full article here. Supports HTML (<h2>, <p>, <ul>, <blockquote>)..." style="min-height: 180px;" required></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-solid" style="width: 100%;" id="saveEpBtn">
+              ✨ Save Playbook & Article
+            </button>
+          </form>
         </div>
 
-        <form id="quoteForm">
-          <input type="hidden" id="editIndex" value="-1">
-
-          <div class="form-group">
-            <label for="quoteCategoryInput">CATEGORY / TAG</label>
-            <input type="text" id="quoteCategoryInput" placeholder="e.g. SYSTEMS & WILLPOWER // 06" required>
+        <!-- Right: Episodes List & Export -->
+        <div class="panel-box">
+          <div class="panel-title">
+            <span>📚 ALL ARTICLES (<span id="epCount">0</span>)</span>
           </div>
 
-          <div class="form-group">
-            <label for="quoteTextInput">QUOTE TEXT (HINDI / ENGLISH)</label>
-            <textarea id="quoteTextInput" placeholder="Type your motivational quote here..." required></textarea>
+          <div class="items-list" id="episodesList">
+            <!-- Dynamically rendered -->
           </div>
 
-          <div class="form-group">
-            <label for="quoteAuthorInput">AUTHOR / SOURCE</label>
-            <input type="text" id="quoteAuthorInput" placeholder="e.g. — Ziddi Founder Rules" required>
-          </div>
-
-          <button type="submit" class="btn btn-solid" style="width: 100%;" id="saveQuoteBtn">
-            ✨ Add Quote to List
-          </button>
-        </form>
-
-        <!-- Live Preview -->
-        <div style="margin-top: 24px;">
-          <label>LIVE PREVIEW</label>
-          <div class="preview-card">
-            <span class="preview-tag" id="prevCat">SYSTEMS & WILLPOWER // 01</span>
-            <p class="preview-text" id="prevText">"Your quote preview will appear here in real-time as you type..."</p>
-            <span class="preview-author" id="prevAuthor">— Ziddi Founder</span>
+          <div class="export-box">
+            <div class="export-title">💾 SAVE ARTICLES TO WEBSITE</div>
+            <p class="export-instructions">
+              Click <strong>Copy episodes.json</strong> below, paste inside <code>episodes.json</code>, and push with GitHub Desktop!
+            </p>
+            <div class="export-btns">
+              <button class="btn btn-solid" id="copyEpJsonBtn">📋 Copy episodes.json</button>
+              <button class="btn" id="downloadEpJsonBtn">📥 Download episodes.json</button>
+            </div>
           </div>
         </div>
+
       </div>
-
-      <!-- Right Column: Quotes Manager & Export -->
-      <div class="panel-box">
-        <div class="panel-title">
-          <span>📚 ALL QUOTES (<span id="quoteCount">0</span>)</span>
-        </div>
-
-        <div class="quotes-list" id="quotesList">
-          <!-- Dynamically rendered quotes -->
-        </div>
-
-        <!-- Export & Sync Section -->
-        <div class="export-box">
-          <div class="export-title">💾 SAVE CHANGES TO WEBSITE</div>
-          <p class="export-instructions">
-            After adding or editing quotes, click <strong>Copy quotes.json</strong> below, replace the text inside <code>quotes.json</code>, and push with GitHub Desktop!
-          </p>
-          <div class="export-btns">
-            <button class="btn btn-solid" id="copyJsonBtn">📋 Copy quotes.json Content</button>
-            <button class="btn" id="downloadJsonBtn">📥 Download quotes.json File</button>
-          </div>
-        </div>
-
-      </div>
-
     </div>
+
+    <!-- TAB 2: QUOTES MANAGER -->
+    <div class="tab-content" id="quotesTab">
+      <div class="container">
+        
+        <!-- Left: Form -->
+        <div class="panel-box">
+          <div class="panel-title">
+            <span id="formModeTitle">➕ ADD NEW QUOTE</span>
+            <button class="btn btn-sm" id="resetFormBtn" style="display:none;">Reset Form</button>
+          </div>
+
+          <form id="quoteForm">
+            <input type="hidden" id="editIndex" value="-1">
+
+            <div class="form-group">
+              <label for="quoteCategoryInput">CATEGORY / TAG</label>
+              <input type="text" id="quoteCategoryInput" placeholder="e.g. SYSTEMS & WILLPOWER // 06">
+            </div>
+
+            <div class="form-group">
+              <label for="quoteTextInput">QUOTE TEXT (HINDI / ENGLISH)</label>
+              <textarea id="quoteTextInput" placeholder="Type your motivational quote here..."></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="quoteAuthorInput">AUTHOR / SOURCE</label>
+              <input type="text" id="quoteAuthorInput" placeholder="e.g. — Ziddi Founder Rules">
+            </div>
+
+            <button type="submit" class="btn btn-solid" style="width: 100%;" id="saveQuoteBtn">
+              ✨ Add Quote to List
+            </button>
+          </form>
+
+          <div style="margin-top: 24px;">
+            <label>LIVE PREVIEW</label>
+            <div class="preview-card">
+              <span class="preview-tag" id="prevCat">SYSTEMS & WILLPOWER // 01</span>
+              <p class="preview-text" id="prevText">"Your quote preview will appear here in real-time..."</p>
+              <span class="preview-author" id="prevAuthor">— Ziddi Founder</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: List & Export -->
+        <div class="panel-box">
+          <div class="panel-title">
+            <span>📚 ALL QUOTES (<span id="quoteCount">0</span>)</span>
+          </div>
+
+          <div class="items-list" id="quotesList">
+            <!-- Dynamically rendered -->
+          </div>
+
+          <div class="export-box">
+            <div class="export-title">💾 SAVE QUOTES TO WEBSITE</div>
+            <p class="export-instructions">
+              Click <strong>Copy quotes.json</strong> below, paste inside <code>quotes.json</code>, and push with GitHub Desktop!
+            </p>
+            <div class="export-btns">
+              <button class="btn btn-solid" id="copyJsonBtn">📋 Copy quotes.json</button>
+              <button class="btn" id="downloadJsonBtn">📥 Download quotes.json</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
   </div>
 
   <div class="toast" id="toast">Copied to clipboard!</div>
 
   <script>
     // SECURITY CONFIGURATION
-    // You can change your admin password below (Default: ziddi2026)
     const ADMIN_PASSWORD = "ziddi2026";
 
-    // DOM Elements for Lock
     const lockOverlay = document.getElementById('lockOverlay');
     const lockForm = document.getElementById('lockForm');
     const passInput = document.getElementById('passInput');
     const lockError = document.getElementById('lockError');
     const adminUI = document.getElementById('adminUI');
     const lockBtn = document.getElementById('lockBtn');
+    const toast = document.getElementById('toast');
 
-    // Check if already authenticated in session
     if (sessionStorage.getItem('ziddi_admin_auth') === 'true') {
       unlockAdmin();
     }
@@ -549,13 +653,158 @@
     function unlockAdmin() {
       lockOverlay.style.display = 'none';
       adminUI.style.display = 'block';
+      fetchEpisodes();
       fetchQuotes();
       setupLivePreview();
     }
 
+    function switchTab(tabId, btn) {
+      document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+      btn.classList.add('active');
+    }
+
+    /* ----------------------------------------------------
+       EPISODES & ARTICLES ENGINE
+    ---------------------------------------------------- */
+    let episodes = [];
+    const epForm = document.getElementById('epForm');
+    const epEditId = document.getElementById('epEditId');
+    const epTagInput = document.getElementById('epTagInput');
+    const epReadTimeInput = document.getElementById('epReadTimeInput');
+    const epTitleInput = document.getElementById('epTitleInput');
+    const epDescInput = document.getElementById('epDescInput');
+    const epSpotifyInput = document.getElementById('epSpotifyInput');
+    const epContentInput = document.getElementById('epContentInput');
+    const epFormModeTitle = document.getElementById('epFormModeTitle');
+    const resetEpFormBtn = document.getElementById('resetEpFormBtn');
+    const saveEpBtn = document.getElementById('saveEpBtn');
+    const episodesList = document.getElementById('episodesList');
+    const epCount = document.getElementById('epCount');
+    const copyEpJsonBtn = document.getElementById('copyEpJsonBtn');
+    const downloadEpJsonBtn = document.getElementById('downloadEpJsonBtn');
+
+    function fetchEpisodes() {
+      fetch('episodes.json')
+        .then(res => res.json())
+        .then(data => {
+          episodes = data;
+          renderEpisodesList();
+        })
+        .catch(() => {
+          episodes = [
+            {
+              "id": "ep-00",
+              "episodeTag": "EPISODE 00",
+              "title": "Willpower Got You to ₹10 Cr. Systems Take You to ₹100 Cr.",
+              "description": "Why clean thinking can't fix broken operational architecture, and how to transition from daily willpower to DMAIC systems.",
+              "readTime": "2 min",
+              "spotifyUrl": "https://spotify.com",
+              "articleContent": "<h2>The Willpower Ceiling</h2><p>Most founders are trapped in a self-built execution loop...</p>"
+            }
+          ];
+          renderEpisodesList();
+        });
+    }
+
+    function renderEpisodesList() {
+      epCount.textContent = episodes.length;
+      episodesList.innerHTML = '';
+
+      episodes.forEach((ep, index) => {
+        const div = document.createElement('div');
+        div.className = 'item-card';
+        div.innerHTML = `
+          <div class="item-details">
+            <span class="item-tag">${escapeHtml(ep.episodeTag || '')} · ${escapeHtml(ep.readTime || '')}</span>
+            <div class="item-title">${escapeHtml(ep.title || '')}</div>
+            <p class="item-desc">${escapeHtml(ep.description || '')}</p>
+          </div>
+          <div class="item-actions">
+            <button class="btn btn-sm" onclick="editEpisode(${index})">✏️ Edit</button>
+            <button class="btn btn-sm btn-danger" onclick="deleteEpisode(${index})">🗑️</button>
+          </div>
+        `;
+        episodesList.appendChild(div);
+      });
+    }
+
+    epForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      const newEp = {
+        id: epEditId.value || 'ep-' + Date.now(),
+        episodeTag: epTagInput.value.trim(),
+        title: epTitleInput.value.trim(),
+        description: epDescInput.value.trim(),
+        readTime: epReadTimeInput.value.trim() || '3 min',
+        spotifyUrl: epSpotifyInput.value.trim(),
+        articleContent: epContentInput.value.trim()
+      };
+
+      const existingIndex = episodes.findIndex(item => item.id === epEditId.value);
+      if (existingIndex >= 0) {
+        episodes[existingIndex] = newEp;
+        showToast('Article updated!');
+      } else {
+        episodes.push(newEp);
+        showToast('New Article added!');
+      }
+
+      resetEpForm();
+      renderEpisodesList();
+    });
+
+    window.editEpisode = function(index) {
+      const ep = episodes[index];
+      epEditId.value = ep.id;
+      epTagInput.value = ep.episodeTag || '';
+      epReadTimeInput.value = ep.readTime || '';
+      epTitleInput.value = ep.title || '';
+      epDescInput.value = ep.description || '';
+      epSpotifyInput.value = ep.spotifyUrl || '';
+      epContentInput.value = ep.articleContent || '';
+
+      epFormModeTitle.textContent = `✏️ EDIT ARTICLE`;
+      saveEpBtn.textContent = '💾 Update Article';
+      resetEpFormBtn.style.display = 'inline-block';
+    };
+
+    window.deleteEpisode = function(index) {
+      if (confirm('Delete this article/episode?')) {
+        episodes.splice(index, 1);
+        renderEpisodesList();
+        showToast('Article deleted!');
+        resetEpForm();
+      }
+    };
+
+    resetEpFormBtn.addEventListener('click', resetEpForm);
+
+    function resetEpForm() {
+      epEditId.value = '';
+      epForm.reset();
+      epFormModeTitle.textContent = '➕ ADD NEW PLAYBOOK / ARTICLE';
+      saveEpBtn.textContent = '✨ Save Playbook & Article';
+      resetEpFormBtn.style.display = 'none';
+    }
+
+    copyEpJsonBtn.addEventListener('click', () => {
+      navigator.clipboard.writeText(JSON.stringify(episodes, null, 2)).then(() => {
+        showToast('episodes.json copied!');
+      });
+    });
+
+    downloadEpJsonBtn.addEventListener('click', () => {
+      downloadFile(JSON.stringify(episodes, null, 2), 'episodes.json');
+      showToast('episodes.json downloaded!');
+    });
+
+    /* ----------------------------------------------------
+       QUOTES ENGINE
+    ---------------------------------------------------- */
     let quotes = [];
-    
-    // DOM Elements for Admin UI
     const quoteForm = document.getElementById('quoteForm');
     const editIndex = document.getElementById('editIndex');
     const quoteCategoryInput = document.getElementById('quoteCategoryInput');
@@ -564,16 +813,13 @@
     const saveQuoteBtn = document.getElementById('saveQuoteBtn');
     const formModeTitle = document.getElementById('formModeTitle');
     const resetFormBtn = document.getElementById('resetFormBtn');
-    
     const prevCat = document.getElementById('prevCat');
     const prevText = document.getElementById('prevText');
     const prevAuthor = document.getElementById('prevAuthor');
-    
     const quotesList = document.getElementById('quotesList');
     const quoteCount = document.getElementById('quoteCount');
     const copyJsonBtn = document.getElementById('copyJsonBtn');
     const downloadJsonBtn = document.getElementById('downloadJsonBtn');
-    const toast = document.getElementById('toast');
 
     function fetchQuotes() {
       fetch('quotes.json')
@@ -582,19 +828,9 @@
           quotes = data;
           renderQuotesList();
         })
-        .catch(err => {
-          console.warn('Failed to fetch quotes.json, using default list', err);
+        .catch(() => {
           quotes = [
-            {
-              "text": "जिद्द से बिज़नेस शुरू होता है, लेकिन सिस्टम से बिज़नेस स्केल होता है।",
-              "author": "— Ziddi Founder Mindset",
-              "category": "SYSTEMS & WILLPOWER // 01"
-            },
-            {
-              "text": "Your business should run on structured processes, not on your constant daily presence.",
-              "author": "— Operations Blueprint",
-              "category": "PROCESS ARCHITECTURE // 02"
-            }
+            { "text": "जिद्द से बिज़नेस शुरू होता है, लेकिन सिस्टम से बिज़नेस स्केल होता है।", "author": "— Ziddi Founder Mindset", "category": "SYSTEMS & WILLPOWER // 01" }
           ];
           renderQuotesList();
         });
@@ -603,19 +839,18 @@
     function renderQuotesList() {
       quoteCount.textContent = quotes.length;
       quotesList.innerHTML = '';
-
       quotes.forEach((q, index) => {
         const div = document.createElement('div');
-        div.className = 'quote-item';
+        div.className = 'item-card';
         div.innerHTML = `
-          <div class="quote-item-details">
-            <span class="quote-item-cat">${escapeHtml(q.category || '')}</span>
-            <p class="quote-item-text">"${escapeHtml(q.text)}"</p>
-            <span class="quote-item-author">${escapeHtml(q.author || '')}</span>
+          <div class="item-details">
+            <span class="item-tag">${escapeHtml(q.category || '')}</span>
+            <div class="item-title">"${escapeHtml(q.text)}"</div>
+            <span class="item-desc">${escapeHtml(q.author || '')}</span>
           </div>
-          <div class="quote-item-actions">
+          <div class="item-actions">
             <button class="btn btn-sm" onclick="editQuote(${index})">✏️ Edit</button>
-            <button class="btn btn-sm btn-danger" onclick="deleteQuote(${index})">🗑️ Delete</button>
+            <button class="btn btn-sm btn-danger" onclick="deleteQuote(${index})">🗑️</button>
           </div>
         `;
         quotesList.appendChild(div);
@@ -625,34 +860,29 @@
     function setupLivePreview() {
       const update = () => {
         prevCat.textContent = quoteCategoryInput.value || 'SYSTEMS & WILLPOWER // 01';
-        prevText.textContent = quoteTextInput.value ? `"${quoteTextInput.value}"` : '"Your quote preview will appear here in real-time as you type..."';
+        prevText.textContent = quoteTextInput.value ? `"${quoteTextInput.value}"` : '"Your quote preview will appear here..."';
         prevAuthor.textContent = quoteAuthorInput.value || '— Ziddi Founder';
       };
-
       quoteCategoryInput.addEventListener('input', update);
       quoteTextInput.addEventListener('input', update);
       quoteAuthorInput.addEventListener('input', update);
     }
 
-    // Form Submit (Add or Edit)
     quoteForm.addEventListener('submit', (e) => {
       e.preventDefault();
-      
       const newQuote = {
         text: quoteTextInput.value.trim(),
         author: quoteAuthorInput.value.trim() || '— Ziddi Founder',
         category: quoteCategoryInput.value.trim() || `MOTIVATION // ${(quotes.length + 1).toString().padStart(2, '0')}`
       };
-
       const idx = parseInt(editIndex.value, 10);
       if (idx >= 0 && idx < quotes.length) {
         quotes[idx] = newQuote;
-        showToast('Quote updated successfully!');
+        showToast('Quote updated!');
       } else {
         quotes.push(newQuote);
         showToast('New quote added!');
       }
-
       resetForm();
       renderQuotesList();
     });
@@ -663,23 +893,18 @@
       quoteCategoryInput.value = q.category || '';
       quoteTextInput.value = q.text || '';
       quoteAuthorInput.value = q.author || '';
-
       formModeTitle.textContent = `✏️ EDIT QUOTE #${index + 1}`;
       saveQuoteBtn.textContent = '💾 Update Quote';
       resetFormBtn.style.display = 'inline-block';
-
-      // Trigger preview update
       quoteCategoryInput.dispatchEvent(new Event('input'));
     };
 
     window.deleteQuote = function(index) {
-      if (confirm(`Are you sure you want to delete quote #${index + 1}?`)) {
+      if (confirm(`Delete quote #${index + 1}?`)) {
         quotes.splice(index, 1);
         renderQuotesList();
         showToast('Quote deleted!');
-        if (parseInt(editIndex.value, 10) === index) {
-          resetForm();
-        }
+        resetForm();
       }
     };
 
@@ -694,29 +919,26 @@
       quoteCategoryInput.dispatchEvent(new Event('input'));
     }
 
-    // Export Actions
     copyJsonBtn.addEventListener('click', () => {
-      const jsonString = JSON.stringify(quotes, null, 2);
-      navigator.clipboard.writeText(jsonString).then(() => {
-        showToast('JSON copied to clipboard!');
-      }).catch(() => {
-        alert('Failed to copy. Please manually export.');
-      });
+      navigator.clipboard.writeText(JSON.stringify(quotes, null, 2)).then(() => showToast('quotes.json copied!'));
     });
 
     downloadJsonBtn.addEventListener('click', () => {
-      const jsonString = JSON.stringify(quotes, null, 2);
-      const blob = new Blob([jsonString], { type: 'application/json' });
+      downloadFile(JSON.stringify(quotes, null, 2), 'quotes.json');
+      showToast('quotes.json downloaded!');
+    });
+
+    function downloadFile(content, filename) {
+      const blob = new Blob([content], { type: 'application/json' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = 'quotes.json';
+      a.download = filename;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
-      showToast('quotes.json downloaded!');
-    });
+    }
 
     function showToast(msg) {
       toast.textContent = msg;
@@ -725,7 +947,7 @@
     }
 
     function escapeHtml(str) {
-      return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+      return (str || '').replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
     }
   </script>
 </body>
