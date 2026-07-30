@@ -39,6 +39,82 @@
       min-height: 100vh;
     }
 
+    /* Lock Screen Overlay */
+    .lock-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(7, 11, 17, 0.96);
+      backdrop-filter: blur(12px);
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .lock-card {
+      background: var(--panel-bg);
+      border: 1px solid var(--accent-amber-dim);
+      border-radius: 8px;
+      padding: 40px;
+      max-width: 400px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+    }
+
+    .lock-icon {
+      font-size: 2.5rem;
+      margin-bottom: 16px;
+      display: block;
+    }
+
+    .lock-card h2 {
+      font-family: var(--font-heading);
+      font-size: 1.6rem;
+      color: var(--text-main);
+      margin-bottom: 8px;
+    }
+
+    .lock-card p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+    }
+
+    .lock-input {
+      width: 100%;
+      background: #090E16;
+      border: 1px solid var(--border-bright);
+      color: var(--accent-amber);
+      padding: 14px;
+      border-radius: 4px;
+      font-family: var(--font-mono);
+      font-size: 1.1rem;
+      text-align: center;
+      letter-spacing: 0.2em;
+      margin-bottom: 16px;
+    }
+
+    .lock-input:focus {
+      outline: none;
+      border-color: var(--accent-amber);
+      box-shadow: 0 0 12px var(--accent-amber-glow);
+    }
+
+    .lock-error {
+      color: var(--accent-red);
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      margin-top: 10px;
+      display: none;
+    }
+
+    /* Main Admin UI (Hidden until unlocked) */
+    .admin-ui {
+      display: none;
+    }
+
     header {
       background: var(--panel-bg);
       border-bottom: 1px solid var(--border-dim);
@@ -335,91 +411,151 @@
 </head>
 <body>
 
-  <header>
-    <div class="brand">
-      <a href="index.html" class="logo">ZIDDI<span>·</span>FOUNDER</a>
-      <span class="admin-badge">QUOTES ADMIN</span>
-    </div>
-    <div class="header-actions">
-      <a href="index.html#quotes" class="btn" target="_blank">🌐 View Live Quotes</a>
-    </div>
-  </header>
-
-  <div class="container">
-    
-    <!-- Left Column: Add / Edit Form -->
-    <div class="panel-box">
-      <div class="panel-title">
-        <span id="formModeTitle">➕ ADD NEW QUOTE</span>
-        <button class="btn btn-sm" id="resetFormBtn" style="display:none;">Reset Form</button>
-      </div>
-
-      <form id="quoteForm">
-        <input type="hidden" id="editIndex" value="-1">
-
-        <div class="form-group">
-          <label for="quoteCategoryInput">CATEGORY / TAG</label>
-          <input type="text" id="quoteCategoryInput" placeholder="e.g. SYSTEMS & WILLPOWER // 06" required>
-        </div>
-
-        <div class="form-group">
-          <label for="quoteTextInput">QUOTE TEXT (HINDI / ENGLISH)</label>
-          <textarea id="quoteTextInput" placeholder="Type your motivational quote here..." required></textarea>
-        </div>
-
-        <div class="form-group">
-          <label for="quoteAuthorInput">AUTHOR / SOURCE</label>
-          <input type="text" id="quoteAuthorInput" placeholder="e.g. — Ziddi Founder Rules" required>
-        </div>
-
-        <button type="submit" class="btn btn-solid" style="width: 100%;" id="saveQuoteBtn">
-          ✨ Add Quote to List
-        </button>
+  <!-- Password Protection Lock Overlay -->
+  <div class="lock-overlay" id="lockOverlay">
+    <div class="lock-card">
+      <span class="lock-icon">🔒</span>
+      <h2>ADMIN ACCESS LOCKED</h2>
+      <p>Enter your Founder Password to access the quotes manager.</p>
+      
+      <form id="lockForm">
+        <input type="password" id="passInput" class="lock-input" placeholder="••••••••" autofocus required>
+        <button type="submit" class="btn btn-solid" style="width: 100%;">Unlock Admin Panel</button>
+        <div class="lock-error" id="lockError">⚠️ Incorrect Password! Try again.</div>
       </form>
+    </div>
+  </div>
 
-      <!-- Live Preview -->
-      <div style="margin-top: 24px;">
-        <label>LIVE PREVIEW</label>
-        <div class="preview-card">
-          <span class="preview-tag" id="prevCat">SYSTEMS & WILLPOWER // 01</span>
-          <p class="preview-text" id="prevText">"Your quote preview will appear here in real-time as you type..."</p>
-          <span class="preview-author" id="prevAuthor">— Ziddi Founder</span>
+  <!-- Main Protected Admin UI -->
+  <div class="admin-ui" id="adminUI">
+    <header>
+      <div class="brand">
+        <a href="index.html" class="logo">ZIDDI<span>·</span>FOUNDER</a>
+        <span class="admin-badge">QUOTES ADMIN</span>
+      </div>
+      <div class="header-actions">
+        <button class="btn btn-sm" id="lockBtn">🔒 Lock Admin</button>
+        <a href="index.html#quotes" class="btn" target="_blank">🌐 View Live Quotes</a>
+      </div>
+    </header>
+
+    <div class="container">
+      
+      <!-- Left Column: Add / Edit Form -->
+      <div class="panel-box">
+        <div class="panel-title">
+          <span id="formModeTitle">➕ ADD NEW QUOTE</span>
+          <button class="btn btn-sm" id="resetFormBtn" style="display:none;">Reset Form</button>
+        </div>
+
+        <form id="quoteForm">
+          <input type="hidden" id="editIndex" value="-1">
+
+          <div class="form-group">
+            <label for="quoteCategoryInput">CATEGORY / TAG</label>
+            <input type="text" id="quoteCategoryInput" placeholder="e.g. SYSTEMS & WILLPOWER // 06" required>
+          </div>
+
+          <div class="form-group">
+            <label for="quoteTextInput">QUOTE TEXT (HINDI / ENGLISH)</label>
+            <textarea id="quoteTextInput" placeholder="Type your motivational quote here..." required></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="quoteAuthorInput">AUTHOR / SOURCE</label>
+            <input type="text" id="quoteAuthorInput" placeholder="e.g. — Ziddi Founder Rules" required>
+          </div>
+
+          <button type="submit" class="btn btn-solid" style="width: 100%;" id="saveQuoteBtn">
+            ✨ Add Quote to List
+          </button>
+        </form>
+
+        <!-- Live Preview -->
+        <div style="margin-top: 24px;">
+          <label>LIVE PREVIEW</label>
+          <div class="preview-card">
+            <span class="preview-tag" id="prevCat">SYSTEMS & WILLPOWER // 01</span>
+            <p class="preview-text" id="prevText">"Your quote preview will appear here in real-time as you type..."</p>
+            <span class="preview-author" id="prevAuthor">— Ziddi Founder</span>
+          </div>
         </div>
       </div>
-    </div>
 
-    <!-- Right Column: Quotes Manager & Export -->
-    <div class="panel-box">
-      <div class="panel-title">
-        <span>📚 ALL QUOTES (<span id="quoteCount">0</span>)</span>
-      </div>
-
-      <div class="quotes-list" id="quotesList">
-        <!-- Dynamically rendered quotes -->
-      </div>
-
-      <!-- Export & Sync Section -->
-      <div class="export-box">
-        <div class="export-title">💾 SAVE CHANGES TO WEBSITE</div>
-        <p class="export-instructions">
-          After adding or editing quotes, click <strong>Copy quotes.json</strong> below, replace the text inside <code>quotes.json</code>, and push with GitHub Desktop!
-        </p>
-        <div class="export-btns">
-          <button class="btn btn-solid" id="copyJsonBtn">📋 Copy quotes.json Content</button>
-          <button class="btn" id="downloadJsonBtn">📥 Download quotes.json File</button>
+      <!-- Right Column: Quotes Manager & Export -->
+      <div class="panel-box">
+        <div class="panel-title">
+          <span>📚 ALL QUOTES (<span id="quoteCount">0</span>)</span>
         </div>
+
+        <div class="quotes-list" id="quotesList">
+          <!-- Dynamically rendered quotes -->
+        </div>
+
+        <!-- Export & Sync Section -->
+        <div class="export-box">
+          <div class="export-title">💾 SAVE CHANGES TO WEBSITE</div>
+          <p class="export-instructions">
+            After adding or editing quotes, click <strong>Copy quotes.json</strong> below, replace the text inside <code>quotes.json</code>, and push with GitHub Desktop!
+          </p>
+          <div class="export-btns">
+            <button class="btn btn-solid" id="copyJsonBtn">📋 Copy quotes.json Content</button>
+            <button class="btn" id="downloadJsonBtn">📥 Download quotes.json File</button>
+          </div>
+        </div>
+
       </div>
 
     </div>
-
   </div>
 
   <div class="toast" id="toast">Copied to clipboard!</div>
 
   <script>
+    // SECURITY CONFIGURATION
+    // You can change your admin password below (Default: ziddi2026)
+    const ADMIN_PASSWORD = "ziddi2026";
+
+    // DOM Elements for Lock
+    const lockOverlay = document.getElementById('lockOverlay');
+    const lockForm = document.getElementById('lockForm');
+    const passInput = document.getElementById('passInput');
+    const lockError = document.getElementById('lockError');
+    const adminUI = document.getElementById('adminUI');
+    const lockBtn = document.getElementById('lockBtn');
+
+    // Check if already authenticated in session
+    if (sessionStorage.getItem('ziddi_admin_auth') === 'true') {
+      unlockAdmin();
+    }
+
+    lockForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (passInput.value === ADMIN_PASSWORD) {
+        sessionStorage.setItem('ziddi_admin_auth', 'true');
+        unlockAdmin();
+      } else {
+        lockError.style.display = 'block';
+        passInput.value = '';
+        passInput.focus();
+      }
+    });
+
+    lockBtn.addEventListener('click', () => {
+      sessionStorage.removeItem('ziddi_admin_auth');
+      location.reload();
+    });
+
+    function unlockAdmin() {
+      lockOverlay.style.display = 'none';
+      adminUI.style.display = 'block';
+      fetchQuotes();
+      setupLivePreview();
+    }
+
     let quotes = [];
     
-    // DOM Elements
+    // DOM Elements for Admin UI
     const quoteForm = document.getElementById('quoteForm');
     const editIndex = document.getElementById('editIndex');
     const quoteCategoryInput = document.getElementById('quoteCategoryInput');
@@ -438,12 +574,6 @@
     const copyJsonBtn = document.getElementById('copyJsonBtn');
     const downloadJsonBtn = document.getElementById('downloadJsonBtn');
     const toast = document.getElementById('toast');
-
-    // Initial Load
-    document.addEventListener('DOMContentLoaded', () => {
-      fetchQuotes();
-      setupLivePreview();
-    });
 
     function fetchQuotes() {
       fetch('quotes.json')
