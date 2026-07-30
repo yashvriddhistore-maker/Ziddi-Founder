@@ -6,6 +6,7 @@
 document.addEventListener('DOMContentLoaded', () => {
   initScrollAnimations();
   initQuizEngine();
+  initQuotesEngine();
   initSmoothScroll();
 });
 
@@ -197,4 +198,188 @@ function initSmoothScroll() {
       }
     });
   });
+}
+
+/**
+ * 4. Interactive Motivational Quotes Engine (GitHub / JSON Powered)
+ */
+function initQuotesEngine() {
+  let quotes = [
+    {
+      text: `"जिद्द से बिज़नेस शुरू होता है, लेकिन सिस्टम से बिज़नेस स्केल होता है।"`,
+      author: "— Ziddi Founder Mindset",
+      category: "SYSTEMS & WILLPOWER // 01"
+    },
+    {
+      text: `"Your business should run on structured processes, not on your constant daily presence."`,
+      author: "— Operations Blueprint",
+      category: "PROCESS ARCHITECTURE // 02"
+    },
+    {
+      text: `"हर बार खुद आग बुझाने की जगह, उस सिस्टम और SOP को ठीक करो जो फेल हुआ है।"`,
+      author: "— DMAIC Engineering",
+      category: "ROOT-CAUSE DIAGNOSIS // 03"
+    },
+    {
+      text: `"If revenue only moves when you personally push, you haven't built an enterprise — you've built high-stress drag."`,
+      author: "— Systems Coaching Audit",
+      category: "SCALABILITY CHECK // 04"
+    },
+    {
+      text: `"कठिन सिस्टम निर्णय आज लोगे तो कल आज़ादी मिलेगी। आज improvising चुनोगे तो कल बिज़नेस का ग़ुलाम रहना पड़ेगा।"`,
+      author: "— Founder Rules",
+      category: "LONG-TERM FREEDOM // 05"
+    }
+  ];
+
+  let currentIndex = 0;
+  let autoPlayTimer = null;
+
+  const quoteCategory = document.getElementById('quoteCategory');
+  const quoteCounter = document.getElementById('quoteCounter');
+  const quoteText = document.getElementById('quoteText');
+  const quoteAuthor = document.getElementById('quoteAuthor');
+  const prevBtn = document.getElementById('prevQuoteBtn');
+  const nextBtn = document.getElementById('nextQuoteBtn');
+  const copyBtn = document.getElementById('copyQuoteBtn');
+  const copyToast = document.getElementById('copyToast');
+  const dotsContainer = document.getElementById('quoteDots');
+  const quoteCard = document.querySelector('.quote-card');
+
+  if (!quoteText || !prevBtn || !nextBtn) return;
+
+  // Attempt to fetch dynamic quotes.json from GitHub/Server
+  fetch('quotes.json')
+    .then(res => {
+      if (!res.ok) throw new Error('Network error loading quotes.json');
+      return res.json();
+    })
+    .then(data => {
+      if (Array.isArray(data) && data.length > 0) {
+        quotes = data;
+        rebuildDots();
+        renderQuote(0);
+      }
+    })
+    .catch(() => {
+      // If fetch fails (e.g. offline or file:// protocol), keep default fallback quotes
+      rebuildDots();
+    });
+
+  function rebuildDots() {
+    if (!dotsContainer) return;
+    dotsContainer.innerHTML = '';
+    quotes.forEach((_, idx) => {
+      const span = document.createElement('span');
+      span.className = `dot ${idx === currentIndex ? 'active' : ''}`;
+      span.setAttribute('data-index', idx);
+      dotsContainer.appendChild(span);
+    });
+  }
+
+  function renderQuote(index) {
+    if (!quotes || quotes.length === 0) return;
+    const contentWrapper = document.querySelector('.quote-content-wrapper');
+    if (contentWrapper) contentWrapper.classList.add('fade-out');
+
+    setTimeout(() => {
+      currentIndex = index;
+      const item = quotes[currentIndex];
+
+      if (quoteCategory) quoteCategory.textContent = item.category || `MOTIVATION // ${(currentIndex + 1).toString().padStart(2, '0')}`;
+      if (quoteCounter) quoteCounter.textContent = `${(currentIndex + 1).toString().padStart(2, '0')} / ${quotes.length.toString().padStart(2, '0')}`;
+      if (quoteText) quoteText.textContent = item.text.startsWith('"') ? item.text : `"${item.text}"`;
+      if (quoteAuthor) quoteAuthor.textContent = item.author;
+
+      // Update active dot
+      if (dotsContainer) {
+        const dots = dotsContainer.querySelectorAll('.dot');
+        dots.forEach((dot, idx) => {
+          dot.classList.toggle('active', idx === currentIndex);
+        });
+      }
+
+      if (contentWrapper) contentWrapper.classList.remove('fade-out');
+    }, 250);
+  }
+
+  function nextQuote() {
+    const nextIdx = (currentIndex + 1) % quotes.length;
+    renderQuote(nextIdx);
+  }
+
+  function prevQuote() {
+    const prevIdx = (currentIndex - 1 + quotes.length) % quotes.length;
+    renderQuote(prevIdx);
+  }
+
+  // Button Listeners
+  nextBtn.addEventListener('click', () => {
+    nextQuote();
+    resetAutoPlay();
+  });
+
+  prevBtn.addEventListener('click', () => {
+    prevQuote();
+    resetAutoPlay();
+  });
+
+  // Dots click listener
+  if (dotsContainer) {
+    dotsContainer.addEventListener('click', (e) => {
+      if (e.target.classList.contains('dot')) {
+        const targetIndex = parseInt(e.target.getAttribute('data-index'), 10);
+        if (!isNaN(targetIndex) && targetIndex !== currentIndex) {
+          renderQuote(targetIndex);
+          resetAutoPlay();
+        }
+      }
+    });
+  }
+
+  // Copy Quote Functionality
+  if (copyBtn) {
+    copyBtn.addEventListener('click', () => {
+      const textToCopy = `${quotes[currentIndex].text}\n${quotes[currentIndex].author}`;
+      navigator.clipboard.writeText(textToCopy).then(() => {
+        showCopyToast();
+      }).catch(() => {
+        // Fallback for clipboard write
+        const textarea = document.createElement('textarea');
+        textarea.value = textToCopy;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+        showCopyToast();
+      });
+    });
+  }
+
+  function showCopyToast() {
+    if (!copyToast) return;
+    copyToast.classList.add('show');
+    setTimeout(() => {
+      copyToast.classList.remove('show');
+    }, 2000);
+  }
+
+  // Auto-play quotes every 6 seconds
+  function startAutoPlay() {
+    autoPlayTimer = setInterval(nextQuote, 6000);
+  }
+
+  function resetAutoPlay() {
+    clearInterval(autoPlayTimer);
+    startAutoPlay();
+  }
+
+  // Pause auto-play when user hovers over quote card
+  if (quoteCard) {
+    quoteCard.addEventListener('mouseenter', () => clearInterval(autoPlayTimer));
+    quoteCard.addEventListener('mouseleave', () => startAutoPlay());
+  }
+
+  // Start auto-play on init
+  startAutoPlay();
 }
