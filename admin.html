@@ -504,8 +504,13 @@
             </div>
 
             <div class="form-group">
-              <label for="epSpotifyInput">SPOTIFY TRACK URL</label>
-              <input type="url" id="epSpotifyInput" placeholder="https://open.spotify.com/track/..." required>
+              <label for="epSpotifyInput">SPOTIFY PAGE / SHOW URL</label>
+              <input type="text" id="epSpotifyInput" placeholder="https://open.spotify.com/show/..." required>
+            </div>
+
+            <div class="form-group">
+              <label for="epSpotifyEmbedInput">SPOTIFY EMBED CODE OR IFRAME SRC</label>
+              <textarea id="epSpotifyEmbedInput" placeholder="Paste <iframe ...> embed code or embed URL from Spotify..." style="min-height: 60px;"></textarea>
             </div>
 
             <div class="form-group">
@@ -582,7 +587,7 @@
             <label>LIVE PREVIEW</label>
             <div class="preview-card">
               <span class="preview-tag" id="prevCat">SYSTEMS & WILLPOWER // 01</span>
-              <p class="preview-text" id="prevText">"Your quote preview will appear here in real-time..."</p>
+              <p class="preview-text" id="prevText">"Your quote preview will appear here..."</p>
               <span class="preview-author" id="prevAuthor">— Ziddi Founder</span>
             </div>
           </div>
@@ -676,6 +681,7 @@
     const epTitleInput = document.getElementById('epTitleInput');
     const epDescInput = document.getElementById('epDescInput');
     const epSpotifyInput = document.getElementById('epSpotifyInput');
+    const epSpotifyEmbedInput = document.getElementById('epSpotifyEmbedInput');
     const epContentInput = document.getElementById('epContentInput');
     const epFormModeTitle = document.getElementById('epFormModeTitle');
     const resetEpFormBtn = document.getElementById('resetEpFormBtn');
@@ -700,7 +706,8 @@
               "title": "Willpower Got You to ₹10 Cr. Systems Take You to ₹100 Cr.",
               "description": "Why clean thinking can't fix broken operational architecture, and how to transition from daily willpower to DMAIC systems.",
               "readTime": "2 min",
-              "spotifyUrl": "https://spotify.com",
+              "spotifyUrl": "https://open.spotify.com/show/0DuN0u47r4tIf8UIUmvRez",
+              "spotifyEmbedUrl": "https://open.spotify.com/embed/show/0DuN0u47r4tIf8UIUmvRez?utm_source=generator&si=1ed66046b45d4b0e",
               "articleContent": "<h2>The Willpower Ceiling</h2><p>Most founders are trapped in a self-built execution loop...</p>"
             }
           ];
@@ -730,9 +737,20 @@
       });
     }
 
+    function extractSpotifySrc(rawInput) {
+      if (!rawInput) return "https://open.spotify.com/embed/show/0DuN0u47r4tIf8UIUmvRez?utm_source=generator&si=1ed66046b45d4b0e";
+      const srcMatch = rawInput.match(/src=["']([^"']+)["']/);
+      if (srcMatch && srcMatch[1]) {
+        return srcMatch[1];
+      }
+      return rawInput.trim();
+    }
+
     epForm.addEventListener('submit', (e) => {
       e.preventDefault();
       
+      const parsedEmbedUrl = extractSpotifySrc(epSpotifyEmbedInput.value);
+
       const newEp = {
         id: epEditId.value || 'ep-' + Date.now(),
         episodeTag: epTagInput.value.trim(),
@@ -740,6 +758,7 @@
         description: epDescInput.value.trim(),
         readTime: epReadTimeInput.value.trim() || '3 min',
         spotifyUrl: epSpotifyInput.value.trim(),
+        spotifyEmbedUrl: parsedEmbedUrl,
         articleContent: epContentInput.value.trim()
       };
 
@@ -764,6 +783,7 @@
       epTitleInput.value = ep.title || '';
       epDescInput.value = ep.description || '';
       epSpotifyInput.value = ep.spotifyUrl || '';
+      epSpotifyEmbedInput.value = ep.spotifyEmbedUrl || '';
       epContentInput.value = ep.articleContent || '';
 
       epFormModeTitle.textContent = `✏️ EDIT ARTICLE`;

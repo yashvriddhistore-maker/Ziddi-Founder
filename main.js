@@ -361,7 +361,7 @@ function initQuotesEngine() {
 }
 
 /**
- * 5. Read & Listen Episodes & Article Reader Modal Engine
+ * 5. Read & Listen Episodes with Embedded Spotify Audio Player & Modal Engine
  */
 function initEpisodesEngine() {
   const episodesGrid = document.getElementById('episodesGrid');
@@ -379,7 +379,6 @@ function initEpisodesEngine() {
 
   let episodesData = [];
 
-  // Default fallback data if episodes.json fails to fetch
   const defaultEpisodes = [
     {
       "id": "ep-00",
@@ -387,7 +386,8 @@ function initEpisodesEngine() {
       "title": "Willpower Got You to ₹10 Cr. Systems Take You to ₹100 Cr.",
       "description": "Why clean thinking can't fix broken operational architecture, and how to transition from daily willpower to DMAIC systems.",
       "readTime": "2 min",
-      "spotifyUrl": "https://spotify.com",
+      "spotifyUrl": "https://open.spotify.com/show/0DuN0u47r4tIf8UIUmvRez",
+      "spotifyEmbedUrl": "https://open.spotify.com/embed/show/0DuN0u47r4tIf8UIUmvRez?utm_source=generator&si=1ed66046b45d4b0e",
       "articleContent": "<h2>The Willpower Ceiling</h2><p>Most ₹10–100 Cr founders are trapped in a self-built execution loop. In the early stage of a business, your personal grit, speed, and willpower are your greatest superpowers.</p><p>However, as operational complexity grows, relying on willpower creates massive high-stress drag. You become the single point of approval, the emergency responder, and the bottleneck for every decision.</p><h3>The DMAIC Transition</h3><p>To scale past ₹10 Cr toward ₹100 Cr without burning out, you must swap willpower for structured business engineering:</p><ul><li><strong>Define:</strong> Map exact operational boundaries where your presence is required vs where SOPs can take over.</li><li><strong>Measure:</strong> Track your calendar audit over 14 days to isolate micro-interruptions.</li><li><strong>Analyze:</strong> Identify root causes for recurring floor emergencies.</li><li><strong>Improve:</strong> Build lightweight, unambiguous SOPs and AI automations.</li><li><strong>Control:</strong> Stress-test your business by stepping out of daily operations.</li></ul><blockquote>\"A fix solves a problem today. A system makes the problem impossible to recur.\"</blockquote>"
     }
   ];
@@ -415,6 +415,9 @@ function initEpisodesEngine() {
     episodesData.forEach((ep, index) => {
       const card = document.createElement('div');
       card.className = 'media-card reveal-on-scroll revealed';
+      
+      const embedUrl = ep.spotifyEmbedUrl || 'https://open.spotify.com/embed/show/0DuN0u47r4tIf8UIUmvRez?utm_source=generator&si=1ed66046b45d4b0e';
+
       card.innerHTML = `
         <div class="media-card-badge">
           <span class="pulse-dot"></span> ${escapeHtml(ep.episodeTag || 'EPISODE ' + index)}
@@ -422,13 +425,25 @@ function initEpisodesEngine() {
         <h3 class="media-card-title">${escapeHtml(ep.title || '')}</h3>
         <p class="media-card-desc">${escapeHtml(ep.description || '')}</p>
         
+        <!-- Embedded Interactive Spotify Player -->
+        <div class="spotify-embed-container" style="margin: 16px 0; border-radius: 12px; overflow: hidden; background: #121212;">
+          <iframe 
+            data-testid="embed-iframe" 
+            style="border-radius:12px; display:block;" 
+            src="${escapeHtml(embedUrl)}" 
+            width="100%" 
+            height="152" 
+            frameBorder="0" 
+            allowfullscreen="" 
+            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
+            loading="lazy">
+          </iframe>
+        </div>
+
         <div class="media-card-actions">
-          <button class="btn btn-ghost media-btn-read" onclick="openArticleReader('${ep.id || index}')">
-            <span>📄</span> Read Article <small>(${escapeHtml(ep.readTime || '2 min')})</small>
+          <button class="btn btn-ghost media-btn-read" onclick="openArticleReader('${ep.id || index}')" style="width: 100%; justify-content: center;">
+            <span>📄</span> Read Full Article <small>(${escapeHtml(ep.readTime || '2 min')})</small>
           </button>
-          <a href="${escapeHtml(ep.spotifyUrl || '#')}" target="_blank" rel="noopener" class="btn btn-solid media-btn-spotify">
-            <span>🎧</span> Listen Track on Spotify
-          </a>
         </div>
       `;
       episodesGrid.appendChild(card);
@@ -439,11 +454,30 @@ function initEpisodesEngine() {
     const ep = episodesData.find(e => e.id === epId) || episodesData[0];
     if (!ep) return;
 
+    const embedUrl = ep.spotifyEmbedUrl || 'https://open.spotify.com/embed/show/0DuN0u47r4tIf8UIUmvRez?utm_source=generator&si=1ed66046b45d4b0e';
+
     if (modalTag) modalTag.innerHTML = `<span class="pulse-dot"></span> ${escapeHtml(ep.episodeTag || '')}`;
     if (modalTitle) modalTitle.textContent = ep.title || '';
     if (modalReadTime) modalReadTime.textContent = ep.readTime || '2 min';
-    if (modalSpotifyLink) modalSpotifyLink.href = ep.spotifyUrl || 'https://spotify.com';
-    if (modalBody) modalBody.innerHTML = ep.articleContent || '<p>Article content coming soon.</p>';
+    if (modalSpotifyLink) modalSpotifyLink.href = ep.spotifyUrl || 'https://open.spotify.com/show/0DuN0u47r4tIf8UIUmvRez';
+    
+    if (modalBody) {
+      modalBody.innerHTML = `
+        <div style="margin-bottom: 24px; border-radius: 12px; overflow: hidden; background: #121212;">
+          <iframe 
+            style="border-radius:12px; display:block;" 
+            src="${escapeHtml(embedUrl)}" 
+            width="100%" 
+            height="152" 
+            frameBorder="0" 
+            allowfullscreen="" 
+            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
+            loading="lazy">
+          </iframe>
+        </div>
+        ${ep.articleContent || '<p>Article content coming soon.</p>'}
+      `;
+    }
 
     if (articleModalOverlay) articleModalOverlay.classList.add('open');
   };
