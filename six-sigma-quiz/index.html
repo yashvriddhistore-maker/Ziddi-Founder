@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Six Sigma Quiz | Ziddi Founder</title>
+  
+  <!-- Ziddi-Founder Fonts + Devanagari for Hindi -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Barlow+Condensed:wght@600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600;700&family=Noto+Sans+Devanagari:wght@400;600;700&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Exclusivity Ticker / Banner -->
+  <div class="exclusivity-banner">
+    <div class="banner-track">
+      <span>ZIDDI FOUNDER SIX SIGMA DIAGNOSTIC</span>
+      <span class="divider">/</span>
+      <span>TEST YOUR PROCESS ARCHITECTURE KNOWLEDGE</span>
+      <span class="divider">/</span>
+      <span>SYSTEMS THINKING OVER MOTIVATIONAL HYPE</span>
+      <span class="divider">/</span>
+      <span>ZIDDI FOUNDER SIX SIGMA DIAGNOSTIC</span>
+      <span class="divider">/</span>
+      <span>TEST YOUR PROCESS ARCHITECTURE KNOWLEDGE</span>
+      <span class="divider">/</span>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header>
+    <div class="nav">
+      <a href="https://www.ziddifounder.com" class="logo">ZIDDI<span>·</span>FOUNDER</a>
+      <div class="lang-actions">
+        <label for="lang-select" class="lang-label">Lang:</label>
+        <select id="lang-select" class="lang-dropdown" onchange="setLang(this.value)">
+          <option value="en">English</option>
+          <option value="hi">हिंदी (Hindi)</option>
+        </select>
+      </div>
+    </div>
+  </header>
+
+  <div class="blueprint-bg"></div>
+
+  <div class="app-container wrap">
+    <!-- HOME SCREEN -->
+    <div id="screen-home" class="screen active">
+      <div class="diagnostic-card">
+        <div class="eyebrow">Diagnostic Engine</div>
+        <h1 class="home-title" id="app-title">Six Sigma Readiness Check</h1>
+        <p class="home-sub" id="app-sub">Validate your knowledge of process architecture and DMAIC frameworks.</p>
+
+        <div class="chapter-grid">
+          <div class="chap-card" onclick="selectChapter('all')">
+            <span class="chap-icon">[ 🎯 ]</span>
+            <div class="chap-details">
+              <span class="chap-name" data-en="All Modules" data-hi="सभी मॉड्यूल">All Modules</span>
+              <span class="chap-count">100+ Parameters</span>
+            </div>
+          </div>
+          <div class="chap-card" onclick="selectChapter('1')">
+            <span class="chap-icon">[ 01 ]</span>
+            <div class="chap-details">
+              <span class="chap-name" data-en="Module 1" data-hi="मॉड्यूल 1">Module 1</span>
+              <span class="chap-count">What is 6σ</span>
+            </div>
+          </div>
+          <div class="chap-card" onclick="selectChapter('5')">
+            <span class="chap-icon">[ 05 ]</span>
+            <div class="chap-details">
+              <span class="chap-name" data-en="Module 5" data-hi="मॉड्यूल 5">Module 5</span>
+              <span class="chap-count">Base Concepts</span>
+            </div>
+          </div>
+          <div class="chap-card" onclick="selectChapter('6')">
+            <span class="chap-icon">[ 06 ]</span>
+            <div class="chap-details">
+              <span class="chap-name" data-en="Module 6" data-hi="मॉड्यूल 6">Module 6</span>
+              <span class="chap-count">Approach</span>
+            </div>
+          </div>
+          <div class="chap-card" onclick="selectChapter('7')">
+            <span class="chap-icon">[ 07 ]</span>
+            <div class="chap-details">
+              <span class="chap-name" data-en="Module 7" data-hi="मॉड्यूल 7">Module 7</span>
+              <span class="chap-count">Process Layer</span>
+            </div>
+          </div>
+          <div class="chap-card" onclick="selectChapter('8')">
+            <span class="chap-icon">[ 08 ]</span>
+            <div class="chap-details">
+              <span class="chap-name" data-en="Module 8" data-hi="मॉड्यूल 8">Module 8</span>
+              <span class="chap-count">Quality Specs</span>
+            </div>
+          </div>
+          <div class="chap-card" onclick="selectChapter('9')">
+            <span class="chap-icon">[ 09 ]</span>
+            <div class="chap-details">
+              <span class="chap-name" data-en="Module 9" data-hi="मॉड्यूल 9">Module 9</span>
+              <span class="chap-count">Project Scale</span>
+            </div>
+          </div>
+          <div class="chap-card" onclick="selectChapter('10')">
+            <span class="chap-icon">[ 10 ]</span>
+            <div class="chap-details">
+              <span class="chap-name" data-en="Module 10" data-hi="मॉड्यूल 10">Module 10</span>
+              <span class="chap-count">Team Struct</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="difficulty-row">
+          <span class="diff-label" id="lbl-diff">STRESS LEVEL:</span>
+          <button class="diff-btn active" onclick="setDiff('easy')" id="btn-easy">STANDARD</button>
+          <button class="diff-btn" onclick="setDiff('hard')" id="btn-hard">ELEVATED</button>
+          <button class="diff-btn" onclick="setDiff('both')" id="btn-mixed">MIXED LOAD</button>
+        </div>
+
+        <button class="btn btn-solid" onclick="startQuiz()" id="btn-start">INITIATE DIAGNOSTIC</button>
+      </div>
+    </div>
+
+    <!-- QUIZ SCREEN -->
+    <div id="screen-quiz" class="screen">
+      <div class="quiz-card">
+        <div class="quiz-header">
+          <div class="q-meta">
+            <span id="q-chapter" class="tracking-label">MOD 01</span>
+            <span id="q-counter">Q 01/20</span>
+          </div>
+          <div class="timer-box">
+            <span class="timer-label">T-MINUS:</span>
+            <span id="timer-val">30</span>
+          </div>
+        </div>
+
+        <div class="meter-bar">
+          <div class="meter-fill" id="progress-bar"></div>
+        </div>
+
+        <h3 class="question-text" id="question-text">Loading diagnostic parameter...</h3>
+        
+        <div class="options-grid" id="options-grid"></div>
+
+        <div class="quiz-footer">
+          <div class="score-display">
+            <span id="lbl-score">EFFICIENCY RATE:</span> <span id="live-score">0</span>
+          </div>
+          <button id="btn-skip" class="btn-skip" onclick="skipQuestion()">BYPASS PARAMETER //</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- RESULT SCREEN -->
+    <div id="screen-result" class="screen">
+      <div class="result-card">
+        <div class="result-header">
+          <span class="readout-tag">DIAGNOSTIC COMPLETE</span>
+          <h2 class="result-title" id="result-title">System Analysis</h2>
+          <div class="sigma-level-display">
+            <span class="sl-label" data-en="Calculated Sigma Level" data-hi="परिणामी सिग्मा स्तर">Calculated Sigma Level</span>
+            <strong id="sigma-level">3σ</strong>
+          </div>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-box s-correct">
+            <strong id="stat-correct">0</strong>
+            <span data-en="Validated" data-hi="मान्य">Validated</span>
+          </div>
+          <div class="stat-box s-wrong">
+            <strong id="stat-wrong">0</strong>
+            <span data-en="Errors" data-hi="त्रुटियाँ">Errors</span>
+          </div>
+          <div class="stat-box s-skip">
+            <strong id="stat-skip">0</strong>
+            <span data-en="Bypassed" data-hi="छोड़े">Bypassed</span>
+          </div>
+        </div>
+
+        <div class="result-btns">
+          <button class="btn btn-solid" onclick="retryQuiz()" data-en="REBOOT DIAGNOSTIC" data-hi="पुनः जाँच करें">REBOOT DIAGNOSTIC</button>
+          <button class="btn" onclick="goHome()" data-en="MAIN CONSOLE" data-hi="मुख्य कन्सोल">MAIN CONSOLE</button>
+        </div>
+
+        <div class="review-section">
+          <h3 class="review-header" data-en="AUDIT LOG" data-hi="ऑडिट लॉग">AUDIT LOG</h3>
+          <div id="review-list"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="questions.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
