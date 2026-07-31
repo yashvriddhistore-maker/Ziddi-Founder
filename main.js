@@ -525,8 +525,8 @@ function initAdvisoryEngine() {
   const modalOverlay = document.getElementById('advisoryModalOverlay');
   const bookingForm = document.getElementById('advisoryBookingForm');
 
-  // Default Razorpay payment link (Can be updated in Admin or custom setting)
-  const RAZORPAY_PAYMENT_URL = localStorage.getItem('ziddi_razorpay_url') || 'https://razorpay.me/@ziddifounder?amount=236000'; // ₹2,000 + 18% GST = ₹2,360
+  // Live Razorpay payment link
+  const RAZORPAY_PAYMENT_URL = localStorage.getItem('ziddi_razorpay_url') || 'https://rzp.io/rzp/pzWbu45';
   
   window.openAdvisoryModal = function() {
     if (modalOverlay) {
