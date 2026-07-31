@@ -459,6 +459,7 @@
       <div class="nav-tabs">
         <button class="tab-btn active" onclick="switchTab('episodesTab', this)">🎧 Playbooks & Articles</button>
         <button class="tab-btn" onclick="switchTab('quotesTab', this)">💬 Quotes Manager</button>
+        <button class="tab-btn" onclick="switchTab('advisoryTab', this)">⚡ Advisory & Razorpay</button>
       </div>
 
       <div class="header-actions">
@@ -618,6 +619,53 @@
       </div>
     </div>
 
+    <!-- TAB 3: ADVISORY & RAZORPAY SETTINGS -->
+    <div class="tab-content" id="advisoryTab">
+      <div class="container">
+        
+        <!-- Left: Razorpay Config -->
+        <div class="panel-box">
+          <div class="panel-title">
+            <span>💳 RAZORPAY PAYMENT LINK SETUP</span>
+          </div>
+
+          <form id="razorpayForm">
+            <div class="form-group">
+              <label for="razorpayUrlInput">RAZORPAY PAYMENT PAGE LINK (₹2,000 + GST)</label>
+              <input type="url" id="razorpayUrlInput" placeholder="https://razorpay.me/@ziddifounder" required>
+              <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 6px;">
+                Paste your live Razorpay Payment Page or Payment Button URL here.
+              </p>
+            </div>
+
+            <button type="submit" class="btn btn-solid" style="width: 100%;">
+              💾 Save Razorpay Payment Link
+            </button>
+          </form>
+
+          <div style="margin-top: 30px; background: rgba(56, 189, 248, 0.05); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 6px; padding: 18px;">
+            <div style="font-family: var(--font-mono); font-size: 0.82rem; color: #38BDF8; margin-bottom: 6px; font-weight: 600;">⚡ POST-PAYMENT CALENDLY REDIRECT</div>
+            <p style="font-size: 0.8rem; color: var(--text-muted);">
+              Set your Razorpay Payment Page "Post Payment Redirect URL" to your Calendly or SavvyCal booking link (e.g., <code>https://calendly.com/gaurav-ziddi/90min-advisory</code>).
+            </p>
+          </div>
+        </div>
+
+        <!-- Right: Saved Advisory Pre-Qualification Leads -->
+        <div class="panel-box">
+          <div class="panel-title">
+            <span>📋 ADVISORY LEADS (<span id="leadCount">0</span>)</span>
+            <button class="btn btn-sm btn-danger" id="clearLeadsBtn">Clear Leads</button>
+          </div>
+
+          <div class="items-list" id="leadsList">
+            <!-- Rendered leads -->
+          </div>
+        </div>
+
+      </div>
+    </div>
+
   </div>
 
   <div class="toast" id="toast">Copied to clipboard!</div>
@@ -660,6 +708,7 @@
       adminUI.style.display = 'block';
       fetchEpisodes();
       fetchQuotes();
+      fetchAdvisorySettings();
       setupLivePreview();
     }
 
@@ -964,6 +1013,67 @@
       toast.textContent = msg;
       toast.classList.add('show');
       setTimeout(() => toast.classList.remove('show'), 2500);
+    }
+
+    /* ----------------------------------------------------
+       ADVISORY & RAZORPAY SETTINGS ENGINE
+    ---------------------------------------------------- */
+    function fetchAdvisorySettings() {
+      const razorpayUrlInput = document.getElementById('razorpayUrlInput');
+      const razorpayForm = document.getElementById('razorpayForm');
+      const leadsList = document.getElementById('leadsList');
+      const leadCount = document.getElementById('leadCount');
+      const clearLeadsBtn = document.getElementById('clearLeadsBtn');
+
+      const savedUrl = localStorage.getItem('ziddi_razorpay_url') || 'https://razorpay.me/@ziddifounder?amount=236000';
+      if (razorpayUrlInput) razorpayUrlInput.value = savedUrl;
+
+      if (razorpayForm) {
+        razorpayForm.addEventListener('submit', (e) => {
+          e.preventDefault();
+          const val = razorpayUrlInput.value.trim();
+          localStorage.setItem('ziddi_razorpay_url', val);
+          showToast('Razorpay Link saved!');
+        });
+      }
+
+      function renderLeads() {
+        if (!leadsList) return;
+        const leads = JSON.parse(localStorage.getItem('ziddi_advisory_leads') || '[]');
+        if (leadCount) leadCount.textContent = leads.length;
+        leadsList.innerHTML = '';
+
+        if (leads.length === 0) {
+          leadsList.innerHTML = '<p style="color: var(--text-muted); font-size: 0.85rem;">No pre-qualification leads submitted yet.</p>';
+          return;
+        }
+
+        leads.slice().reverse().forEach((lead, index) => {
+          const div = document.createElement('div');
+          div.className = 'item-card';
+          div.innerHTML = `
+            <div class="item-details">
+              <span class="item-tag">${escapeHtml(lead.turnover || '')} · ${new Date(lead.timestamp).toLocaleDateString()} ${new Date(lead.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
+              <div class="item-title">${escapeHtml(lead.fullName || '')} (${escapeHtml(lead.phone || '')})</div>
+              <p class="item-desc"><strong>Email:</strong> ${escapeHtml(lead.email || '')}</p>
+              <p class="item-desc" style="color: var(--accent-amber);"><strong>Bottleneck:</strong> "${escapeHtml(lead.bottleneck || '')}"</p>
+            </div>
+          `;
+          leadsList.appendChild(div);
+        });
+      }
+
+      if (clearLeadsBtn) {
+        clearLeadsBtn.addEventListener('click', () => {
+          if (confirm('Clear all stored leads?')) {
+            localStorage.removeItem('ziddi_advisory_leads');
+            renderLeads();
+            showToast('Leads cleared.');
+          }
+        });
+      }
+
+      renderLeads();
     }
 
     function escapeHtml(str) {

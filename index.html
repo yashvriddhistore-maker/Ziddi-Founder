@@ -46,6 +46,7 @@
         <a href="#method" id="navMethod">Method</a>
         <a href="#quiz" id="navQuiz">Readiness Check</a>
         <a href="#program" id="navProg">The Program</a>
+        <a href="#advisory" id="navAdvisory">90-Min Advisory ⚡</a>
         <a href="#quotes" id="navQuotes">Quotes</a>
         <a href="#listen" id="navListen">Read & Listen</a>
         <a href="#notes" id="navNotes">Field Notes</a>
@@ -424,6 +425,38 @@
             <a href="mailto:hello@ziddifounder.com?subject=Readiness%20Check%20-%20Program%20Enquiry" class="btn btn-solid btn-full">Enquire via Email</a>
             <span class="price-disclaimer">Subject to availability check. Only 2 openings left.</span>
           </div>
+      </div>
+
+      <!-- Ziddi Founder: 90-Min Advisory Component -->
+      <div class="advisory-card-wrapper reveal-on-scroll" id="advisory">
+        <div class="advisory-card">
+          <div class="advisory-glow"></div>
+          <div class="advisory-flex">
+            <div class="advisory-content-col">
+              <span class="advisory-badge">
+                Single Advisory Session
+              </span>
+              <h3 class="advisory-title">90-MIN FOUNDER ADVISORY</h3>
+              <p class="advisory-desc">
+                Unpack your operational bottlenecks 1:1 with Gaurav Sharma. Designed for founders who need an immediate, high-impact diagnosis of their business architecture without entering a 12-month retainer.
+              </p>
+              <ul class="advisory-bullets">
+                <li><strong class="bullet-highlight">1:1 Deep-Dive Audit:</strong> Isolate personal & operational time leaks</li>
+                <li><strong class="bullet-highlight">Zero Fluff & Hype:</strong> DMAIC-based root cause analysis applied to your calendar</li>
+                <li><strong class="bullet-highlight">14-Day Actionable Roadmap:</strong> 3 immediate execution steps for friction removal</li>
+              </ul>
+            </div>
+            <div class="advisory-pricing-col">
+              <div class="advisory-price-tag">
+                ₹2,000 <span class="gst-label">+ GST</span>
+              </div>
+              <p class="advisory-price-sub">One-time 90-Min Strategy Call</p>
+              <button class="btn btn-solid advisory-cta-btn" id="openAdvisoryModalBtn">
+                Book 90-Min Advisory Session &rarr;
+              </button>
+              <span class="advisory-slots-note">*Strictly limited to 3 slots per week to protect calendar focus.</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -569,6 +602,66 @@
       </div>
     </div>
   </footer>
+
+  <!-- 90-Min Founder Advisory Pre-Qualification & Booking Modal -->
+  <div class="advisory-modal-overlay" id="advisoryModalOverlay">
+    <div class="advisory-modal-card">
+      <div class="advisory-modal-header">
+        <span class="advisory-badge" style="margin-bottom: 0;">⚡ PRE-QUALIFICATION FORM</span>
+        <button class="advisory-modal-close" id="closeAdvisoryModalBtn" aria-label="Close Modal">✕</button>
+      </div>
+      <h3 class="advisory-modal-title">90-MIN FOUNDER ADVISORY SESSION</h3>
+      <p class="advisory-modal-sub">
+        Please complete this 60-second diagnostic pre-qualification before proceeding to payment.
+      </p>
+
+      <form id="advisoryBookingForm">
+        <div class="advisory-form-grid">
+          <div class="form-field">
+            <label for="advFullName">FULL NAME *</label>
+            <input type="text" id="advFullName" placeholder="e.g. Rahul Verma" required>
+          </div>
+          
+          <div class="form-field">
+            <label for="advPhone">PHONE NUMBER (WHATSAPP) *</label>
+            <input type="tel" id="advPhone" placeholder="+91 98765 43210" required>
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label for="advEmail">EMAIL ADDRESS *</label>
+          <input type="email" id="advEmail" placeholder="founder@company.com" required>
+        </div>
+
+        <div class="form-field">
+          <label for="advTurnover">COMPANY TURNOVER RANGE *</label>
+          <select id="advTurnover" required>
+            <option value="" disabled selected>Select turnover range...</option>
+            <option value="< ₹5 Cr">&lt; ₹5 Cr</option>
+            <option value="₹5–10 Cr">₹5–10 Cr</option>
+            <option value="₹10–100 Cr">₹10–100 Cr</option>
+          </select>
+        </div>
+
+        <div class="form-field">
+          <label for="advBottleneck">WHAT IS THE #1 OPERATIONAL FIRE / BOTTLENECK YOU WANT TO DISCUSS? *</label>
+          <textarea id="advBottleneck" placeholder="Describe the main process failure, time leak, or dependency issue in your operations..." required style="min-height: 80px;"></textarea>
+        </div>
+
+        <div class="advisory-form-pricing">
+          <div>
+            <div class="modal-price">₹2,000 <small>+ GST</small></div>
+            <div class="modal-price-sub">One-time 90-Min Strategy Session with Gaurav Sharma</div>
+          </div>
+          <button type="submit" class="btn btn-solid advisory-submit-btn">
+            Proceed to Payment &rarr;
+          </button>
+        </div>
+        
+        <p class="form-security-note">🔒 Payments handled securely via Razorpay. Post-payment auto-redirects to instant calendar booking.</p>
+      </form>
+    </div>
+  </div>
 
   <!-- JS Script -->
   <script src="main.js"></script>

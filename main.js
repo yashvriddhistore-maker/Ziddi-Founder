@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initQuizEngine();
   initQuotesEngine();
   initEpisodesEngine();
+  initAdvisoryEngine();
   initSmoothScroll();
 });
 
@@ -163,6 +164,20 @@ function initQuizEngine() {
     resultBody.textContent = bodyText;
     resultCta.textContent = ctaText;
     resultCta.href = ctaHref;
+
+    // Check if secondary Advisory CTA already exists, if not create it
+    const resultCtaWrapper = document.querySelector('.result-cta-wrapper');
+    if (resultCtaWrapper && !document.getElementById('advisorySecondaryCta')) {
+      const advBtn = document.createElement('button');
+      advBtn.id = 'advisorySecondaryCta';
+      advBtn.className = 'btn btn-ghost';
+      advBtn.style.marginLeft = '12px';
+      advBtn.style.borderColor = '#38BDF8';
+      advBtn.style.color = '#38BDF8';
+      advBtn.innerHTML = '⚡ Book 90-Min Advisory (₹2,000 + GST)';
+      advBtn.onclick = () => window.openAdvisoryModal && window.openAdvisoryModal();
+      resultCtaWrapper.appendChild(advBtn);
+    }
     
     // Display results block
     quizResult.classList.add('show');
@@ -497,5 +512,84 @@ function initEpisodesEngine() {
 
   function escapeHtml(str) {
     return (str || '').replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+  }
+}
+
+/**
+ * 6. 90-Min Founder Advisory & Paywall Engine
+ * Pre-Qualification Form, Razorpay Payment Trigger, and Booking Redirect.
+ */
+function initAdvisoryEngine() {
+  const openBtn = document.getElementById('openAdvisoryModalBtn');
+  const closeBtn = document.getElementById('closeAdvisoryModalBtn');
+  const modalOverlay = document.getElementById('advisoryModalOverlay');
+  const bookingForm = document.getElementById('advisoryBookingForm');
+
+  // Default Razorpay payment link (Can be updated in Admin or custom setting)
+  const RAZORPAY_PAYMENT_URL = localStorage.getItem('ziddi_razorpay_url') || 'https://razorpay.me/@ziddifounder?amount=236000'; // ₹2,000 + 18% GST = ₹2,360
+  
+  window.openAdvisoryModal = function() {
+    if (modalOverlay) {
+      modalOverlay.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+  };
+
+  function closeAdvisoryModal() {
+    if (modalOverlay) {
+      modalOverlay.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+  }
+
+  if (openBtn) {
+    openBtn.addEventListener('click', window.openAdvisoryModal);
+  }
+
+  if (closeBtn) {
+    closeBtn.addEventListener('click', closeAdvisoryModal);
+  }
+
+  if (modalOverlay) {
+    modalOverlay.addEventListener('click', (e) => {
+      if (e.target === modalOverlay) closeAdvisoryModal();
+    });
+  }
+
+  if (bookingForm) {
+    bookingForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const leadData = {
+        fullName: document.getElementById('advFullName').value.trim(),
+        phone: document.getElementById('advPhone').value.trim(),
+        email: document.getElementById('advEmail').value.trim(),
+        turnover: document.getElementById('advTurnover').value,
+        bottleneck: document.getElementById('advBottleneck').value.trim(),
+        timestamp: new Date().toISOString()
+      };
+
+      // Store lead data locally for verification
+      try {
+        const leads = JSON.parse(localStorage.getItem('ziddi_advisory_leads') || '[]');
+        leads.push(leadData);
+        localStorage.setItem('ziddi_advisory_leads', JSON.stringify(leads));
+      } catch (err) {
+        console.error('Error saving lead data:', err);
+      }
+
+      // Pre-fill email/name in payment URL parameters if supported
+      let paymentUrl = RAZORPAY_PAYMENT_URL;
+      if (paymentUrl.includes('?')) {
+        paymentUrl += `&email=${encodeURIComponent(leadData.email)}&phone=${encodeURIComponent(leadData.phone)}&name=${encodeURIComponent(leadData.fullName)}`;
+      } else {
+        paymentUrl += `?email=${encodeURIComponent(leadData.email)}&phone=${encodeURIComponent(leadData.phone)}&name=${encodeURIComponent(leadData.fullName)}`;
+      }
+
+      closeAdvisoryModal();
+      
+      // Redirect founder to Razorpay Payment Page
+      window.location.href = paymentUrl;
+    });
   }
 }
