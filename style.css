@@ -61,6 +61,18 @@ p {
 em {
   font-style: normal;
   color: var(--accent-amber);
+  display: inline-block;
+  padding: 0 6px;
+  border-radius: 4px;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  cursor: pointer;
+}
+
+em:hover {
+  background-color: var(--accent-amber);
+  color: var(--bg-ink);
+  box-shadow: 0 0 16px rgba(255, 178, 63, 0.4);
+  transform: translateY(-2px);
 }
 
 .mono {
