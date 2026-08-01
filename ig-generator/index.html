@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Case Study to Instagram Content Generator — Ziddi Founder SaaS</title>
+  
+  <!-- SEO & Description -->
+  <meta name="description" content="Transform long business case studies into high-converting Instagram Carousels, Reel Scripts, and Captions in seconds using Generative AI.">
+  <meta name="keywords" content="Case Study to Instagram, Content Generator, SaaS, Carousel Generator, Reel Script AI, Ziddi Founder">
+  <meta name="author" content="Ziddi Founder & Antigravity">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- html2pdf & html2canvas Libraries for PDF & PNG Exports -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+  <!-- CSS Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Top Announcement Bar -->
+  <div class="top-announcement">
+    <span>⚡ ZIDDI FOUNDER SAAS ENGINE: TRANSFORM BUSINESS CASE STUDIES INTO VIRAL INSTAGRAM CONTENT</span>
+  </div>
+
+  <!-- Header / Navigation -->
+  <header class="navbar">
+    <div class="nav-container">
+      <a href="#" class="brand-logo">
+        <span class="logo-icon">⚡</span>
+        <span class="logo-text">ZIDDI<span>·</span>IG ENGINE</span>
+      </a>
+
+      <div class="nav-actions">
+        <button class="btn btn-ghost" id="openSettingsBtn">
+          <i class="fa-solid fa-key"></i> <span id="apiKeyStatusLabel">API Key: Active</span>
+        </button>
+        <a href="#inputSection" class="btn btn-primary">Create Content &rarr;</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="hero-bg"></div>
+    <div class="container relative">
+      <div class="badge-tag">
+        <span class="pulse-dot"></span> AI-POWERED CASE STUDY CONVERTER
+      </div>
+      <h1 class="hero-title">
+        Turn 2,000-Word Case Studies into <br>
+        <span class="gradient-text">High-Converting Instagram Content</span>
+      </h1>
+      <p class="hero-subtitle">
+        Paste your B2B or D2C case study text or upload a document. Generative AI extracts the core hooks, strategy framework, and metrics to auto-generate 10-slide Carousels, Reel Scripts & Captions.
+      </p>
+
+      <div class="hero-stats">
+        <div class="stat-item">
+          <span class="stat-num">10-Slide</span>
+          <span class="stat-label">Carousel Script & Visual Prompts</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <span class="stat-num">30-Sec</span>
+          <span class="stat-label">Reel / Short Video Audio Script</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <span class="stat-num">1-Click</span>
+          <span class="stat-label">Ready-to-Copy Caption & Hashtags</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Generator Section -->
+  <main class="main-container" id="inputSection">
+    
+    <!-- Input Workspace Card -->
+    <div class="workspace-card">
+      <div class="card-header">
+        <div class="step-indicator">STEP 1</div>
+        <h2>Input Business Case Study</h2>
+        <p>Paste your case study text below or upload a PDF/TXT document. Or select a pre-loaded sample.</p>
+      </div>
+
+      <!-- Sample Case Study Selector Buttons -->
+      <div class="presets-wrapper">
+        <span class="presets-label"><i class="fa-solid fa-wand-magic-sparkles"></i> Try Sample Case Study:</span>
+        <div class="presets-buttons">
+          <button class="preset-btn" data-preset="nike">
+            👟 Nike ₹1,000 Cr Air Jordan Strategy
+          </button>
+          <button class="preset-btn" data-preset="auto">
+            🚗 ₹28 Cr Auto Factory Bottleneck
+          </button>
+          <button class="preset-btn" data-preset="saas">
+            💻 ₹45 Cr B2B Sales Separation
+          </button>
+          <button class="preset-btn" data-preset="d2c">
+            📦 ₹18 Cr D2C Packaging Quality
+          </button>
+        </div>
+      </div>
+
+      <!-- Input Form -->
+      <form id="generatorForm">
+        
+        <!-- Textarea Input -->
+        <div class="form-group">
+          <div class="form-label-row">
+            <label for="caseStudyText">CASE STUDY TEXT CONTENT *</label>
+            <span class="char-counter" id="charCounter">0 words</span>
+          </div>
+          <textarea 
+            id="caseStudyText" 
+            placeholder="Paste your full case study here... (e.g. Background, Problem, Strategy implemented, DMAIC metrics, and final results)..." 
+            required
+            rows="9"
+          ></textarea>
+        </div>
+
+        <!-- File Upload Area -->
+        <div class="file-upload-box" id="dropZone">
+          <input type="file" id="fileInput" accept=".txt,.pdf,.doc,.docx" hidden>
+          <div class="upload-content">
+            <i class="fa-solid fa-cloud-arrow-up upload-icon"></i>
+            <p class="upload-text"><strong>Drag & Drop PDF or TXT File here</strong> or <span class="browse-link">browse computer</span></p>
+            <span class="upload-hint" id="fileHint">Supports .TXT and text PDFs up to 10MB</span>
+          </div>
+        </div>
+
+        <!-- Configuration Controls Grid -->
+        <div class="controls-grid">
+          
+          <!-- Tone Selector -->
+          <div class="form-group">
+            <label for="toneSelect"><i class="fa-solid fa-masks-theater"></i> CONTENT TONE / VOICE</label>
+            <select id="toneSelect" class="form-select">
+              <option value="Professional & Authoritative" selected>💼 Professional & Authoritative (Corporate/B2B)</option>
+              <option value="Aggressive & Bold">🔥 Aggressive & Bold (High-Hook / Ziddi Founder)</option>
+              <option value="Analytical & Data-Driven">📊 Analytical & Data-Driven (Six Sigma / Metrics)</option>
+              <option value="Casual & Conversational">💬 Casual & Conversational (Storytelling / Creator)</option>
+            </select>
+          </div>
+
+          <!-- Niche / Target Audience Selector -->
+          <div class="form-group">
+            <label for="nicheSelect"><i class="fa-solid fa-bullseye"></i> TARGET AUDIENCE / NICHE</label>
+            <select id="nicheSelect" class="form-select">
+              <option value="B2B Business Owners & Founders (₹10-100 Cr)" selected>🏢 B2B Business Owners (₹10–100 Cr)</option>
+              <option value="D2C & E-Commerce Entrepreneurs">🛒 D2C & E-Commerce Founders</option>
+              <option value="Manufacturing & Plant Leaders">🏭 Manufacturing & Industrial Leaders</option>
+              <option value="Startups & Tech Founders">🚀 Tech Founders & Agency Owners</option>
+            </select>
+          </div>
+
+          <!-- Slide Count -->
+          <div class="form-group">
+            <label for="slideCountSelect"><i class="fa-solid fa-layer-group"></i> CAROUSEL LENGTH</label>
+            <select id="slideCountSelect" class="form-select">
+              <option value="10" selected>10 Slides (Recommended for Max Engagement)</option>
+              <option value="7">7 Slides (Punchy Breakdown)</option>
+              <option value="5">5 Slides (Quick Summary)</option>
+            </select>
+          </div>
+
+        </div>
+
+        <!-- Generate Button -->
+        <div class="submit-wrapper">
+          <button type="submit" class="btn btn-submit" id="generateBtn">
+            <span class="btn-text"><i class="fa-solid fa-bolt"></i> Generate Instagram Content Package</span>
+            <span class="btn-spinner" style="display: none;"><i class="fa-solid fa-spinner fa-spin"></i> Processing AI Magic...</span>
+          </button>
+        </div>
+
+      </form>
+    </div>
+
+    <!-- AI Loading State Banner -->
+    <div class="loading-container" id="loadingContainer" style="display: none;">
+      <div class="loading-card">
+        <div class="ai-pulse-ring">
+          <i class="fa-solid fa-brain ai-brain-icon"></i>
+        </div>
+        <h3>Analyzing Case Study Architecture...</h3>
+        <p id="loadingStatusText">Extracting core hooks, DMAIC framework, and key metrics...</p>
+        <div class="progress-bar-track">
+          <div class="progress-bar-fill" id="progressFill"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Output Workspace Card -->
+    <div class="output-container" id="outputContainer" style="display: none;">
+      
+      <div class="workspace-card output-card">
+        <div class="output-header">
+          <div>
+            <div class="step-indicator step-green">STEP 2</div>
+            <h2>Generated Instagram Content Package</h2>
+            <p>Your Instagram-ready carousel slides, reel script, and caption are generated below.</p>
+          </div>
+          
+          <div class="output-actions">
+            <button class="btn btn-outline" id="copyAllBtn">
+              <i class="fa-solid fa-copy"></i> Copy All Text
+            </button>
+            <button class="btn btn-amber" id="downloadPdfBtn">
+              <i class="fa-solid fa-file-pdf"></i> Download PDF Report
+            </button>
+            <button class="btn btn-ghost" id="exportJsonBtn">
+              <i class="fa-solid fa-code"></i> Export JSON
+            </button>
+          </div>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <div class="tab-navigation">
+          <button class="tab-btn active" data-tab="carouselTab">
+            <i class="fa-solid fa-images"></i> Tab 1: Carousel Script <span class="tab-badge" id="carouselSlideBadge">10 Slides</span>
+          </button>
+          <button class="tab-btn" data-tab="reelsTab">
+            <i class="fa-solid fa-video"></i> Tab 2: Reels/Shorts Script <span class="tab-badge badge-blue">30 Sec</span>
+          </button>
+          <button class="tab-btn" data-tab="captionTab">
+            <i class="fa-solid fa-hashtag"></i> Tab 3: Caption & Hashtags <span class="tab-badge badge-green">Ready</span>
+          </button>
+        </div>
+
+        <!-- Tab 1: Carousel Script Content -->
+        <div class="tab-content active" id="carouselTab">
+          <div class="tab-meta-bar graphic-controls-bar">
+            <div class="theme-selector-group">
+              <span class="theme-label"><i class="fa-solid fa-palette"></i> CARD THEME:</span>
+              <button class="theme-btn active" data-theme="theme-ziddi">🔥 Ziddi Amber</button>
+              <button class="theme-btn" data-theme="theme-cyan">⚡ Electric Cyan</button>
+              <button class="theme-btn" data-theme="theme-light">💼 Corporate Light</button>
+              <button class="theme-btn" data-theme="theme-violet">💜 Cyber Violet</button>
+            </div>
+            
+            <div class="card-action-btns">
+              <button class="btn btn-sm btn-ghost" id="copyCarouselTextBtn"><i class="fa-solid fa-copy"></i> Copy Text</button>
+              <button class="btn btn-sm btn-outline" id="shuffleAnimalsBtn"><i class="fa-solid fa-paw"></i> Shuffle Animal BG</button>
+              <button class="btn btn-sm btn-amber" id="downloadAllPngsBtn"><i class="fa-solid fa-file-image"></i> Download All PNGs</button>
+            </div>
+          </div>
+
+          <div class="carousel-grid" id="carouselGrid">
+            <!-- Dynamically populated aesthetic graphic carousel cards -->
+          </div>
+        </div>
+
+        <!-- Tab 2: Reels / Shorts Script Content -->
+        <div class="tab-content" id="reelsTab">
+          <div class="tab-meta-bar">
+            <span><i class="fa-solid fa-clapperboard"></i> <strong>Reels Script Format:</strong> Optimized for 15-30 second viral Instagram Reels & YouTube Shorts.</span>
+            <button class="btn btn-sm btn-ghost" id="copyReelsBtn"><i class="fa-solid fa-copy"></i> Copy Script Text</button>
+          </div>
+
+          <div class="reels-script-wrapper" id="reelsScriptBox">
+            <!-- Dynamically populated Reels script -->
+          </div>
+        </div>
+
+        <!-- Tab 3: Caption & Hashtags Content -->
+        <div class="tab-content" id="captionTab">
+          <div class="tab-meta-bar">
+            <span><i class="fa-solid fa-pen-nib"></i> <strong>Instagram Caption:</strong> Includes high-converting Hook, Structured Body, Call To Action, and Niche Hashtags.</span>
+            <button class="btn btn-sm btn-solid" id="copyCaptionBtn"><i class="fa-solid fa-copy"></i> Copy Caption & Hashtags</button>
+          </div>
+
+          <div class="caption-card">
+            <div class="caption-header">
+              <span class="mono-label">READY-TO-POST CAPTION</span>
+              <span class="char-count-label" id="captionCharCount">0 characters</span>
+            </div>
+            <textarea id="captionTextArea" readonly rows="14" class="caption-textarea"></textarea>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-content">
+      <div class="footer-brand">
+        <span class="logo-icon">⚡</span> ZIDDI FOUNDER SAAS ENGINE
+      </div>
+      <p class="footer-text">Case Study to Instagram Content Generator · Designed for High-Ticket B2B & D2C Growth</p>
+      <div class="footer-copy">© 2026 Ziddi Founder Architecture. All rights reserved.</div>
+    </div>
+  </footer>
+
+  <!-- API Key Settings Modal -->
+  <div class="modal-overlay" id="settingsModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-gear"></i> AI Engine Settings</h3>
+        <button class="modal-close" id="closeSettingsBtn">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p>The app includes a built-in AI parser engine. To use your custom **Google Gemini API Key** or **OpenAI API Key**, enter it below:</p>
+        
+        <div class="form-group">
+          <label for="userApiKeyInput">GEMINI API KEY (OPTIONAL)</label>
+          <input type="password" id="userApiKeyInput" placeholder="AIzaSy..." class="form-input">
+          <small class="form-hint">Stored securely in your browser's LocalStorage. Leave blank to use built-in engine.</small>
+        </div>
+
+        <div class="form-group">
+          <label for="aiModelSelect">PREFERRED LLM MODEL</label>
+          <select id="aiModelSelect" class="form-select">
+            <option value="gemini-1.5-flash" selected>Gemini 1.5 Flash (Ultra Fast)</option>
+            <option value="gemini-1.5-pro">Gemini 1.5 Pro (Deep Analysis)</option>
+            <option value="builtin">Built-In Smart Heuristic Engine (Instant)</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" id="saveSettingsBtn">Save Settings</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Main JavaScript File -->
+  <script src="app.js"></script>
+</body>
+</html>
