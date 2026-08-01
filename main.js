@@ -4,6 +4,7 @@
  */
 
 document.addEventListener('DOMContentLoaded', () => {
+  initMobileNav();
   initScrollAnimations();
   initQuizEngine();
   initQuotesEngine();
@@ -593,3 +594,51 @@ function initAdvisoryEngine() {
     });
   }
 }
+
+/**
+ * 7. Mobile Navigation Toggle & Drawer Controller
+ */
+function initMobileNav() {
+  const toggleBtn = document.getElementById('mobileNavToggle');
+  const navLinks = document.getElementById('navLinks');
+  
+  if (!toggleBtn || !navLinks) return;
+  
+  toggleBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const isOpen = navLinks.classList.contains('nav-active');
+    if (isOpen) {
+      closeMobileMenu();
+    } else {
+      openMobileMenu();
+    }
+  });
+
+  // Close mobile menu when tapping any navigation link
+  const links = navLinks.querySelectorAll('a');
+  links.forEach(link => {
+    link.addEventListener('click', () => {
+      closeMobileMenu();
+    });
+  });
+
+  // Close mobile menu when clicking outside header
+  document.addEventListener('click', (e) => {
+    if (!toggleBtn.contains(e.target) && !navLinks.contains(e.target)) {
+      closeMobileMenu();
+    }
+  });
+
+  function openMobileMenu() {
+    navLinks.classList.add('nav-active');
+    toggleBtn.classList.add('active');
+    toggleBtn.setAttribute('aria-expanded', 'true');
+  }
+
+  function closeMobileMenu() {
+    navLinks.classList.remove('nav-active');
+    toggleBtn.classList.remove('active');
+    toggleBtn.setAttribute('aria-expanded', 'false');
+  }
+}
+

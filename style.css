@@ -330,6 +330,63 @@ header {
   box-shadow: 0 0 12px var(--accent-amber-glow) !important;
 }
 
+/* Mobile Navigation Toggle (Hamburger Menu Button) */
+.mobile-nav-toggle {
+  display: none;
+  background: transparent;
+  border: 1px solid var(--border-bright);
+  border-radius: 4px;
+  padding: 8px 10px;
+  cursor: pointer;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 5px;
+  width: 42px;
+  height: 38px;
+  z-index: 1001;
+  transition: all 0.25s ease;
+}
+
+.mobile-nav-toggle:hover {
+  border-color: var(--accent-amber);
+  background: var(--accent-amber-glow);
+}
+
+.hamburger-bar {
+  display: block;
+  width: 100%;
+  height: 2px;
+  background-color: var(--text-main);
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+.mobile-nav-toggle.active .hamburger-bar:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+  background-color: var(--accent-amber);
+}
+
+.mobile-nav-toggle.active .hamburger-bar:nth-child(2) {
+  opacity: 0;
+}
+
+.mobile-nav-toggle.active .hamburger-bar:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+  background-color: var(--accent-amber);
+}
+
+.mobile-cta-inside {
+  display: none;
+  margin-top: 16px;
+  width: 100%;
+}
+
+.btn-full {
+  width: 100%;
+  text-align: center;
+  justify-content: center;
+}
+
 /* Buttons */
 .btn {
   display: inline-flex;
@@ -2148,6 +2205,130 @@ footer {
   font-size: 0.7rem;
   color: #64748B;
   text-align: center;
+}
+
+.nav-mobile-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+/* ====================================================
+   RESPONSIVE MOBILE & TABLET STYLES
+   ==================================================== */
+@media (max-width: 992px) {
+  .nav {
+    padding: 14px 20px;
+    position: relative;
+  }
+
+  .nav-mobile-right {
+    gap: 12px;
+  }
+
+  .mobile-nav-toggle {
+    display: flex;
+  }
+
+  .btn-nav-accent {
+    font-size: 0.68rem;
+    padding: 6px 12px;
+  }
+
+  .nav-links {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: rgba(7, 11, 17, 0.98);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--accent-amber-dim);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.95);
+    flex-direction: column;
+    gap: 0;
+    padding: 16px 24px 24px;
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    visibility: hidden;
+    transition: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .nav-links.nav-active {
+    max-height: 85vh;
+    opacity: 1;
+    overflow-y: auto;
+    visibility: visible;
+  }
+
+  .nav-links a {
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border-dim);
+    font-size: 0.88rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .nav-links a:last-of-type {
+    border-bottom: none;
+  }
+
+  .nav-deep-diag-btn {
+    margin-bottom: 8px;
+    text-align: center;
+    justify-content: center !important;
+  }
+
+  .hero {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    padding-top: 60px;
+    padding-bottom: 60px;
+  }
+
+  .grid-3 {
+    grid-template-columns: 1fr;
+  }
+
+  .split {
+    grid-template-columns: 1fr;
+  }
+
+  .method-summary-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .dmaic-row {
+    grid-template-columns: 1fr;
+  }
+
+  .dmaic-header {
+    border-right: none;
+    border-bottom: 1px solid var(--border-dim);
+    padding: 20px 24px;
+  }
+
+  .dmaic-content-box {
+    padding: 24px;
+  }
+}
+
+@media (max-width: 600px) {
+  .hero h1 {
+    font-size: 2.2rem;
+  }
+  .wrap {
+    padding: 0 16px;
+  }
+  .section {
+    padding: 60px 0;
+  }
+  .section-tight {
+    padding: 50px 0;
+  }
 }
 
 /* Reduced Motion Override */
