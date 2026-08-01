@@ -1602,6 +1602,92 @@ footer {
   box-shadow: 0 0 8px var(--accent-amber-glow);
 }
 
+/* Founder Mindset Gallery Grid */
+.quotes-gallery-wrapper {
+  margin-top: 50px;
+}
+
+.gallery-grid-title {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--accent-amber);
+  letter-spacing: 0.15em;
+  margin-bottom: 24px;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.quotes-gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  position: relative;
+  z-index: 2;
+}
+
+.gallery-card {
+  background: var(--panel-bg);
+  border: 1px solid var(--border-dim);
+  border-radius: 6px;
+  overflow: hidden;
+  position: relative;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  display: flex;
+  flex-direction: column;
+}
+
+.gallery-card:hover {
+  border-color: var(--accent-amber-dim);
+  transform: translateY(-4px);
+  background: var(--panel-bg-hover);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 20px var(--accent-amber-glow);
+}
+
+.gallery-img-wrapper {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  position: relative;
+  background: #020617;
+}
+
+.gallery-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s ease;
+}
+
+.gallery-card:hover .gallery-img {
+  transform: scale(1.04);
+}
+
+.gallery-card-body {
+  padding: 20px 24px;
+  border-top: 1px solid var(--border-dim);
+  flex-grow: 1;
+}
+
+.gallery-card-tag {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--accent-amber);
+  margin-bottom: 6px;
+  display: block;
+  letter-spacing: 0.05em;
+}
+
+.gallery-card-quote {
+  font-size: 0.92rem;
+  color: var(--text-main);
+  font-weight: 500;
+  line-height: 1.5;
+}
+
 /* Read & Listen Section Styles */
 .read-listen-grid {
   display: grid;
