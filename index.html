@@ -41,9 +41,6 @@
     <div class="nav">
       <a href="#" class="logo" id="logoLink">ZIDDI<span>·</span>FOUNDER</a>
       <div class="nav-mobile-right">
-        <div class="nav-cta-wrapper">
-          <a href="#quiz" class="btn btn-nav-accent">Check Fit</a>
-        </div>
         <button class="mobile-nav-toggle" id="mobileNavToggle" aria-label="Toggle navigation menu" aria-expanded="false">
           <span class="hamburger-bar"></span>
           <span class="hamburger-bar"></span>
@@ -51,15 +48,14 @@
         </button>
       </div>
       <nav class="nav-links" id="navLinks">
-        <a href="six-sigma-quiz/index.html" class="nav-deep-diag-btn" id="navDeepDiag">Deep Diagnostic ⚡</a>
-        <a href="#fitcheck" id="navFit">Fit Check</a>
         <a href="#method" id="navMethod">Method</a>
-        <a href="#quiz" id="navQuiz">Readiness Check</a>
         <a href="#program" id="navProg">The Program</a>
-        <a href="#advisory" id="navAdvisory">90-Min Advisory ⚡</a>
-        <a href="#quotes" id="navQuotes">Quotes</a>
         <a href="#listen" id="navListen">Read & Listen</a>
-        <a href="#notes" id="navNotes">Field Notes</a>
+        <a href="#quotes" id="navQuotes">Mindset</a>
+        <div class="nav-cta-group">
+          <a href="#advisory" class="nav-advisory-btn" id="navAdvisory">90-Min Advisory ⚡</a>
+          <a href="six-sigma-quiz/index.html" class="nav-deep-diag-btn" id="navDeepDiag">Deep Diagnostic ⚡</a>
+        </div>
       </nav>
     </div>
   </header>
@@ -546,8 +542,15 @@
     <div class="wrap relative">
       <div class="eyebrow">MEDIA & PLAYBOOKS // READ & LISTEN</div>
       <h2>Read & Listen</h2>
-      <p class="section-subtitle">Free Playbooks & Audio for Every Founder. <br><span style="color: var(--accent-amber); font-size: 0.88rem; font-family: var(--font-mono); display: inline-block; margin-top: 6px;">(Dedicated 1:1 Architecture Strictly Limited to 12 Clients/Year.)</span></p>
+      <p class="section-subtitle">Free Playbooks, Business Case Studies & Audio for Every Founder. <br><span style="color: var(--accent-amber); font-size: 0.88rem; font-family: var(--font-mono); display: inline-block; margin-top: 6px;">(Dedicated 1:1 Architecture Strictly Limited to 12 Clients/Year.)</span></p>
       
+      <!-- Filter Bar -->
+      <div class="media-filter-bar" id="mediaFilterBar">
+        <button class="filter-btn active" data-filter="all">⚡ ALL CONTENT</button>
+        <button class="filter-btn" data-filter="casestudy">📊 BUSINESS CASE STUDIES</button>
+        <button class="filter-btn" data-filter="episode">🎧 ARTICLES & PODCASTS</button>
+      </div>
+
       <div class="read-listen-grid" id="episodesGrid">
         <!-- Dynamically loaded from episodes.json -->
       </div>

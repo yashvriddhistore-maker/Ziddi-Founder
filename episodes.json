@@ -1,12 +1,42 @@
 [
   {
     "id": "ep-00",
-    "episodeTag": "EPISODE 00",
+    "episodeTag": "EPISODE 00 // FOUNDER ARCHITECTURE",
     "title": "Willpower Got You to ₹10 Cr. Systems Take You to ₹100 Cr.",
     "description": "Why clean thinking can't fix broken operational architecture, and how to transition from daily willpower to DMAIC systems.",
     "readTime": "2 min",
     "spotifyUrl": "https://open.spotify.com/show/0DuN0u47r4tIf8UIUmvRez",
     "spotifyEmbedUrl": "https://open.spotify.com/embed/show/0DuN0u47r4tIf8UIUmvRez?utm_source=generator&si=1ed66046b45d4b0e",
     "articleContent": "<h2>The Willpower Ceiling</h2><p>Most ₹10–100 Cr founders are trapped in a self-built execution loop. In the early stage of a business, your personal grit, speed, and willpower are your greatest superpowers.</p><p>However, as operational complexity grows, relying on willpower creates massive high-stress drag. You become the single point of approval, the emergency responder, and the bottleneck for every decision.</p><h3>The DMAIC Transition</h3><p>To scale past ₹10 Cr toward ₹100 Cr without burning out, you must swap willpower for structured business engineering:</p><ul><li><strong>Define:</strong> Map exact operational boundaries where your presence is required vs where SOPs can take over.</li><li><strong>Measure:</strong> Track your calendar audit over 14 days to isolate micro-interruptions.</li><li><strong>Analyze:</strong> Identify root causes for recurring floor emergencies.</li><li><strong>Improve:</strong> Build lightweight, unambiguous SOPs and AI automations.</li><li><strong>Control:</strong> Stress-test your business by stepping out of daily operations.</li></ul><blockquote>\"A fix solves a problem today. A system makes the problem impossible to recur.\"</blockquote>"
+  },
+  {
+    "id": "cs-01",
+    "episodeTag": "CASE STUDY 01 // MANUFACTURING",
+    "title": "How a ₹28 Cr Auto Components Factory Eliminated 18 Hours of Founder Firefighting Weekly",
+    "description": "A deep dive into how DMAIC root-cause analysis replaced manual purchase approvals and floor escalations with a self-correcting SOP matrix.",
+    "readTime": "4 min",
+    "spotifyUrl": "https://open.spotify.com/show/0DuN0u47r4tIf8UIUmvRez",
+    "spotifyEmbedUrl": "https://open.spotify.com/embed/show/0DuN0u47r4tIf8UIUmvRez?utm_source=generator&si=1ed66046b45d4b0e",
+    "articleContent": "<h2>The Case of Pune Precision Components (₹28 Cr Turnover)</h2><p><strong>The Bottleneck:</strong> The founder was spending 3.5 hours every single day approving inventory requisitions, resolving delivery delays on the shop floor, and refereeing disputes between sales and production teams.</p><h3>The DMAIC Intervention</h3><ul><li><strong>14-Day Decision Log Audit:</strong> We discovered that 82% of the founder's daily interventions were for purchases below ₹50,000.</li><li><strong>Automated SOP Thresholds:</strong> Set up a tier-based approval matrix allowing plant managers to approve up to ₹1 Lakh with zero founder involvement.</li><li><strong>Daily 15-Min Standup Dashboard:</strong> Replaced endless phone calls with a morning metric review covering quality, output, and dispatch targets.</li></ul><h3>Key Metric Outcomes</h3><ul><li><strong>18 Hours/Week:</strong> Founder time reclaimed for strategic expansion.</li><li><strong>64% Drop:</strong> Reduction in floor delivery delay escalations in 60 days.</li><li><strong>Zero Floor Interventions:</strong> Founder took first 10-day vacation in 6 years without checking work phone.</li></ul><blockquote>\"Systematizing approvals turned our reactive plant managers into proactive process owners.\"</blockquote>"
+  },
+  {
+    "id": "cs-02",
+    "episodeTag": "CASE STUDY 02 // B2B SERVICES",
+    "title": "From Founder-Led Sales to a Self-Running B2B Sales Engine (₹45 Cr Turnover)",
+    "description": "How an IT services firm built a 4-rep sales team using standardized pitch scripts, automated CRM lead distribution, and zero founder pitch dependencies.",
+    "readTime": "5 min",
+    "spotifyUrl": "https://open.spotify.com/show/0DuN0u47r4tIf8UIUmvRez",
+    "spotifyEmbedUrl": "https://open.spotify.com/embed/show/0DuN0u47r4tIf8UIUmvRez?utm_source=generator&si=1ed66046b45d4b0e",
+    "articleContent": "<h2>The Case of Apex IT Solutions (₹45 Cr Turnover)</h2><p><strong>The Bottleneck:</strong> Client deals closed ONLY when the founder personally pitched in final meetings. When the founder was unavailable, sales leads stalled for weeks.</p><h3>The DMAIC Intervention</h3><ul><li><strong>Sales Pitch Architecture:</strong> Extracted 12 years of founder sales intuition into an objection-handling playbook and pitch deck.</li><li><strong>Qualified Lead Scoring:</strong> Implemented pre-qualification forms so reps only pitched qualified prospects.</li><li><strong>Daily Pipeline Rhythm:</strong> Installed a 10-minute morning pipeline review and automated CRM follow-up triggers.</li></ul><h3>Key Metric Outcomes</h3><ul><li><strong>3.2X Increase:</strong> In qualified lead conversion rate without founder attending pitch calls.</li><li><strong>₹1.4 Cr New Sales:</strong> Closed in 90 days entirely by sales team.</li><li><strong>100% Founder Separation:</strong> Founder shifted 100% focus to enterprise product expansion.</li></ul><blockquote>\"When sales intuition is codified into a system, average reps deliver star results.\"</blockquote>"
+  },
+  {
+    "id": "cs-03",
+    "episodeTag": "CASE STUDY 03 // D2C & PACKAGING",
+    "title": "Solving Quality & Dispatch Chaos for a ₹18 Cr D2C Brand",
+    "description": "Eliminating dispatch errors, customer return spikes, and supplier delays by replacing jugaad with manufacturing excellence protocols.",
+    "readTime": "3 min",
+    "spotifyUrl": "https://open.spotify.com/show/0DuN0u47r4tIf8UIUmvRez",
+    "spotifyEmbedUrl": "https://open.spotify.com/embed/show/0DuN0u47r4tIf8UIUmvRez?utm_source=generator&si=1ed66046b45d4b0e",
+    "articleContent": "<h2>The Case of EcoPack Solutions (₹18 Cr Turnover)</h2><p><strong>The Bottleneck:</strong> Rapid order growth led to 14% customer return rate due to wrong packaging, missing items, and delayed dispatches during peak festival seasons.</p><h3>The DMAIC Intervention</h3><ul><li><strong>Barcode Verification Protocol:</strong> Introduced mandatory scan-verify step before sealing packages.</li><li><strong>Poka-Yoke (Mistake-Proofing):</strong> Redesigned packing tables so incorrect box sizes physically could not fit into shipping bins.</li><li><strong>Vendor SLA Audit:</strong> Established strict quality inspection standards for raw material suppliers.</li></ul><h3>Key Metric Outcomes</h3><ul><li><strong>14% to 0.8%:</strong> Return rate dropped drastically in 45 days.</li><li><strong>₹22 Lakhs Saved:</strong> In avoided return logistics and replacement costs per quarter.</li><li><strong>Scalability Unlocked:</strong> Capacity increased from 1,200 orders/day to 4,500 orders/day seamlessly.</li></ul><blockquote>\"Mistake-proofing the process is 100x cheaper than apologizing to angry customers.\"</blockquote>"
   }
 ]

@@ -408,6 +408,22 @@ function initEpisodesEngine() {
     }
   ];
 
+  let currentFilter = 'all';
+
+  // Setup Filter Bar Event Listeners
+  const filterBar = document.getElementById('mediaFilterBar');
+  if (filterBar) {
+    const filterBtns = filterBar.querySelectorAll('.filter-btn');
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentFilter = btn.getAttribute('data-filter') || 'all';
+        renderEpisodes();
+      });
+    });
+  }
+
   fetch('episodes.json')
     .then(res => {
       if (!res.ok) throw new Error('Failed to load episodes.json');
@@ -428,20 +444,38 @@ function initEpisodesEngine() {
 
   function renderEpisodes() {
     episodesGrid.innerHTML = '';
-    episodesData.forEach((ep, index) => {
+
+    const filtered = episodesData.filter(ep => {
+      if (currentFilter === 'casestudy') {
+        return (ep.id && ep.id.startsWith('cs-')) || (ep.episodeTag && ep.episodeTag.includes('CASE STUDY'));
+      }
+      if (currentFilter === 'episode') {
+        return (ep.id && ep.id.startsWith('ep-')) || (ep.episodeTag && ep.episodeTag.includes('EPISODE'));
+      }
+      return true; // 'all'
+    });
+
+    if (filtered.length === 0) {
+      episodesGrid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 40px;">No items found in this section.</div>`;
+      return;
+    }
+
+    filtered.forEach((ep, index) => {
       const card = document.createElement('div');
       card.className = 'media-card reveal-on-scroll revealed';
       
+      const isCaseStudy = (ep.id && ep.id.startsWith('cs-')) || (ep.episodeTag && ep.episodeTag.includes('CASE STUDY'));
       const embedUrl = ep.spotifyEmbedUrl || 'https://open.spotify.com/embed/show/0DuN0u47r4tIf8UIUmvRez?utm_source=generator&si=1ed66046b45d4b0e';
 
       card.innerHTML = `
-        <div class="media-card-badge">
-          <span class="pulse-dot"></span> ${escapeHtml(ep.episodeTag || 'EPISODE ' + index)}
+        <div class="media-card-badge" style="${isCaseStudy ? 'background: rgba(56, 189, 248, 0.15); border-color: rgba(56, 189, 248, 0.4); color: #38BDF8;' : ''}">
+          <span class="pulse-dot" style="${isCaseStudy ? 'background: #38BDF8; box-shadow: 0 0 8px #38BDF8;' : ''}"></span> ${escapeHtml(ep.episodeTag || 'EPISODE ' + index)}
         </div>
         <h3 class="media-card-title">${escapeHtml(ep.title || '')}</h3>
         <p class="media-card-desc">${escapeHtml(ep.description || '')}</p>
         
-        <!-- Embedded Interactive Spotify Player -->
+        <!-- Embedded Interactive Spotify Player (Optional for episodes, compact for case studies) -->
+        ${!isCaseStudy ? `
         <div class="spotify-embed-container" style="margin: 16px 0; border-radius: 12px; overflow: hidden; background: #121212;">
           <iframe 
             data-testid="embed-iframe" 
@@ -454,11 +488,11 @@ function initEpisodesEngine() {
             allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
             loading="lazy">
           </iframe>
-        </div>
+        </div>` : ''}
 
-        <div class="media-card-actions">
-          <button class="btn btn-ghost media-btn-read" onclick="openArticleReader('${ep.id || index}')" style="width: 100%; justify-content: center;">
-            <span>📄</span> Read Full Article <small>(${escapeHtml(ep.readTime || '2 min')})</small>
+        <div class="media-card-actions" style="margin-top: ${isCaseStudy ? '24px' : '0'};">
+          <button class="btn btn-ghost media-btn-read" onclick="openArticleReader('${ep.id || index}')" style="width: 100%; justify-content: center; ${isCaseStudy ? 'border-color: #38BDF8; color: #38BDF8;' : ''}">
+            <span>${isCaseStudy ? '📊' : '📄'}</span> Read ${isCaseStudy ? 'Case Study Breakdown' : 'Full Article'} <small>(${escapeHtml(ep.readTime || '2 min')})</small>
           </button>
         </div>
       `;
@@ -470,15 +504,20 @@ function initEpisodesEngine() {
     const ep = episodesData.find(e => e.id === epId) || episodesData[0];
     if (!ep) return;
 
+    const isCaseStudy = (ep.id && ep.id.startsWith('cs-')) || (ep.episodeTag && ep.episodeTag.includes('CASE STUDY'));
     const embedUrl = ep.spotifyEmbedUrl || 'https://open.spotify.com/embed/show/0DuN0u47r4tIf8UIUmvRez?utm_source=generator&si=1ed66046b45d4b0e';
 
-    if (modalTag) modalTag.innerHTML = `<span class="pulse-dot"></span> ${escapeHtml(ep.episodeTag || '')}`;
+    if (modalTag) modalTag.innerHTML = `<span class="pulse-dot" style="${isCaseStudy ? 'background: #38BDF8; box-shadow: 0 0 8px #38BDF8;' : ''}"></span> ${escapeHtml(ep.episodeTag || '')}`;
     if (modalTitle) modalTitle.textContent = ep.title || '';
     if (modalReadTime) modalReadTime.textContent = ep.readTime || '2 min';
-    if (modalSpotifyLink) modalSpotifyLink.href = ep.spotifyUrl || 'https://open.spotify.com/show/0DuN0u47r4tIf8UIUmvRez';
+    if (modalSpotifyLink) {
+      modalSpotifyLink.style.display = isCaseStudy ? 'none' : 'inline';
+      modalSpotifyLink.href = ep.spotifyUrl || 'https://open.spotify.com/show/0DuN0u47r4tIf8UIUmvRez';
+    }
     
     if (modalBody) {
       modalBody.innerHTML = `
+        ${!isCaseStudy ? `
         <div style="margin-bottom: 24px; border-radius: 12px; overflow: hidden; background: #121212;">
           <iframe 
             style="border-radius:12px; display:block;" 
@@ -490,7 +529,7 @@ function initEpisodesEngine() {
             allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
             loading="lazy">
           </iframe>
-        </div>
+        </div>` : ''}
         ${ep.articleContent || '<p>Article content coming soon.</p>'}
       `;
     }
