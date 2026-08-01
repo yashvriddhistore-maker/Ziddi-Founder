@@ -1375,10 +1375,6 @@ footer {
     grid-template-columns: 1fr;
   }
   
-  .nav-links {
-    display: none;
-  }
-  
   .footer-top {
     flex-direction: column;
     gap: 30px;
