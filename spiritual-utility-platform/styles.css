@@ -935,14 +935,25 @@ main::-webkit-scrollbar-thumb {
 .preview-header h4 { margin: 6px 0 2px 0; color: #f39c12; font-size: 13px; font-weight: 700; }
 .preview-header p { margin: 0; font-size: 11px; color: #a0a7c4; }
 
+.offerings-title {
+  font-size: 10px;
+  color: var(--text-gold);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 6px 0 2px 0;
+  text-align: center;
+}
+
 .dummy-card {
   background: rgba(255, 255, 255, 0.04);
-  padding: 8px 10px;
-  margin-top: 6px;
+  padding: 7px 9px;
+  margin-top: 5px;
   border-radius: 8px;
-  font-size: 11px;
+  font-size: 10px;
   border-left: 3px solid #e67e22;
   color: #f5f6fa;
+  font-weight: 600;
 }
 
 .preview-footer {
