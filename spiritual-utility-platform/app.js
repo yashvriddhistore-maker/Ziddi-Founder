@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Sankalp Tracker
         sankalp: {
             title: "Mahamrityunjaya Mantra Sankalp",
-            current: 432,
+            current: 0,
             target: 11000
         },
         
@@ -95,6 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
         sankalpInputTitle: document.getElementById('sankalpInputTitle'),
         sankalpInputTarget: document.getElementById('sankalpInputTarget'),
         sankalpUpdateBtn: document.getElementById('sankalpUpdateBtn'),
+        sankalpResetBtn: document.getElementById('sankalpResetBtn'),
         
         // Share / Media Generator
         canvas: document.getElementById('statusCanvas'),
@@ -518,6 +519,16 @@ document.addEventListener('DOMContentLoaded', () => {
         alert("संकल्प अपडेट कर दिया गया है!");
         sendSimulatedWhatsAppAlert("Sankalp Updated", `🚩 New religious milestone started: *"${state.sankalp.title}"* with a target of *${state.sankalp.target}* chants.`);
     });
+
+    if (elements.sankalpResetBtn) {
+        elements.sankalpResetBtn.addEventListener('click', () => {
+            if (confirm("क्या आप वर्तमान संकल्प काउंटर (Current Count) को 0 करना चाहते हैं?")) {
+                state.sankalp.current = 0;
+                updateSankalpUI();
+                sendSimulatedWhatsAppAlert("Sankalp Reset", `🔄 Sankalp count reset to 0 for: *"${state.sankalp.title}"*. Ready for fresh counting.`);
+            }
+        });
+    }
 
     // -------------------------------------------------------------
     // 8. VERNACULAR MEDIA STATUS CARD GENERATOR (CANVAS ENGINE)
