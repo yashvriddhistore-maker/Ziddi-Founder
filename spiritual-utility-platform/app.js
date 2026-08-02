@@ -857,6 +857,140 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // -------------------------------------------------------------
+    // CIRCULAR PHOTO CROP & ADJUST ENGINE
+    // -------------------------------------------------------------
+    const cropModal = document.getElementById('photoCropModal');
+    const cropCanvas = document.getElementById('cropCanvas');
+    const cropViewport = document.getElementById('cropViewport');
+    const cropZoomSlider = document.getElementById('cropZoomSlider');
+    const zoomLevelText = document.getElementById('zoomLevelText');
+    const applyCropBtn = document.getElementById('applyCropBtn');
+    const cancelCropBtn = document.getElementById('cancelCropBtn');
+    const closeCropModalBtn = document.getElementById('closeCropModalBtn');
+
+    let currentCropState = {
+        img: null,
+        zoom: 1,
+        offsetX: 0,
+        offsetY: 0,
+        isDragging: false,
+        startX: 0,
+        startY: 0,
+        onComplete: null
+    };
+
+    function drawCropCanvas() {
+        if (!cropCanvas || !currentCropState.img) return;
+        const ctx = cropCanvas.getContext('2d');
+        const size = cropCanvas.width; // 300
+        ctx.clearRect(0, 0, size, size);
+
+        const img = currentCropState.img;
+        const scale = (Math.max(size / img.width, size / img.height)) * currentCropState.zoom;
+        const drawW = img.width * scale;
+        const drawH = img.height * scale;
+
+        // Constrain offsets
+        const maxOffsetX = Math.max(0, (drawW - size) / 2);
+        const maxOffsetY = Math.max(0, (drawH - size) / 2);
+        currentCropState.offsetX = Math.min(Math.max(currentCropState.offsetX, -maxOffsetX), maxOffsetX);
+        currentCropState.offsetY = Math.min(Math.max(currentCropState.offsetY, -maxOffsetY), maxOffsetY);
+
+        const x = (size - drawW) / 2 + currentCropState.offsetX;
+        const y = (size - drawH) / 2 + currentCropState.offsetY;
+
+        ctx.drawImage(img, x, y, drawW, drawH);
+    }
+
+    function openPhotoCropModal(rawImg, callback) {
+        currentCropState.img = rawImg;
+        currentCropState.zoom = 1;
+        currentCropState.offsetX = 0;
+        currentCropState.offsetY = 0;
+        currentCropState.onComplete = callback;
+
+        if (cropZoomSlider) cropZoomSlider.value = 1;
+        if (zoomLevelText) zoomLevelText.textContent = '100%';
+
+        if (cropModal) cropModal.style.display = 'flex';
+        drawCropCanvas();
+    }
+
+    if (cropZoomSlider) {
+        cropZoomSlider.addEventListener('input', (e) => {
+            currentCropState.zoom = parseFloat(e.target.value);
+            if (zoomLevelText) zoomLevelText.textContent = `${Math.round(currentCropState.zoom * 100)}%`;
+            drawCropCanvas();
+        });
+    }
+
+    // Drag handlers (Mouse & Touch)
+    if (cropViewport) {
+        const startDrag = (clientX, clientY) => {
+            currentCropState.isDragging = true;
+            currentCropState.startX = clientX - currentCropState.offsetX;
+            currentCropState.startY = clientY - currentCropState.offsetY;
+            cropViewport.style.cursor = 'grabbing';
+        };
+
+        const moveDrag = (clientX, clientY) => {
+            if (!currentCropState.isDragging) return;
+            currentCropState.offsetX = clientX - currentCropState.startX;
+            currentCropState.offsetY = clientY - currentCropState.startY;
+            drawCropCanvas();
+        };
+
+        const endDrag = () => {
+            currentCropState.isDragging = false;
+            if (cropViewport) cropViewport.style.cursor = 'grab';
+        };
+
+        cropViewport.addEventListener('mousedown', (e) => startDrag(e.clientX, e.clientY));
+        window.addEventListener('mousemove', (e) => moveDrag(e.clientX, e.clientY));
+        window.addEventListener('mouseup', endDrag);
+
+        cropViewport.addEventListener('touchstart', (e) => {
+            if (e.touches.length === 1) {
+                startDrag(e.touches[0].clientX, e.touches[0].clientY);
+            }
+        }, { passive: true });
+
+        window.addEventListener('touchmove', (e) => {
+            if (e.touches.length === 1) {
+                moveDrag(e.touches[0].clientX, e.touches[0].clientY);
+            }
+        }, { passive: true });
+
+        window.addEventListener('touchend', endDrag);
+    }
+
+    // Modal Action Buttons
+    const closeCrop = () => { if (cropModal) cropModal.style.display = 'none'; };
+    if (cancelCropBtn) cancelCropBtn.addEventListener('click', closeCrop);
+    if (closeCropModalBtn) closeCropModalBtn.addEventListener('click', closeCrop);
+
+    if (applyCropBtn) {
+        applyCropBtn.addEventListener('click', () => {
+            if (!cropCanvas) return;
+            const outputCanvas = document.createElement('canvas');
+            outputCanvas.width = 400;
+            outputCanvas.height = 400;
+            const oCtx = outputCanvas.getContext('2d');
+            oCtx.drawImage(cropCanvas, 0, 0, 300, 300, 0, 0, 400, 400);
+
+            const croppedDataUrl = outputCanvas.toDataURL('image/png');
+            const croppedImg = new Image();
+            croppedImg.onload = () => {
+                if (currentCropState.onComplete) {
+                    currentCropState.onComplete(croppedImg, croppedDataUrl);
+                }
+                closeCrop();
+            };
+            croppedImg.src = croppedDataUrl;
+        });
+    }
+
     // Custom Photo Layer Upload Handlers (Shared logic for B2B tab and Status Share tab)
     function setupPhotoUpload(triggerId, inputId, removeId, previewContainerId, previewImgId) {
         const inputEl = document.getElementById(inputId);
@@ -872,24 +1006,27 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (file) {
                     const reader = new FileReader();
                     reader.onload = (evt) => {
-                        const img = new Image();
-                        img.onload = () => {
-                            state.userPhotoImg = img;
-                            if (previewImg) previewImg.src = evt.target.result;
-                            if (previewContainer) previewContainer.style.display = 'flex';
-                            if (removeBtn) removeBtn.style.display = 'block';
+                        const rawImg = new Image();
+                        rawImg.onload = () => {
+                            // Trigger Circular Crop & Adjust Modal
+                            openPhotoCropModal(rawImg, (croppedImg, croppedDataUrl) => {
+                                state.userPhotoImg = croppedImg;
+                                if (previewImg) previewImg.src = croppedDataUrl;
+                                if (previewContainer) previewContainer.style.display = 'flex';
+                                if (removeBtn) removeBtn.style.display = 'block';
 
-                            // Sync preview in other tab if present
-                            const otherImg = document.getElementById(previewImgId === 'b2bPhotoPreviewImg' ? 'shareTabPhotoPreviewImg' : 'b2bPhotoPreviewImg');
-                            const otherContainer = document.getElementById(previewContainerId === 'b2bPhotoPreviewContainer' ? 'shareTabPhotoPreviewContainer' : 'b2bPhotoPreviewContainer');
-                            const otherRemove = document.getElementById(removeId === 'b2bRemovePhotoBtn' ? 'shareTabRemovePhotoBtn' : 'b2bRemovePhotoBtn');
-                            if (otherImg) otherImg.src = evt.target.result;
-                            if (otherContainer) otherContainer.style.display = 'flex';
-                            if (otherRemove) otherRemove.style.display = 'block';
+                                // Sync preview in other tab if present
+                                const otherImg = document.getElementById(previewImgId === 'b2bPhotoPreviewImg' ? 'shareTabPhotoPreviewImg' : 'b2bPhotoPreviewImg');
+                                const otherContainer = document.getElementById(previewContainerId === 'b2bPhotoPreviewContainer' ? 'shareTabPhotoPreviewContainer' : 'b2bPhotoPreviewContainer');
+                                const otherRemove = document.getElementById(removeId === 'b2bRemovePhotoBtn' ? 'shareTabRemovePhotoBtn' : 'b2bRemovePhotoBtn');
+                                if (otherImg) otherImg.src = croppedDataUrl;
+                                if (otherContainer) otherContainer.style.display = 'flex';
+                                if (otherRemove) otherRemove.style.display = 'block';
 
-                            generateShareCard();
+                                generateShareCard();
+                            });
                         };
-                        img.src = evt.target.result;
+                        rawImg.src = evt.target.result;
                     };
                     reader.readAsDataURL(file);
                 }
@@ -902,7 +1039,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (inputEl) inputEl.value = '';
                 if (previewContainer) previewContainer.style.display = 'none';
                 removeBtn.style.display = 'none';
-                
+
                 const b2bInput = document.getElementById('b2bPhotoInput');
                 const shareInput = document.getElementById('shareTabPhotoInput');
                 if (b2bInput) b2bInput.value = '';
