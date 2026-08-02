@@ -183,7 +183,7 @@ main {
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     overscroll-behavior-y: contain;
-    padding: 16px 20px 140px 20px; /* generous clearance for bottom nav & floating action buttons */
+    padding: 16px 20px 32px 20px;
     scrollbar-width: thin;
     scrollbar-color: rgba(241, 196, 15, 0.3) rgba(0, 0, 0, 0.1);
 }
@@ -927,12 +927,11 @@ main::-webkit-scrollbar-thumb {
 
 /* Bottom Navigation Bar */
 nav.bottom-nav {
-    position: absolute;
-    bottom: 0;
-    left: 0;
+    flex-shrink: 0;
+    position: relative;
     width: 100%;
     height: var(--nav-height);
-    background: rgba(14, 17, 26, 0.9);
+    background: rgba(14, 17, 26, 0.95);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border-top: 1px solid var(--border-glass);
