@@ -842,6 +842,11 @@ document.addEventListener('DOMContentLoaded', () => {
         elements.b2bPanditName.value = state.whiteLabel.panditName;
         elements.b2bTempleName.value = state.whiteLabel.templeName;
         toggleB2BFields(true);
+
+        const noticeEl = document.getElementById('sharedLinkNotice');
+        const priestTxt = document.getElementById('sharedLinkPriestText');
+        if (noticeEl) noticeEl.style.display = 'block';
+        if (priestTxt) priestTxt.textContent = state.whiteLabel.panditName;
     } else {
         toggleB2BFields(false);
     }
