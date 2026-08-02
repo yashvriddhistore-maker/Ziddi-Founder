@@ -117,6 +117,7 @@ document.addEventListener('DOMContentLoaded', () => {
         b2bPreviewName: document.getElementById('b2bPreviewName'),
         b2bPreviewTemple: document.getElementById('b2bPreviewTemple'),
         b2bSaveBtn: document.getElementById('b2bSaveBtn'),
+        b2bCopyLinkBtn: document.getElementById('b2bCopyLinkBtn'),
         
         // WhatsApp Simulator Drawer
         whatsappSimBtn: document.getElementById('whatsappSimBtn'),
@@ -769,6 +770,22 @@ document.addEventListener('DOMContentLoaded', () => {
         if (state.activeTab === 'share') generateShareCard();
     });
 
+    if (elements.b2bCopyLinkBtn) {
+        elements.b2bCopyLinkBtn.addEventListener('click', () => {
+            const baseUrl = window.location.origin + window.location.pathname;
+            const priest = encodeURIComponent(state.whiteLabel.panditName || 'Acharya Sharma');
+            const temple = encodeURIComponent(state.whiteLabel.templeName || 'Mandir Trust');
+            const customUrl = `${baseUrl}?priest=${priest}&temple=${temple}`;
+            
+            navigator.clipboard.writeText(customUrl).then(() => {
+                alert(`📋 यजमान शेयर लिंक कॉपी हो गया है!\n\n${customUrl}\n\nइसे आप WhatsApp समूहों व यजमानों के साथ साझा कर सकते हैं।`);
+                sendSimulatedWhatsAppAlert("White-Label Link Copied", `📋 Custom Share Link created: *${customUrl}* ready for WhatsApp distribution.`);
+            }).catch(() => {
+                prompt("यहाँ से अपना कस्टमाइज्ड लिंक कॉपी करें:", customUrl);
+            });
+        });
+    }
+
     // -------------------------------------------------------------
     // 10. WHATSAPP SIMULATION LOGIC
     // -------------------------------------------------------------
@@ -809,13 +826,30 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // -------------------------------------------------------------
-    // 11. INITIAL RUNS
+    // 11. INITIAL RUNS & URL PARAMETER PARSING
     // -------------------------------------------------------------
+    // Auto-parse URL Query Parameters for White-Label links (e.g. ?priest=Acharya+Devrat&temple=Pracheen+Shiva+Mandir)
+    const urlParams = new URLSearchParams(window.location.search);
+    const priestParam = urlParams.get('priest') || urlParams.get('pandit');
+    const templeParam = urlParams.get('temple');
+
+    if (priestParam || templeParam) {
+        state.whiteLabel.enabled = true;
+        if (priestParam) state.whiteLabel.panditName = priestParam;
+        if (templeParam) state.whiteLabel.templeName = templeParam;
+        
+        elements.b2bEnabledToggle.checked = true;
+        elements.b2bPanditName.value = state.whiteLabel.panditName;
+        elements.b2bTempleName.value = state.whiteLabel.templeName;
+        toggleB2BFields(true);
+    } else {
+        toggleB2BFields(false);
+    }
+
     // Initializing views
     renderPanchang();
     updateJaapUI();
     updateSankalpUI();
-    toggleB2BFields(false);
 
     // Push initial WhatsApp Onboarding greetings
     setTimeout(() => {
