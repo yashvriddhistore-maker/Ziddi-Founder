@@ -35,7 +35,9 @@
                     <p>Spiritual Utility</p>
                 </div>
             </div>
-            <div class="location-section" style="display: flex; align-items: center; gap: 8px;">
+            <div class="location-section" style="display: flex; align-items: center; gap: 6px;">
+                <a href="../daily_darshan/index.html" title="Open Daily Live Darshan App" style="background: rgba(241, 196, 15, 0.15); border: 1px solid var(--border-gold-glass); border-radius: 12px; color: var(--text-gold); padding: 5px 9px; font-size: 11px; font-weight: 700; text-decoration: none; display: flex; align-items: center; gap: 3px; white-space: nowrap;">🛕 लाइव दर्शन</a>
+                <a href="../index.html" title="ZiddiFounder Main Tools Portal" style="background: rgba(255,255,255,0.05); border: 1px solid var(--border-glass); border-radius: 12px; color: var(--text-secondary); padding: 5px 9px; font-size: 11px; font-weight: 700; text-decoration: none; display: flex; align-items: center; gap: 3px; white-space: nowrap;">🏠 पोर्टल</a>
                 <div class="location-selector">
                     <select id="citySelect">
                         <option value="New Delhi" selected>New Delhi</option>
@@ -463,6 +465,9 @@
 
         </main>
 
+        <!-- Toast Feedback Notification -->
+        <div class="toast-message" id="toastMsg">🙏 आपका भोग स्वीकार हुआ!</div>
+
         <!-- Creative Poster Share Preview Modal -->
         <div id="creativePosterModal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(10px); z-index: 10000; align-items: center; justify-content: center; padding: 20px; overflow-y: auto;">
             <div style="background: #140d1c; border: 1px solid var(--border-gold-glass); border-radius: 24px; max-width: 440px; width: 100%; padding: 24px; text-align: center; box-shadow: 0 10px 40px rgba(0,0,0,0.8); position: relative;">
@@ -534,7 +539,7 @@
             </div>
         </div>
 
-        <!-- Bottom Navigation Menu bar -->
+        <!-- Bottom Navigation Menu bar (Original 5 Core Tools) -->
         <nav class="bottom-nav">
             <button class="nav-item active" data-tab="panchang">
                 <span class="nav-icon">📅</span>
@@ -542,7 +547,7 @@
             </button>
             <button class="nav-item" data-tab="jaap">
                 <span class="nav-icon">📿</span>
-                <span class="nav-label">जाप माला</span>
+                <span class="nav-label">जाप</span>
             </button>
             <button class="nav-item" data-tab="sankalp">
                 <span class="nav-icon">🚩</span>
@@ -550,11 +555,11 @@
             </button>
             <button class="nav-item" data-tab="share">
                 <span class="nav-icon">🖼️</span>
-                <span class="nav-label">स्टेटस शेयर</span>
+                <span class="nav-label">स्टेटस</span>
             </button>
             <button class="nav-item" data-tab="b2b">
                 <span class="nav-icon">💼</span>
-                <span class="nav-label">पंडित कंसोल</span>
+                <span class="nav-label">पंडित</span>
             </button>
         </nav>
 

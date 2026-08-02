@@ -1400,9 +1400,16 @@ document.addEventListener('DOMContentLoaded', () => {
         toggleB2BFields(false);
     }
 
+    // Auto-parse URL Query Parameters for Tab Deep-Linking
+    const initialTab = urlParams.get('tab');
+    if (initialTab === 'darshan') {
+        window.location.href = '../daily_darshan/index.html';
+    } else if (initialTab && ['panchang', 'jaap', 'chalisa', 'rashifal', 'sankalp', 'share', 'b2b'].includes(initialTab)) {
+        switchTab(initialTab);
+    }
+
     // Initializing views
     renderPanchang();
     updateJaapUI();
     updateSankalpUI();
-
 });
