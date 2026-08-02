@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Spiritual Tech Utility Platform & Ecosystem</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="100% निस्वार्थ सनातन धर्म सेवा, दैनिक पंचांग, शुभ मुहूर्त, चौघड़िया, राहुकाल अलर्ट, और डिजिटल माला जाप साधना मंच।">
+    <meta name="keywords" content="Panchang, Muhurat, Choghadiya, Rahu Kaal, Digital Jaap Counter, Mala, Sankalp Tracker, SpiritualUtility">
+    
+    <!-- Styling and Fonts -->
+    <link rel="stylesheet" href="styles.css">
+    
+    <!-- PWA support details -->
+    <meta name="theme-color" content="#0e111a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+</head>
+<body>
+
+    <!-- Sacred Background Geometry & Light Glows -->
+    <div class="bg-pattern"></div>
+    <div class="bg-mandala"></div>
+
+    <!-- Main Mobile Frame Container -->
+    <div class="app-container">
+        
+        <!-- Header Panel -->
+        <header>
+            <div class="brand-section">
+                <span class="sacred-om">ॐ</span>
+                <div class="brand-name">
+                    <h1>धर्म-मार्ग</h1>
+                    <p>Spiritual Utility</p>
+                </div>
+            </div>
+            <div class="location-section" style="display: flex; align-items: center; gap: 8px;">
+                <div class="location-selector">
+                    <select id="citySelect">
+                        <option value="New Delhi" selected>New Delhi</option>
+                        <option value="Mumbai">Mumbai</option>
+                        <option value="Bengaluru">Bengaluru</option>
+                        <option value="Kolkata">Kolkata</option>
+                        <option value="Varanasi">Varanasi</option>
+                        <option value="Haridwar">Haridwar</option>
+                        <option value="Ayodhya">Ayodhya</option>
+                        <option value="Ujjain">Ujjain</option>
+                        <option value="Chennai">Chennai</option>
+                        <option value="Hyderabad">Hyderabad</option>
+                    </select>
+                </div>
+                <button id="gpsBtn" style="background: rgba(255,255,255,0.05); border: 1px solid var(--border-glass); border-radius: 12px; color: var(--text-secondary); padding: 6px 10px; font-size: 11px; font-weight: 700; cursor: pointer;">🛰️ GPS</button>
+            </div>
+        </header>
+
+        <!-- Main Scrollable Content Area -->
+        <main>
+            
+            <!-- MODULE 1: PANCHANG & MUHURAT ALERT ENGINE -->
+            <div id="panchangTab" class="tab-content active">
+                
+                <!-- Current Location / Date Card -->
+                <div class="glass-card gold-border">
+                    <div class="day-status-widget">
+                        <div class="time-box">
+                            <span class="label">स्थान / Location</span>
+                            <span id="activeLocationName" class="val gold">New Delhi</span>
+                        </div>
+                        <div class="time-box" style="text-align: right;">
+                            <span class="label">सूर्य उदय / Sunrise</span>
+                            <span id="sunriseVal" class="val saffron">05:45 AM</span>
+                        </div>
+                        <div class="time-box" style="text-align: right;">
+                            <span class="label">सूर्य अस्त / Sunset</span>
+                            <span id="sunsetVal" class="val">07:05 PM</span>
+                        </div>
+                    </div>
+
+                    <!-- Panchang Astro Grid Details -->
+                    <div class="panchang-meta-grid">
+                        <div class="meta-item">
+                            <span class="label">🗓️ तिथि / Lunar Tithi</span>
+                            <span id="tithiVal" class="value">Ekadashi (एकादशी)</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="label">✨ नक्षत्र / Star</span>
+                            <span id="nakshatraVal" class="value">Rohini (रोहिणी)</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="label">🔱 इष्ट देव / Deity</span>
+                            <span id="deityVal" class="value">Vishnu / Shiva</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="label">💫 शुभ मुहूर्त / Shubh Muhurat</span>
+                            <span id="muhuratVal" class="value">11:45 AM - 12:30 PM</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Rahu Kaal Status Card -->
+                <div id="rahuKaalBanner" class="rahu-banner">
+                    <div class="rahu-info">
+                        <h4>🚫 राहुकाल कालचक्र / Rahu Kaal</h4>
+                        <p id="rahuKaalTime">04:30 PM to 06:00 PM</p>
+                    </div>
+                    <span class="rahu-badge">Inauspicious</span>
+                </div>
+
+                <!-- Choghadiya Timeline Section -->
+                <div class="section-title">
+                    <h4>🕒 चौघड़िया मुहूर्त / Choghadiya Muhurat</h4>
+                    <span class="subtitle">Real-time Astro Divisions</span>
+                </div>
+
+                <div class="choghadiya-toggle">
+                    <button id="dayModeBtn" data-mode="day" class="active">☀️ दिन का चौघड़िया / Day</button>
+                    <button id="nightModeBtn" data-mode="night">🌙 रात्रि का चौघड़िया / Night</button>
+                </div>
+
+                <!-- Scrollable Choghadiya List -->
+                <div id="choghadiyaTimeline" class="timeline">
+                    <!-- Dynamic timeline items loaded by app.js -->
+                </div>
+
+                <!-- B2C Soft-Remarketing Product Integration -->
+                <div id="remarketingCard" class="remarketing-card">
+                    <div id="remarketingIcon" class="remarketing-icon">🪔</div>
+                    <div class="remarketing-body">
+                        <span id="remarketingTag" class="remarketing-tag">Certified Devotional Purity</span>
+                        <p id="remarketingText">एकादशी पूजन हेतु प्रामाणिक एवं शुद्ध सामग्री का ही उपयोग करें।</p>
+                        <a id="remarketingLink" href="#buy-pure-kit">
+                            यूटिलिटी स्टोर देखें → 
+                            <span style="font-size: 10px;">🛡️ Certified Pure</span>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- MODULE 2: GAMIFIED DIGITAL JAAP COUNTER -->
+            <div id="jaapTab" class="tab-content">
+                <div class="jaap-container">
+                    
+                    <!-- Select Mantra Option -->
+                    <div class="jaap-selector">
+                        <label style="display: block; margin-bottom: 6px; font-size: 12px; font-weight: 600; color: var(--text-secondary);">साधना मंत्र / Select Chanting Mantra</label>
+                        <select id="jaapMantraSelect">
+                            <option value="ॐ नमः शिवाय (Om Namah Shivaya)">ॐ नमः शिवाय (Om Namah Shivaya)</option>
+                            <option value="ॐ नमो भगवते वासुदेवाय (Om Namo Bhagavate Vasudevaya)">ॐ नमो भगवते वासुदेवाय (Om Namo Bhagavate Vasudevaya)</option>
+                            <option value="हरे कृष्ण महामंत्र (Hare Krishna Mahamantra)">हरे कृष्ण महामंत्र (Hare Krishna Mahamantra)</option>
+                            <option value="श्री राम जय राम जय जय राम (Sri Rama Mantra)">श्री राम जय राम जय जय राम (Sri Rama Mantra)</option>
+                            <option value="महामृत्युंजय मंत्र (Mahamrityunjaya Mantra)">महामृत्युंजय मंत्र (Mahamrityunjaya Mantra)</option>
+                            <option value="गायत्री मंत्र (Gayatri Mantra)">गायत्री मंत्र (Gayatri Mantra)</option>
+                        </select>
+                    </div>
+
+                    <!-- Central Bead & Circle Touch Counter Trigger -->
+                    <div id="jaapRing" class="jaap-ring-outer">
+                        <svg class="jaap-circle-progress">
+                            <defs>
+                                <linearGradient id="saffronGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#d35400" />
+                                    <stop offset="50%" stop-color="#e67e22" />
+                                    <stop offset="100%" stop-color="#f1c40f" />
+                                </linearGradient>
+                            </defs>
+                            <circle class="bg" cx="125" cy="125" r="110" />
+                            <circle id="progressCircle" class="progress" cx="125" cy="125" r="110" />
+                        </svg>
+                        
+                        <!-- Bead visual tracker -->
+                        <div id="jaapBeadVisual" class="jaap-bead-visual">
+                            <div class="bead-dot"></div>
+                        </div>
+
+                        <!-- Touch Button Details -->
+                        <div class="jaap-button-inner">
+                            <span class="jaap-symbol">🚩</span>
+                            <span id="jaapCountDisplay" class="jaap-count">0</span>
+                            <span id="jaapTargetDisplay" style="display:none;">108</span>
+                            <span class="jaap-label">जप संख्या / Tap Screen</span>
+                        </div>
+                    </div>
+
+                    <!-- Summary Mala counters -->
+                    <div class="glass-card" style="width: 100%; display: flex; justify-content: space-around; padding: 12px; margin-bottom: 24px;">
+                        <div style="text-align: center;">
+                            <span style="display: block; font-size: 11px; color: var(--text-secondary); text-transform: uppercase;">माला पूर्ण / Completed Malas</span>
+                            <span id="malaCountDisplay" style="font-size: 20px; font-weight: 800; color: var(--text-gold);">0</span>
+                        </div>
+                        <div style="border-right: 1px solid rgba(255,255,255,0.08);"></div>
+                        <div style="text-align: center;">
+                            <span style="display: block; font-size: 11px; color: var(--text-secondary); text-transform: uppercase;">माला लक्ष्य / Target</span>
+                            <span style="font-size: 20px; font-weight: 800; color: var(--text-primary);">108 Mntr / Mala</span>
+                        </div>
+                    </div>
+
+                    <!-- Reset & Audio control buttons -->
+                    <div class="jaap-controls">
+                        <button id="soundToggleBtn" class="accent">🔊 Sound: On</button>
+                        <button id="vibrateToggleBtn" class="accent">📳 Vibrate: On</button>
+                        <button id="resetJaapBtn">🔄 Reset</button>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- MODULE 3: SANKALP PROGRESS TRACKER -->
+            <div id="sankalpTab" class="tab-content">
+                
+                <!-- Active Sankalp Card -->
+                <div class="glass-card gold-border">
+                    <div class="sankalp-box">
+                        <div class="progress-header">
+                            <div class="progress-title">
+                                <h4 id="sankalpTitle">Mahamrityunjaya Mantra Sankalp</h4>
+                                <p id="sankalpSubtitle">Daily meditation milestone logs & alerts</p>
+                            </div>
+                            <span id="sankalpPercent" class="progress-pct">4.0%</span>
+                        </div>
+                        
+                        <!-- Visual Progress Bar -->
+                        <div class="progress-bar-container">
+                            <div id="sankalpProgressBar" class="progress-bar-fill" style="width: 4%;"></div>
+                        </div>
+
+                        <!-- Progress Summary -->
+                        <div class="sankalp-meta">
+                            <span>कुल प्रगति: <strong id="sankalpCurrent">432</strong> मंत्र</span>
+                            <span>लक्ष्य संकल्प: <strong id="sankalpTarget">11,000</strong> मंत्र</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Create/Update New Sankalp Form -->
+                <div class="section-title">
+                    <h4>🚩 नया संकल्प प्रारंभ करें / Initiate New Sankalp</h4>
+                </div>
+
+                <div class="glass-card">
+                    <div class="form-group">
+                        <label for="sankalpInputTitle">संकल्प का उद्देश्य / Devotional Resolution Title</label>
+                        <input type="text" id="sankalpInputTitle" placeholder="उदाहरण: 11,000 महामृत्युंजय मंत्र संकल्प" value="Mahamrityunjaya Mantra Sankalp">
+                    </div>
+                    <div class="form-group">
+                        <label for="sankalpInputTarget">मंत्र लक्ष्य संख्या / Total Target Chants</label>
+                        <input type="number" id="sankalpInputTarget" placeholder="जैसे: 11000, 24000, 108000" value="11000">
+                    </div>
+                    <button id="sankalpUpdateBtn" style="width: 100%; margin-top: 10px; background: var(--saffron-gradient); border: none; border-radius: 12px; color: white; padding: 12px; font-weight: 700; cursor: pointer; box-shadow: var(--shadow-glow);">संकल्प संचित करें / Update Sankalp</button>
+                </div>
+
+            </div>
+
+            <!-- MODULE 4: HIGH-ENGAGEMENT MEDIA STATUS CARD GENERATOR -->
+            <div id="shareTab" class="tab-content">
+                <div class="media-generator-box">
+                    
+                    <div class="section-title" style="width:100%;">
+                        <h4>🖼️ दैनिक पंचांग कार्ड / Daily Sharing Card</h4>
+                        <span class="subtitle">Tap Card to Change Quote</span>
+                    </div>
+
+                    <!-- Canvas preview mockup -->
+                    <div class="canvas-preview-container">
+                        <canvas id="statusCanvas"></canvas>
+                    </div>
+
+                    <!-- Action layout -->
+                    <div style="text-align: center; font-size: 11px; color: var(--text-secondary); margin-bottom: 16px;">
+                        💡 *यह इमेज 100% आपके चयनित स्थान के दैनिक पंचांग डेटा से निर्मित हुई है।*
+                    </div>
+
+                    <div class="share-action-buttons">
+                        <button id="downloadCardBtn" class="share-btn download">💾 डाउनलोड करें / Save Image</button>
+                        <button id="whatsappShareBtn" class="share-btn whatsapp">📲 व्हाट्सएप स्टेटस / Share Status</button>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- MODULE 5: B2B WHITE-LABEL & PANDIT PORTAL -->
+            <div id="b2bTab" class="tab-content">
+                
+                <div class="section-title">
+                    <h4>💼 पंडित एवं मंदिर ट्रस्ट कंसोल / Pandit Portal</h4>
+                    <span class="b2b-badge">B2B White-Label</span>
+                </div>
+                
+                <p class="console-intro">
+                    इस पोर्टल के माध्यम से स्थानीय मंदिर ट्रस्ट, पुरोहित एवं आचार्य पंचांग यूटिलिटी को अपने नाम से कस्टमाइज कर यजमानों से साझा कर सकते हैं।
+                </p>
+
+                <!-- Configuration panel -->
+                <div class="glass-card">
+                    <div class="form-group" style="flex-direction: row; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                        <label for="b2bEnabledToggle" style="cursor: pointer;">🔌 वाइट-लेबल ब्रैंडिंग सक्रिय करें</label>
+                        <input type="checkbox" id="b2bEnabledToggle" style="width: 20px; height: 20px; cursor: pointer;">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="b2bPanditName">आचार्य/पुरोहित का नाम / Priest Name</label>
+                        <input type="text" id="b2bPanditName" placeholder="जैसे: आचार्य देवव्रत शर्मा" value="Acharya Devrat">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="b2bTempleName">मंदिर अथवा संस्था / Temple Trust Name</label>
+                        <input type="text" id="b2bTempleName" placeholder="जैसे: प्राचीन शिव मंदिर, दिल्ली" value="Pracheen Shiva Mandir">
+                    </div>
+                    
+                    <button id="b2bSaveBtn" style="width: 100%; margin-top: 10px; background: var(--saffron-gradient); border: none; border-radius: 12px; color: white; padding: 12px; font-weight: 700; cursor: pointer; box-shadow: var(--shadow-glow);">ब्रैंडिंग सेव करें / Save Custom Branding</button>
+                </div>
+
+                <!-- Live preview display -->
+                <div class="section-title">
+                    <h4>👀 शेयरिंग प्रीव्यू / Custom Branding Preview</h4>
+                </div>
+
+                <div class="preview-pill">
+                    <span class="preview-pill-header">Shared Link Footer preview</span>
+                    <div class="preview-pill-content">
+                        <div id="b2bPreviewLogo" class="preview-logo-placeholder">A</div>
+                        <div>
+                            <div id="b2bPreviewName" style="color: var(--text-primary);">Neutral Front-End</div>
+                            <div id="b2bPreviewTemple" style="font-size: 11px; color: var(--text-secondary);">Confidential D2C Platform</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- B2B Wholesale Inventory catalog -->
+                <div class="section-title" style="margin-top: 24px;">
+                    <h4>📦 Devotional B2B Supply Chain Catalog</h4>
+                    <span class="subtitle">Bulk Orders</span>
+                </div>
+
+                <div class="glass-card" style="padding: 12px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center;">
+                    <div style="font-size: 13px;">
+                        <strong>1. वैदिक भीमसेनी कपूर किट (Bulk)</strong><br>
+                        <span style="font-size: 11px; color: var(--text-secondary);">100% शुद्ध, रसायन रहित • मिनिमम आर्डर: 20 पैक</span>
+                    </div>
+                    <span style="font-weight: 700; color: var(--text-gold); font-size: 13px;">₹149 / unit</span>
+                </div>
+                <div class="glass-card" style="padding: 12px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center;">
+                    <div style="font-size: 13px;">
+                        <strong>2. प्रीमियम चंदन धूप किट (Unbranded)</strong><br>
+                        <span style="font-size: 11px; color: var(--text-secondary);">वाइट-लेबल हेतु उपलब्ध • मिनिमम आर्डर: 50 पैक</span>
+                    </div>
+                    <span style="font-weight: 700; color: var(--text-gold); font-size: 13px;">₹49 / unit</span>
+                </div>
+
+            </div>
+
+        </main>
+
+        <!-- Dynamic Simulated WhatsApp Notifications drawer trigger -->
+        <button id="whatsappSimBtn" class="whatsapp-sim-btn">
+            💬
+        </button>
+
+        <!-- Simulated WhatsApp Message Portal (Dashboard overlay) -->
+        <div id="whatsappDrawer" class="whatsapp-sim-drawer">
+            <div class="drawer-header">
+                <h3>🟢 WhatsApp API Automation Logs</h3>
+                <button id="closeDrawerBtn" class="close-drawer">✕</button>
+            </div>
+            <div id="whatsappFeed" class="whatsapp-sim-feed">
+                <!-- Messages appended dynamically by app.js -->
+            </div>
+        </div>
+
+        <!-- Bottom Navigation Menu bar -->
+        <nav class="bottom-nav">
+            <button class="nav-item active" data-tab="panchang">
+                <span class="nav-icon">📅</span>
+                <span class="nav-label">पंचांग</span>
+            </button>
+            <button class="nav-item" data-tab="jaap">
+                <span class="nav-icon">📿</span>
+                <span class="nav-label">जाप माला</span>
+            </button>
+            <button class="nav-item" data-tab="sankalp">
+                <span class="nav-icon">🚩</span>
+                <span class="nav-label">संकल्प</span>
+            </button>
+            <button class="nav-item" data-tab="share">
+                <span class="nav-icon">🖼️</span>
+                <span class="nav-label">स्टेटस शेयर</span>
+            </button>
+            <button class="nav-item" data-tab="b2b">
+                <span class="nav-icon">💼</span>
+                <span class="nav-label">पंडित कंसोल</span>
+            </button>
+        </nav>
+
+    </div>
+
+    <!-- Calculations engine and main app lifecycle scripts -->
+    <script src="panchang.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
