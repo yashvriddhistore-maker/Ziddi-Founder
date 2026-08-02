@@ -748,24 +748,41 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function updateB2BPreview() {
-        const name = elements.b2bPanditName.value.trim() || "Pandit Ji";
-        const temple = elements.b2bTempleName.value.trim() || "Local Mandir Trust";
-        const initial = name.charAt(0) || "P";
+        const name = elements.b2bPanditName.value.trim() || "Acharya Devrat";
+        const temple = elements.b2bTempleName.value.trim() || "Pracheen Shiva Mandir";
+        const initial = name.charAt(0) || "A";
         
         state.whiteLabel.panditName = name;
         state.whiteLabel.templeName = temple;
         state.whiteLabel.logoLetter = initial.toUpperCase();
         
-        elements.b2bPreviewLogo.textContent = state.whiteLabel.logoLetter;
-        elements.b2bPreviewName.textContent = name;
-        elements.b2bPreviewTemple.textContent = temple;
+        // Sync phone mockup preview elements
+        const previewPriest = document.getElementById('previewPriestName');
+        const previewTemple = document.getElementById('previewTempleName');
+        const previewFooter = document.getElementById('previewFooterBrand');
+        const liveLinkBtn = document.getElementById('liveLinkBtn');
+
+        if (previewPriest) previewPriest.textContent = name;
+        if (previewTemple) previewTemple.textContent = temple;
+        if (previewFooter) previewFooter.textContent = `${name} (${temple})`;
+
+        // Dynamic URL generation
+        const baseUrl = window.location.origin + window.location.pathname;
+        const priest = encodeURIComponent(name);
+        const templeEnc = encodeURIComponent(temple);
+        const customUrl = `${baseUrl}?priest=${priest}&temple=${templeEnc}`;
+
+        if (liveLinkBtn) liveLinkBtn.href = customUrl;
     }
 
     elements.b2bPanditName.addEventListener('input', updateB2BPreview);
     elements.b2bTempleName.addEventListener('input', updateB2BPreview);
 
+    // Initial sync call
+    updateB2BPreview();
+
     elements.b2bSaveBtn.addEventListener('click', () => {
-        alert("B2B ब्रैंडिंग सफलतापूर्वक सहेज ली गई है! अब स्टेटस कार्ड और शेयर लिंक्स पर आपका नाम प्रदर्शित होगा।");
+        alert("✨ आपकी डिजिटल पहचान सफलतापूर्वक सक्रिय हो गई है! अब आप लाइव प्रीव्यू देखकर व्हाट्सएप पर शेयर कर सकते हैं।");
         sendSimulatedWhatsAppAlert("B2B White-Label Active", `⚙️ B2B Partner Portal configured. Shared templates will now reflect: *"${state.whiteLabel.panditName}"* branding.`);
         if (state.activeTab === 'share') generateShareCard();
     });
@@ -773,8 +790,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (elements.b2bCopyLinkBtn) {
         elements.b2bCopyLinkBtn.addEventListener('click', () => {
             const baseUrl = window.location.origin + window.location.pathname;
-            const priest = encodeURIComponent(state.whiteLabel.panditName || 'Acharya Sharma');
-            const temple = encodeURIComponent(state.whiteLabel.templeName || 'Mandir Trust');
+            const priest = encodeURIComponent(state.whiteLabel.panditName || 'Acharya Devrat');
+            const temple = encodeURIComponent(state.whiteLabel.templeName || 'Pracheen Shiva Mandir');
             const customUrl = `${baseUrl}?priest=${priest}&temple=${temple}`;
             
             navigator.clipboard.writeText(customUrl).then(() => {
@@ -783,6 +800,22 @@ document.addEventListener('DOMContentLoaded', () => {
             }).catch(() => {
                 prompt("यहाँ से अपना कस्टमाइज्ड लिंक कॉपी करें:", customUrl);
             });
+        });
+    }
+
+    const shareWhatsAppBtn = document.getElementById('shareWhatsAppBtn');
+    if (shareWhatsAppBtn) {
+        shareWhatsAppBtn.addEventListener('click', () => {
+            const baseUrl = window.location.origin + window.location.pathname;
+            const priestName = state.whiteLabel.panditName || 'Acharya Devrat';
+            const templeName = state.whiteLabel.templeName || 'Pracheen Shiva Mandir';
+            const priestEnc = encodeURIComponent(priestName);
+            const templeEnc = encodeURIComponent(templeName);
+            const customUrl = `${baseUrl}?priest=${priestEnc}&temple=${templeEnc}`;
+            
+            const message = `🚩 *${priestName}* - ${templeName}\n\nहमारे पंचांग एवं आध्यात्मिक सेवाओं के डिजिटल पोर्टल से जुड़ने के लिए नीचे दिए गए लिंक पर क्लिक करें:\n\n🔗 ${customUrl}`;
+            const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(message)}`;
+            window.open(whatsappUrl, '_blank');
         });
     }
 

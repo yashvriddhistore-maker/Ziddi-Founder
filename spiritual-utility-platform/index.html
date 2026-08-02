@@ -320,21 +320,46 @@
 
                 <!-- Live preview display -->
                 <div class="section-title">
-                    <h4>👀 शेयरिंग प्रीव्यू / Custom Branding Preview</h4>
+                    <h4>👀 लाइव मोबाइल प्रीव्यू / Interactive Mobile Preview</h4>
                 </div>
 
-                <div class="preview-pill">
-                    <span class="preview-pill-header">Shared Link Footer preview</span>
-                    <div class="preview-pill-content">
-                        <div id="b2bPreviewLogo" class="preview-logo-placeholder">A</div>
-                        <div>
-                            <div id="b2bPreviewName" style="color: var(--text-primary);">Neutral Front-End</div>
-                            <div id="b2bPreviewTemple" style="font-size: 11px; color: var(--text-secondary);">Confidential D2C Platform</div>
+                <div class="preview-section-container" style="background: rgba(0, 0, 0, 0.3); border: 1px solid var(--border-glass); border-radius: 20px; padding: 20px; margin-bottom: 20px;">
+                    <!-- Phone Mockup Frame -->
+                    <div class="phone-mockup">
+                        <div class="phone-screen">
+                            <!-- Live Header Branding -->
+                            <div class="preview-header">
+                                <span class="verified-tag">✓ अधिकृत आध्यात्मिक सेवा</span>
+                                <h4 id="previewPriestName">Acharya Devrat</h4>
+                                <p id="previewTempleName">Pracheen Shiva Mandir</p>
+                            </div>
+
+                            <!-- Simulated Landing Page Content -->
+                            <div class="preview-body">
+                                <div class="dummy-card">🚩 आज का पंचांग एवं शुभ मुहूर्त</div>
+                                <div class="dummy-card">📿 दैनिक जाप माला काउंटर</div>
+                                <div class="dummy-card">🛕 विशेष पूजा संकल्प बुकिंग</div>
+                            </div>
+
+                            <!-- Dynamic Link Banner -->
+                            <div class="preview-footer">
+                                <small>सौजन्य से: <span id="previewFooterBrand">Acharya Devrat (Pracheen Shiva Mandir)</span></small>
+                            </div>
                         </div>
                     </div>
-                    <button id="b2bCopyLinkBtn" style="width: 100%; margin-top: 12px; background: rgba(255, 153, 51, 0.15); border: 1px solid var(--primary-accent); border-radius: 8px; color: var(--primary-accent); padding: 8px 12px; font-size: 12px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;">
-                        📋 कस्टमाइज्ड यजमान लिंक कॉपी करें / Copy White-Label Link
-                    </button>
+
+                    <!-- Action Buttons (Live Link & WhatsApp Share) -->
+                    <div class="action-bar" id="actionBar" style="margin-top: 16px; display: flex; gap: 10px;">
+                        <a id="liveLinkBtn" href="#" target="_blank" class="btn-action btn-view" style="flex: 1; padding: 12px; background: rgba(255, 255, 255, 0.08); border: 1px solid var(--border-glass); border-radius: 12px; color: #fff; text-decoration: none; text-align: center; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 6px;">
+                            👁️ लाइव लिंक देखें
+                        </a>
+                        <button id="b2bCopyLinkBtn" class="btn-action btn-copy" style="flex: 1; padding: 12px; background: rgba(255, 153, 51, 0.15); border: 1px solid var(--saffron-bright); border-radius: 12px; color: var(--saffron-bright); font-size: 12px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;">
+                            📋 लिंक कॉपी करें
+                        </button>
+                        <button id="shareWhatsAppBtn" class="btn-action btn-whatsapp" style="flex: 1; padding: 12px; background: #25D366; border: none; border-radius: 12px; color: #fff; font-size: 12px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);">
+                            📲 व्हाट्सएप पर शेयर
+                        </button>
+                    </div>
                 </div>
 
                 <!-- B2B Wholesale Inventory catalog -->
