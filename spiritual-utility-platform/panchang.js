@@ -273,21 +273,69 @@ const PanchangEngine = {
      * Compute approximate Lunar Tithi (1 to 30) based on Astronomical Moon position
      * Leverages simplified lunar phase cycle calculation.
      */
+    /**
+     * Compute Astronomical Sidereal Moon Longitude & Nakshatra / Tithi
+     * Ref: Jean Meeus Astronomical Algorithms (Truncated Lunar/Solar Motion Model) + Lahiri Ayanamsha
+     */
     calculateLunarTithi: function(date) {
-        // Known base new moon: 1970-01-07 19:35 UTC
-        const baseDate = new Date(Date.UTC(1970, 0, 7, 19, 35, 0));
-        const diffMs = date.getTime() - baseDate.getTime();
-        const diffDays = diffMs / (1000 * 60 * 60 * 24);
-        
-        // Average synodic month (lunar cycle) is 29.530588853 days
-        const synodicMonth = 29.530588853;
-        const cycles = diffDays / synodicMonth;
-        const currentAge = (cycles - Math.floor(cycles)) * synodicMonth;
+        const rad = (d) => d * Math.PI / 180;
 
-        // Devide 29.53 days into 30 tithis (approx 0.9843 days each tithi)
-        const tithiDecimal = (currentAge / synodicMonth) * 30;
-        let tithiNum = Math.floor(tithiDecimal) + 1;
+        // Julian Date calculation
+        const timeMs = date.getTime();
+        const jd = (timeMs / 86400000) + 2440587.5;
+        const T = (jd - 2451545.0) / 36525; // Julian centuries from J2000.0
+
+        // Sun Mean Longitude & Mean Anomaly
+        const L_sun = (280.46646 + 36000.76983 * T) % 360;
+        const M_sun = (357.52911 + 35999.05029 * T) % 360;
+        const C_sun = (1.914602 - 0.004817 * T) * Math.sin(rad(M_sun)) + (0.019993 - 0.000101 * T) * Math.sin(rad(2 * M_sun));
+        const sunTrueLong = (L_sun + C_sun + 360) % 360;
+
+        // Moon Mean Longitude, Anomaly, Elongation, Argument of Latitude
+        const L_moon = (218.3164477 + 481267.88123421 * T) % 360;
+        const M_moon = (134.9633964 + 477198.8675055 * T) % 360;
+        const D_moon = (297.8501921 + 445267.1114034 * T) % 360;
+        const F_moon = (93.2720950 + 483202.0175233 * T) % 360;
+
+        // Major Lunar Perturbations (in degrees)
+        const moonPerturbations = 
+            6.2886 * Math.sin(rad(M_moon)) +
+            1.2740 * Math.sin(rad(2 * D_moon - M_moon)) +
+            0.6583 * Math.sin(rad(2 * D_moon)) +
+            0.2136 * Math.sin(rad(2 * M_moon)) -
+            0.1851 * Math.sin(rad(M_sun)) -
+            0.1143 * Math.sin(rad(2 * F_moon)) +
+            0.0587 * Math.sin(rad(2 * D_moon - 2 * M_moon)) +
+            0.0570 * Math.sin(rad(2 * D_moon - M_sun - M_moon)) +
+            0.0533 * Math.sin(rad(2 * D_moon + M_moon));
+
+        const moonTrueLongSayana = (L_moon + moonPerturbations + 3600) % 360;
+
+        // Lahiri Ayanamsha (approx 23.85° at J2000.0, 50.29" precession per year)
+        const year = date.getFullYear() + (date.getMonth() / 12) + (date.getDate() / 365);
+        const ayanamsha = 23.85 + (year - 2000) * (50.29 / 3600);
+
+        // Nirayana (Sidereal) Moon Longitude
+        const moonNirayanaLong = (moonTrueLongSayana - ayanamsha + 360) % 360;
+
+        // Solar-Lunar Elongation for Tithi (12 degrees per tithi)
+        const elongation = (moonTrueLongSayana - sunTrueLong + 360) % 360;
+        let tithiNum = Math.floor(elongation / 12) + 1;
         if (tithiNum > 30) tithiNum = 30;
+
+        // Nakshatra Index (13.333333 degrees per nakshatra)
+        let nakshatraIndex = Math.floor(moonNirayanaLong / (360 / 27)) + 1;
+        if (nakshatraIndex > 27) nakshatraIndex = 27;
+
+        const NAKSHATRAS = [
+            "Ashwini (अश्विनी)", "Bharani (भरणी)", "Krittika (कृत्तिका)", "Rohini (रोहिणी)", 
+            "Mrigashira (मृगशिरा)", "Ardra (आर्द्रा)", "Punarvasu (पुनर्वसु)", "Pushya (पुष्य)", 
+            "Ashlesha (आश्लेषा)", "Magha (मघा)", "Purva Phalguni (पूर्वाफाल्गुनी)", "Uttara Phalguni (उत्तराफाल्गुनी)", 
+            "Hasta (हस्त)", "Chitra (चित्रा)", "Swati (स्वाती)", "Vishakha (विशाखा)", 
+            "Anuradha (अनुराधा)", "Jyeshtha (ज्येष्ठा)", "Mula (मूल)", "Purva Ashadha (पूर्वाषाढ़ा)", 
+            "Uttara Ashadha (उत्तराषाढ़ा)", "Shravana (श्रवण)", "Dhanishta (धनिष्ठा)", "Shatabhisha (शतभिषा)", 
+            "Purva Bhadrapada (पूर्वाभाद्रपद)", "Uttara Bhadrapada (उत्तराभाद्रपद)", "Revati (रेवती)"
+        ];
 
         const TITHIS_HINDI = {
             1: "Pratipada (प्रतिपदा)",
@@ -323,27 +371,7 @@ const PanchangEngine = {
         };
 
         const paksha = tithiNum <= 15 ? "Shukla Paksha (शुक्ल पक्ष)" : "Krishna Paksha (कृष्ण पक्ष)";
-        const tithiIndex = tithiNum;
-        
-        // Fetch approximate Nakshatra based on moon position angle (approx 27.32 days orbit)
-        const siderealMonth = 27.321661;
-        const siderealCycles = diffDays / siderealMonth;
-        const moonAngle = (siderealCycles - Math.floor(siderealCycles)) * 360;
-        const nakshatraIndex = Math.floor(moonAngle / (360 / 27)) + 1;
 
-        const NAKSHATRAS = [
-            "Ashwini (अश्विनी)", "Bharani (भरणी)", "Krittika (कृत्तिका)", "Rohini (रोहिणी)", 
-            "Mrigashira (मृगशिरा)", "Ardra (आर्द्रा)", "Punarvasu (पुनर्वसु)", "Pushya (पुष्य)", 
-            "Ashlesha (आश्लेषा)", "Magha (मघा)", "Purva Phalguni (पूर्वाफाल्गुनी)", "Uttara Phalguni (उत्तराफाल्गुनी)", 
-            "Hasta (हस्त)", "Chitra (चित्रा)", "Swati (स्वाती)", "Vishakha (विशाखा)", 
-            "Anuradha (अनुराधा)", "Jyeshtha (ज्येष्ठा)", "Mula (मूल)", "Purva Ashadha (पूर्वाषाढ़ा)", 
-            "Uttara Ashadha (उत्तराषाढ़ा)", "Shravana (श्रवण)", "Dhanishta (धनिष्ठा)", "Shatabhisha (शतभिषा)", 
-            "Purva Bhadrapada (पूर्वाभाद्रपद)", "Uttara Bhadrapada (उत्तराभाद्रपद)", "Revati (रेवती)"
-        ];
-
-        const NAKSHATRAS_HINDI = NAKSHATRAS[Math.min(nakshatraIndex - 1, 26)];
-
-        // Get approximate deity based on tithi
         const DEITIES = {
             1: "Agni", 2: "Brahma", 3: "Gauri/Ganesha", 4: "Ganesha", 5: "Lalitha/Nagas",
             6: "Kartikeya", 7: "Surya", 8: "Shiva/Ashta Vasus", 9: "Durga", 10: "Yama",
@@ -357,7 +385,7 @@ const PanchangEngine = {
             tithiNum: tithiNum,
             tithiName: TITHIS_HINDI[tithiNum],
             paksha: paksha,
-            nakshatra: NAKSHATRAS_HINDI,
+            nakshatra: NAKSHATRAS[nakshatraIndex - 1],
             rulingDeity: DEITIES[tithiNum] || "Paramatma"
         };
     },
