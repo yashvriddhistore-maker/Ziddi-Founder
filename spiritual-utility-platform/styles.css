@@ -54,10 +54,13 @@ body {
     color: var(--text-primary);
     font-family: 'Outfit', sans-serif;
     min-height: 100vh;
+    min-height: 100dvh;
     display: flex;
     justify-content: center;
     align-items: center;
     overflow-x: hidden;
+    overflow-y: auto;
+    padding: 10px 0;
 }
 
 /* Background Sacred Geometry Pattern */
@@ -91,6 +94,7 @@ body {
     width: 100%;
     max-width: var(--app-width);
     height: 100vh;
+    height: 100dvh;
     background: var(--dark-gradient);
     border: 1px solid var(--border-glass);
     position: relative;
@@ -103,6 +107,8 @@ body {
 @media (min-width: 481px) {
     .app-container {
         height: 880px;
+        max-height: calc(100vh - 20px);
+        max-height: calc(100dvh - 20px);
         border-radius: 32px;
         border: 1px solid rgba(255, 255, 255, 0.1);
     }
@@ -175,12 +181,24 @@ header {
 main {
     flex: 1;
     overflow-y: auto;
-    padding: 16px 20px 92px 20px; /* space for bottom nav */
-    scrollbar-width: none; /* Hide scrollbar for Firefox */
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: contain;
+    padding: 16px 20px 140px 20px; /* generous clearance for bottom nav & floating action buttons */
+    scrollbar-width: thin;
+    scrollbar-color: rgba(241, 196, 15, 0.3) rgba(0, 0, 0, 0.1);
 }
 
 main::-webkit-scrollbar {
-    display: none; /* Hide scrollbar for Chrome/Safari */
+    width: 5px;
+}
+
+main::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.15);
+}
+
+main::-webkit-scrollbar-thumb {
+    background: rgba(241, 196, 15, 0.35);
+    border-radius: 10px;
 }
 
 /* Tab Sections Navigation */
