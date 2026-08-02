@@ -748,24 +748,44 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function updateB2BPreview() {
-        const name = elements.b2bPanditName.value.trim() || "Pandit Ji";
-        const temple = elements.b2bTempleName.value.trim() || "Local Mandir Trust";
-        const initial = name.charAt(0) || "P";
+        const name = elements.b2bPanditName.value.trim() || "Acharya Devrat";
+        const temple = elements.b2bTempleName.value.trim() || "Pracheen Shiva Mandir";
+        const initial = name.charAt(0) || "A";
         
         state.whiteLabel.panditName = name;
         state.whiteLabel.templeName = temple;
         state.whiteLabel.logoLetter = initial.toUpperCase();
         
-        elements.b2bPreviewLogo.textContent = state.whiteLabel.logoLetter;
-        elements.b2bPreviewName.textContent = name;
-        elements.b2bPreviewTemple.textContent = temple;
+        // Sync phone mockup preview elements
+        const previewPriest = document.getElementById('previewPriestName');
+        const previewTemple = document.getElementById('previewTempleName');
+        const previewFooter = document.getElementById('previewFooterBrand');
+        const liveLinkBtn = document.getElementById('liveLinkBtn');
+        const shortUrlDisplay = document.getElementById('shortUrlDisplay');
+
+        if (previewPriest) previewPriest.textContent = name;
+        if (previewTemple) previewTemple.textContent = temple;
+        if (previewFooter) previewFooter.textContent = `${name} (${temple})`;
+
+        // Dynamic URL generation (Full & Shorthand Compact Short Link)
+        const baseUrl = window.location.origin + window.location.pathname;
+        const priestEnc = encodeURIComponent(name);
+        const templeEnc = encodeURIComponent(temple);
+        const customUrl = `${baseUrl}?priest=${priestEnc}&temple=${templeEnc}`;
+        const shortUrl = `${baseUrl}?p=${priestEnc}&t=${templeEnc}`;
+
+        if (liveLinkBtn) liveLinkBtn.href = customUrl;
+        if (shortUrlDisplay) shortUrlDisplay.textContent = `.../index.html?p=${priestEnc}&t=${templeEnc}`;
     }
 
     elements.b2bPanditName.addEventListener('input', updateB2BPreview);
     elements.b2bTempleName.addEventListener('input', updateB2BPreview);
 
+    // Initial sync call
+    updateB2BPreview();
+
     elements.b2bSaveBtn.addEventListener('click', () => {
-        alert("B2B ब्रैंडिंग सफलतापूर्वक सहेज ली गई है! अब स्टेटस कार्ड और शेयर लिंक्स पर आपका नाम प्रदर्शित होगा।");
+        alert("✨ आपकी डिजिटल पहचान सफलतापूर्वक सक्रिय हो गई है! अब आप लाइव प्रीव्यू देखकर शॉर्ट लिंक व्हाट्सएप पर शेयर कर सकते हैं।");
         sendSimulatedWhatsAppAlert("B2B White-Label Active", `⚙️ B2B Partner Portal configured. Shared templates will now reflect: *"${state.whiteLabel.panditName}"* branding.`);
         if (state.activeTab === 'share') generateShareCard();
     });
@@ -773,16 +793,36 @@ document.addEventListener('DOMContentLoaded', () => {
     if (elements.b2bCopyLinkBtn) {
         elements.b2bCopyLinkBtn.addEventListener('click', () => {
             const baseUrl = window.location.origin + window.location.pathname;
-            const priest = encodeURIComponent(state.whiteLabel.panditName || 'Acharya Sharma');
-            const temple = encodeURIComponent(state.whiteLabel.templeName || 'Mandir Trust');
-            const customUrl = `${baseUrl}?priest=${priest}&temple=${temple}`;
+            const priest = encodeURIComponent(state.whiteLabel.panditName || 'Acharya Devrat');
+            const temple = encodeURIComponent(state.whiteLabel.templeName || 'Pracheen Shiva Mandir');
+            // Compact Short URL format
+            const shortUrl = `${baseUrl}?p=${priest}&t=${temple}`;
             
-            navigator.clipboard.writeText(customUrl).then(() => {
-                alert(`📋 यजमान शेयर लिंक कॉपी हो गया है!\n\n${customUrl}\n\nइसे आप WhatsApp समूहों व यजमानों के साथ साझा कर सकते हैं।`);
-                sendSimulatedWhatsAppAlert("White-Label Link Copied", `📋 Custom Share Link created: *${customUrl}* ready for WhatsApp distribution.`);
+            navigator.clipboard.writeText(shortUrl).then(() => {
+                alert(`✂️ यजमान शॉर्ट लिंक (Short Link) कॉपी हो गया है!\n\n${shortUrl}\n\nइसे आप WhatsApp समूहों व यजमानों के साथ आसानी से साझा कर सकते हैं।`);
+                sendSimulatedWhatsAppAlert("Short Link Copied", `📋 Shortened Link created: *${shortUrl}* ready for WhatsApp distribution.`);
             }).catch(() => {
-                prompt("यहाँ से अपना कस्टमाइज्ड लिंक कॉपी करें:", customUrl);
+                prompt("यहाँ से अपना कस्टमाइज्ड शॉर्ट लिंक कॉपी करें:", shortUrl);
             });
+        });
+    }
+
+    const shareWhatsAppBtn = document.getElementById('shareWhatsAppBtn');
+    if (shareWhatsAppBtn) {
+        shareWhatsAppBtn.addEventListener('click', () => {
+            const baseUrl = window.location.origin + window.location.pathname;
+            const priestName = state.whiteLabel.panditName || 'Acharya Devrat';
+            const templeName = state.whiteLabel.templeName || 'Pracheen Shiva Mandir';
+            const priestEnc = encodeURIComponent(priestName);
+            const templeEnc = encodeURIComponent(templeName);
+            
+            // Compact Short URL format (?p= & ?t=)
+            const shortUrl = `${baseUrl}?p=${priestEnc}&t=${templeEnc}`;
+            
+            const message = `🚩 *${priestName}* - ${templeName}\n\nहमारे पंचांग एवं आध्यात्मिक सेवाओं के आधिकारिक डिजिटल पोर्टल से जुड़ें:\n\n✨ *पोर्टल पर उपलब्ध मुख्य सुविधाएं:*\n📜 1. सटीक दैनिक पंचांग एवं शुभ मुहूर्त\n📿 2. डिजिटल जाप माला काउंटर\n🛕 3. विशेष पूजा संकल्प एवं यजमान ट्रैकिंग\n📦 4. वैदिक पूजन सामग्री डायरेक्ट आपूर्ति\n\n🔗 *यजमान पोर्टल लिंक:* ${shortUrl}\n\nसौजन्य से: *${priestName} (${templeName})*`;
+            
+            const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(message)}`;
+            window.open(whatsappUrl, '_blank');
         });
     }
 
@@ -828,10 +868,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // -------------------------------------------------------------
     // 11. INITIAL RUNS & URL PARAMETER PARSING
     // -------------------------------------------------------------
-    // Auto-parse URL Query Parameters for White-Label links (e.g. ?priest=Acharya+Devrat&temple=Pracheen+Shiva+Mandir)
+    // Auto-parse URL Query Parameters for White-Label links (supports both ?priest= & shorthand ?p= and ?t=)
     const urlParams = new URLSearchParams(window.location.search);
-    const priestParam = urlParams.get('priest') || urlParams.get('pandit');
-    const templeParam = urlParams.get('temple');
+    const priestParam = urlParams.get('priest') || urlParams.get('pandit') || urlParams.get('p');
+    const templeParam = urlParams.get('temple') || urlParams.get('t');
 
     if (priestParam || templeParam) {
         state.whiteLabel.enabled = true;
@@ -842,6 +882,11 @@ document.addEventListener('DOMContentLoaded', () => {
         elements.b2bPanditName.value = state.whiteLabel.panditName;
         elements.b2bTempleName.value = state.whiteLabel.templeName;
         toggleB2BFields(true);
+
+        const noticeEl = document.getElementById('sharedLinkNotice');
+        const priestTxt = document.getElementById('sharedLinkPriestText');
+        if (noticeEl) noticeEl.style.display = 'block';
+        if (priestTxt) priestTxt.textContent = state.whiteLabel.panditName;
     } else {
         toggleB2BFields(false);
     }
