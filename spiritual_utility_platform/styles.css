@@ -143,6 +143,7 @@ header {
     font-size: 26px;
     background: var(--saffron-gradient);
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
     text-shadow: 0 0 15px rgba(230, 126, 34, 0.2);
     animation: slow-pulse 3s infinite ease-in-out;

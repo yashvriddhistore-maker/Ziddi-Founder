@@ -269,9 +269,41 @@
                         <canvas id="statusCanvas"></canvas>
                     </div>
 
+                    <!-- Devotional Theme Selector & Photo Upload Layer Controls -->
+                    <div class="glass-card" style="width: 100%; margin-top: 14px; margin-bottom: 14px; padding: 14px; text-align: left;">
+                        <!-- Devotional Theme Selector -->
+                        <div class="form-group">
+                            <label style="font-weight: 700; color: var(--text-gold); font-size: 13px;">🎨 वॉलपेपर थीम चुनें (Devotional Theme)</label>
+                            <div class="theme-selector-chips" style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 6px;">
+                                <button class="theme-chip active" data-theme="shiva" type="button">🔱 शिव जी (Shiv Ji)</button>
+                                <button class="theme-chip" data-theme="ram" type="button">🏹 श्री राम (Ram Ji)</button>
+                                <button class="theme-chip" data-theme="hanuman" type="button">📿 हनुमान जी (Hanuman Ji)</button>
+                                <button class="theme-chip" data-theme="gold" type="button">🌅 क्लासिक गोल्ड (Sunset Gold)</button>
+                            </div>
+                        </div>
+
+                        <!-- Custom Photo Upload Layer -->
+                        <div class="form-group" style="margin-top: 12px;">
+                            <label style="font-weight: 700; color: var(--text-gold); font-size: 13px;">📸 आपकी फोटो/लोगो लेयर (Upload Photo Layer)</label>
+                            <div style="display: flex; gap: 10px; align-items: center; margin-top: 6px;">
+                                <input type="file" id="shareTabPhotoInput" accept="image/*" style="display: none;">
+                                <button type="button" id="shareTabPhotoTriggerBtn" style="flex: 2; background: rgba(255,255,255,0.08); border: 1px dashed var(--border-gold-glass); border-radius: 10px; padding: 10px; color: var(--text-gold); font-size: 13px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;">
+                                    📤 फोटो/लोगो चुनें (Upload Photo)
+                                </button>
+                                <button type="button" id="shareTabRemovePhotoBtn" style="flex: 1; background: rgba(231,76,60,0.15); border: 1px solid rgba(231,76,60,0.3); border-radius: 10px; padding: 10px; color: #e74c3c; font-size: 12px; font-weight: 600; cursor: pointer; display: none;">
+                                    🗑️ हटाएं
+                                </button>
+                            </div>
+                            <div id="shareTabPhotoPreviewContainer" style="display: none; align-items: center; gap: 10px; margin-top: 8px; background: rgba(0,0,0,0.3); padding: 8px 12px; border-radius: 10px;">
+                                <img id="shareTabPhotoPreviewImg" src="" style="width: 40px; height: 40px; border-radius: 50%; border: 2px solid #f1c40f; object-fit: cover;">
+                                <span style="font-size: 11px; color: #2ecc71;">✓ आपकी फोटो लेयर एक्टिव हो गई है!</span>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- Action layout -->
                     <div style="text-align: center; font-size: 11px; color: var(--text-secondary); margin-bottom: 16px;">
-                        💡 *यह इमेज 100% आपके चयनित स्थान के दैनिक पंचांग डेटा से निर्मित हुई है।*
+                        💡 *यह इमेज 100% आपके चयनित स्थान के दैनिक पंचांग डेटा से निर्मित हुई है। टैप करके श्लोक बदलें।*
                     </div>
 
                     <div class="share-action-buttons">
@@ -314,8 +346,37 @@
                         <label for="b2bTempleName">मंदिर अथवा संस्था / Temple Trust Name</label>
                         <input type="text" id="b2bTempleName" placeholder="जैसे: प्राचीन शिव मंदिर, दिल्ली" value="Pracheen Shiva Mandir">
                     </div>
+
+                    <!-- Devotional Theme Selector -->
+                    <div class="form-group" style="margin-top: 12px;">
+                        <label>🎨 वॉलपेपर एवं पोस्टर थीम / Poster Wallpaper Theme</label>
+                        <div class="theme-selector-chips" style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 6px;">
+                            <button class="theme-chip active" data-theme="shiva" type="button">🔱 शिव जी (Shiv Ji)</button>
+                            <button class="theme-chip" data-theme="ram" type="button">🏹 श्री राम (Ram Ji)</button>
+                            <button class="theme-chip" data-theme="hanuman" type="button">📿 हनुमान जी (Hanuman Ji)</button>
+                            <button class="theme-chip" data-theme="gold" type="button">🌅 क्लासिक गोल्ड (Sunset Gold)</button>
+                        </div>
+                    </div>
+
+                    <!-- Custom Photo Upload Layer -->
+                    <div class="form-group" style="margin-top: 12px;">
+                        <label>📸 आपकी फोटो लेयर (Custom Photo / Logo Layer)</label>
+                        <div style="display: flex; gap: 10px; align-items: center; margin-top: 6px;">
+                            <input type="file" id="b2bPhotoInput" accept="image/*" style="display: none;">
+                            <button type="button" id="b2bPhotoTriggerBtn" style="flex: 2; background: rgba(255,255,255,0.08); border: 1px dashed var(--border-gold-glass); border-radius: 10px; padding: 10px; color: var(--text-gold); font-size: 13px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;">
+                                📤 फोटो/लोगो अपलोड करें (Upload Photo)
+                            </button>
+                            <button type="button" id="b2bRemovePhotoBtn" style="flex: 1; background: rgba(231,76,60,0.15); border: 1px solid rgba(231,76,60,0.3); border-radius: 10px; padding: 10px; color: #e74c3c; font-size: 12px; font-weight: 600; cursor: pointer; display: none;">
+                                🗑️ बताएं
+                            </button>
+                        </div>
+                        <div id="b2bPhotoPreviewContainer" style="display: none; align-items: center; gap: 10px; margin-top: 8px; background: rgba(0,0,0,0.3); padding: 8px 12px; border-radius: 10px;">
+                            <img id="b2bPhotoPreviewImg" src="" style="width: 40px; height: 40px; border-radius: 50%; border: 2px solid #f1c40f; object-fit: cover;">
+                            <span style="font-size: 11px; color: #2ecc71;">✓ आपकी फोटो पोस्टर में लेयर हो गई है!</span>
+                        </div>
+                    </div>
                     
-                    <button id="b2bSaveBtn" style="width: 100%; margin-top: 10px; background: var(--saffron-gradient); border: none; border-radius: 12px; color: white; padding: 12px; font-weight: 700; cursor: pointer; box-shadow: var(--shadow-glow);">ब्रैंडिंग सेव करें / Save Custom Branding</button>
+                    <button id="b2bSaveBtn" style="width: 100%; margin-top: 14px; background: var(--saffron-gradient); border: none; border-radius: 12px; color: white; padding: 12px; font-weight: 700; cursor: pointer; box-shadow: var(--shadow-glow);">ब्रैंडिंग सेव करें / Save Custom Branding</button>
                 </div>
 
                 <!-- Live preview display -->
@@ -356,17 +417,24 @@
                         <code id="shortUrlDisplay" style="color: var(--text-gold); font-weight: 700;">ziddifounder.com/spiritual?p=Acharya+Devrat</code>
                     </div>
 
-                    <!-- Action Buttons (Live Link, Copy Short Link, WhatsApp Share) -->
-                    <div class="action-bar" id="actionBar" style="margin-top: 14px; display: flex; gap: 8px; flex-wrap: wrap;">
-                        <a id="liveLinkBtn" href="#" target="_blank" class="btn-action btn-view" style="flex: 1; min-width: 100px; padding: 10px; background: rgba(255, 255, 255, 0.08); border: 1px solid var(--border-glass); border-radius: 10px; color: #fff; text-decoration: none; text-align: center; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 4px;">
-                            👁️ लाइव देखें
-                        </a>
-                        <button id="b2bCopyLinkBtn" class="btn-action btn-copy" style="flex: 1; min-width: 110px; padding: 10px; background: rgba(255, 153, 51, 0.15); border: 1px solid var(--saffron-bright); border-radius: 10px; color: var(--saffron-bright); font-size: 11px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px;">
-                            ✂️ शॉर्ट लिंक कॉपी
+                    <!-- Action Buttons (Creative Share, Download Poster, Copy Short Link, Live View) -->
+                    <div class="action-bar" id="actionBar" style="margin-top: 14px; display: flex; flex-direction: column; gap: 10px;">
+                        <!-- Main Highlighted Creative Share Button -->
+                        <button id="b2bCreativeShareBtn" style="width: 100%; padding: 13px; background: linear-gradient(135deg, #25D366 0%, #128C7E 100%); border: none; border-radius: 12px; color: #fff; font-size: 13px; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4); transition: transform 0.2s;">
+                            🎨 व्हाट्सएप स्टेटस क्रिएटिव शेयर (Image + Link)
                         </button>
-                        <button id="shareWhatsAppBtn" class="btn-action btn-whatsapp" style="flex: 1.2; min-width: 130px; padding: 10px; background: #25D366; border: none; border-radius: 10px; color: #fff; font-size: 11px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);">
-                            📲 व्हाट्सएप पर शेयर
-                        </button>
+                        
+                        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                            <button id="b2bDownloadPosterBtn" style="flex: 1; min-width: 120px; padding: 10px; background: rgba(241, 196, 15, 0.15); border: 1px solid var(--border-gold-glass); border-radius: 10px; color: var(--text-gold); font-size: 11px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px;">
+                                🖼️ क्रिएटिव पोस्टर डाउनलोड
+                            </button>
+                            <button id="b2bCopyLinkBtn" class="btn-action btn-copy" style="flex: 1; min-width: 110px; padding: 10px; background: rgba(255, 153, 51, 0.15); border: 1px solid var(--saffron-bright); border-radius: 10px; color: var(--saffron-bright); font-size: 11px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px;">
+                                ✂️ शॉर्ट लिंक कॉपी
+                            </button>
+                            <a id="liveLinkBtn" href="#" target="_blank" class="btn-action btn-view" style="flex: 0.8; min-width: 90px; padding: 10px; background: rgba(255, 255, 255, 0.08); border: 1px solid var(--border-glass); border-radius: 10px; color: #fff; text-decoration: none; text-align: center; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 4px;">
+                                👁️ लाइव देखें
+                            </a>
+                        </div>
                     </div>
                 </div>
 
@@ -394,6 +462,31 @@
             </div>
 
         </main>
+
+        <!-- Creative Poster Share Preview Modal -->
+        <div id="creativePosterModal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(10px); z-index: 10000; align-items: center; justify-content: center; padding: 20px; overflow-y: auto;">
+            <div style="background: #140d1c; border: 1px solid var(--border-gold-glass); border-radius: 24px; max-width: 440px; width: 100%; padding: 24px; text-align: center; box-shadow: 0 10px 40px rgba(0,0,0,0.8); position: relative;">
+                <button id="closePosterModalBtn" style="position: absolute; top: 15px; right: 15px; background: rgba(255,255,255,0.1); border: none; color: #fff; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; font-size: 16px;">✕</button>
+                
+                <h3 style="color: var(--text-gold); font-size: 18px; margin-bottom: 6px;">🎨 आपका वाइट-लेबल क्रिएटिव पोस्टर तैयार है!</h3>
+                <p style="color: var(--text-secondary); font-size: 12px; margin-bottom: 16px;">इमेज डाउनलोड हो गई है एवं शोर्ट लिंक क्लिपबोर्ड में कॉपी हो गया है।</p>
+                
+                <!-- Preview Canvas Rendered Image -->
+                <div style="width: 100%; border-radius: 16px; overflow: hidden; border: 2px solid var(--border-gold-glass); margin-bottom: 16px; background: #000; box-shadow: 0 4px 20px rgba(241,196,15,0.2);">
+                    <img id="posterModalImg" src="" alt="Status Poster Creative" style="width: 100%; height: auto; display: block; max-height: 480px; object-fit: contain; border-radius: 12px;" />
+                    <p style="font-size: 11px; color: #a0a7c4; text-align: center; margin-top: 8px;">💡 <b>इमेज सेव टिप:</b> ऊपर फोटो पर 2 सेकंड दबाकर रखें (Long-press) और <b>"Save Image"</b> या <b>"Share to WhatsApp"</b> चुनें!</p>
+                </div>
+                
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    <a id="posterModalWaLink" href="#" target="_blank" style="padding: 13px; background: linear-gradient(135deg, #25D366 0%, #128C7E 100%); border-radius: 12px; color: #fff; text-decoration: none; font-weight: 800; font-size: 13px; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);">
+                        📲 व्हाट्सएप पर जाएं एवं स्टेटस लगाएं
+                    </a>
+                    <button id="posterModalDownloadBtn" style="padding: 10px; background: rgba(241, 196, 15, 0.15); border: 1px solid var(--border-gold-glass); border-radius: 10px; color: var(--text-gold); font-size: 12px; font-weight: 700; cursor: pointer;">
+                        📥 पोस्टर फ़ोटो सेव (Download Image)
+                    </button>
+                </div>
+            </div>
+        </div>
 
         <!-- Dynamic Simulated WhatsApp Notifications drawer trigger -->
         <button id="whatsappSimBtn" class="whatsapp-sim-btn">
@@ -439,6 +532,6 @@
 
     <!-- Calculations engine and main app lifecycle scripts -->
     <script src="panchang.js"></script>
-    <script src="app.js"></script>
+    <script src="app.js?v=3.1"></script>
 </body>
 </html>
