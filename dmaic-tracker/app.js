@@ -2,12 +2,12 @@
 
 document.addEventListener('DOMContentLoaded', () => {
   // App State & Config
-  const DEFAULT_WEBHOOK_URL = ''; // Paste your Google Apps Script Webhook URL here
+  const DEFAULT_WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbx0vu8StuCoMbyZ-gmkJoeOKzAPYH5AClGKwQZ8IRTe7aKPniAon9aB6ZosG4WCYdDKHQ/exec';
   let currentQuarterKey = 'Q1';
   let currentMeetingId = 'M1';
   let currentClientName = '';
   let currentCompanyName = '';
-  let webhookUrl = localStorage.getItem('ziddi_webhook_url') || DEFAULT_WEBHOOK_URL || '';
+  let webhookUrl = DEFAULT_WEBHOOK_URL;
   
   // Storage Keys
   const STORAGE_KEY = 'ziddi_dmaic_submissions_v1';
