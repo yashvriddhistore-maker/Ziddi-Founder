@@ -1,12 +1,13 @@
 // Ziddi DMAIC Mastermind Input Tool - Main Logic Application
 
 document.addEventListener('DOMContentLoaded', () => {
-  // App State
+  // App State & Config
+  const DEFAULT_WEBHOOK_URL = ''; // Paste your Google Apps Script Webhook URL here
   let currentQuarterKey = 'Q1';
   let currentMeetingId = 'M1';
   let currentClientName = '';
   let currentCompanyName = '';
-  let webhookUrl = localStorage.getItem('ziddi_webhook_url') || '';
+  let webhookUrl = localStorage.getItem('ziddi_webhook_url') || DEFAULT_WEBHOOK_URL || '';
   
   // Storage Keys
   const STORAGE_KEY = 'ziddi_dmaic_submissions_v1';
@@ -69,7 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
-    if (webhookUrl) {
+    if (webhookUrl && webhookInput) {
       webhookInput.value = webhookUrl;
       updateWebhookStatus(true);
     }
@@ -326,6 +327,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function updateWebhookStatus(isConnected) {
+    if (!webhookStatus) return;
     if (isConnected) {
       webhookStatus.textContent = `STATUS: CONNECTED 🟢 (${webhookUrl.substring(0, 30)}...)`;
       webhookStatus.className = 'webhook-status connected';
@@ -335,20 +337,22 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  saveWebhookBtn.addEventListener('click', () => {
-    const val = webhookInput.value.trim();
-    if (val) {
-      webhookUrl = val;
-      localStorage.setItem('ziddi_webhook_url', val);
-      updateWebhookStatus(true);
-      showToast('✅ Google Sheet Webhook Saved!');
-    } else {
-      webhookUrl = '';
-      localStorage.removeItem('ziddi_webhook_url');
-      updateWebhookStatus(false);
-      showToast('Webhook disconnected.');
-    }
-  });
+  if (saveWebhookBtn) {
+    saveWebhookBtn.addEventListener('click', () => {
+      const val = webhookInput.value.trim();
+      if (val) {
+        webhookUrl = val;
+        localStorage.setItem('ziddi_webhook_url', val);
+        updateWebhookStatus(true);
+        showToast('✅ Google Sheet Webhook Saved!');
+      } else {
+        webhookUrl = '';
+        localStorage.removeItem('ziddi_webhook_url');
+        updateWebhookStatus(false);
+        showToast('Webhook disconnected.');
+      }
+    });
+  }
 
   // Saved Submissions Drawer
   function renderSavedSubmissionsList() {
