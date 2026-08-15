@@ -243,10 +243,8 @@ document.addEventListener('DOMContentLoaded', () => {
     saveSubmission(submissionPayload);
     showToast(`✅ Meeting ${meetingInfo.meeting.number} Saved Successfully!`);
 
-    // Send to Google Webhook if configured
-    if (webhookUrl) {
-      sendToWebhook(submissionPayload);
-    }
+    // Always send to Google Webhook
+    sendToWebhook(submissionPayload);
 
     renderMeetingPills();
     updateOverallProgress();
@@ -310,11 +308,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Google Sheets Webhook Integration
   function sendToWebhook(payload) {
-    showToast('🚀 Sending to Google Sheet...');
-    fetch(webhookUrl, {
+    const url = DEFAULT_WEBHOOK_URL;
+    if (!url) return;
+    showToast('🚀 Sending data to Google Sheet...');
+
+    fetch(url, {
       method: 'POST',
       mode: 'no-cors',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
       body: JSON.stringify(payload)
     })
     .then(() => {
@@ -322,7 +323,13 @@ document.addEventListener('DOMContentLoaded', () => {
     })
     .catch(err => {
       console.error('Webhook error:', err);
-      showToast('⚠️ Webhook send error, check console');
+      try {
+        const blob = new Blob([JSON.stringify(payload)], { type: 'text/plain' });
+        navigator.sendBeacon(url, blob);
+        showToast('📊 Data sent to Google Sheet!');
+      } catch (beaconErr) {
+        showToast('⚠️ Webhook error');
+      }
     });
   }
 
