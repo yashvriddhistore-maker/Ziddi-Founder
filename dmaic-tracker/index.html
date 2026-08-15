@@ -142,7 +142,7 @@
         <!-- Progress Widget -->
         <div class="side-card">
           <div class="side-card-title">
-            <span>CLIENT PROGRESS</span>
+            <span>YOUR PROGRESS</span>
             <span style="font-size: 0.8rem; color: var(--accent-amber); font-family: var(--font-mono);">DMAIC TRACK</span>
           </div>
           <div class="progress-stat-box">
@@ -153,39 +153,21 @@
             <div class="progress-bar-inner" id="progressBarInner"></div>
           </div>
           <p style="font-size: 0.78rem; color: var(--text-muted);">
-            Progress updates automatically when you submit meeting entries for the selected client.
+            Your progress updates automatically as you complete each mastermind meeting entry.
           </p>
         </div>
 
-        <!-- Google Sheets Integration Box -->
-        <div class="side-card">
+        <!-- Coach Support Note Card -->
+        <div class="side-card" style="border-left: 3px solid var(--accent-amber);">
           <div class="side-card-title">
-            <span>GOOGLE SHEETS SYNC</span>
-            <span style="font-size: 0.75rem; background: var(--border-color); padding: 2px 6px; border-radius: 4px;">LIVE</span>
+            <span>⚡ NEED COACH SUPPORT?</span>
           </div>
-          <div class="webhook-status" id="webhookStatus">
-            STATUS: NOT CONNECTED (LOCAL STORAGE ONLY)
-          </div>
-          <div class="form-group" style="margin-bottom: 12px;">
-            <label for="webhookUrlInput" style="font-size: 0.75rem;">GOOGLE APPS SCRIPT WEBHOOK URL</label>
-            <input type="url" id="webhookUrlInput" class="form-control" placeholder="https://script.google.com/macros/s/..." style="font-size: 0.8rem;">
-          </div>
-          <button type="button" class="btn btn-ghost btn-sm" id="saveWebhookBtn" style="width: 100%;">
-            Connect Google Sheet
-          </button>
-          <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 8px;">
-            💡 Connect your Google Webhook to receive instant live rows in your Mastermind Sheet whenever a client submits a meeting form!
-          </div>
-        </div>
-
-        <!-- Client Submissions List -->
-        <div class="side-card">
-          <div class="side-card-title">
-            <span>SAVED CLIENTS</span>
-          </div>
-          <ul class="sub-list" id="submissionsList">
-            <!-- Client items loaded dynamically -->
-          </ul>
+          <p style="font-size: 0.84rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 12px;">
+            Fill out the details for your current meeting before your 1:1 call with <strong>Gaurav Sharma</strong>.
+          </p>
+          <a href="mailto:hello@ziddifounder.com" class="btn btn-ghost btn-sm" style="width: 100%; justify-content: center; text-align: center;">
+            ✉️ Email Coach Support
+          </a>
         </div>
 
       </div>
