@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ziddi Founder — DMAIC Mastermind 18-Meeting Input Tool</title>
+  
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="18-Meeting DMAIC Mastermind Input Tool for Six Sigma Business Coach Gaurav Sharma. Track Q1-Q4 founder metrics, root causes, and SOP progress.">
+  <meta name="keywords" content="Ziddi Founder, DMAIC Mastermind, Six Sigma, Business Coaching, Operations Input Tool, Gaurav Sharma">
+  <meta name="author" content="Gaurav Sharma">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=IBM+Plex+Mono:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- html2canvas CDN for visual card image exports -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  
+  <!-- App Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Blueprint Grid Pattern Overlay -->
+  <div class="bg-grid-pattern"></div>
+
+  <!-- Top Announcement Bar -->
+  <div class="top-banner">
+    <div class="container">
+      <div>
+        <span class="banner-badge">ZIDDI DMAIC FRAMEWORK</span>
+        <span style="margin-left: 8px;">1-YEAR MASTERMIND CLIENT DATA COLLECTION TOOL</span>
+      </div>
+      <div>
+        <span>COACH: GAURAV SHARMA // WWW.ZIDDIFOUNDER.COM</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- App Header -->
+  <header class="app-header">
+    <div class="container header-flex">
+      <a href="../index.html" class="logo">
+        ZIDDI<span>·</span>FOUNDER <span class="logo-tag">DMAIC TRACKER</span>
+      </a>
+      <div class="header-actions">
+        <a href="../index.html" class="btn btn-ghost btn-sm">← Back to Site</a>
+        <button id="shareLinkBtn" class="btn btn-solid btn-sm">🔗 Share Meeting Link</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <div class="container" style="margin-top: 20px;">
+    
+    <!-- Quarter Selector Tabs -->
+    <div class="quarter-selector-wrapper">
+      <div class="quarter-tabs" id="quarterTabs">
+        <!-- Rendered dynamically via JavaScript -->
+      </div>
+    </div>
+
+    <!-- Meeting Pills Navigation -->
+    <div class="meeting-selector-bar" id="meetingPills">
+      <!-- Rendered dynamically via JavaScript -->
+    </div>
+
+    <!-- Dashboard Grid Layout -->
+    <div class="dashboard-grid">
+      
+      <!-- Main Form Column -->
+      <div class="form-card">
+        
+        <!-- Meeting Header -->
+        <div class="meeting-card-header">
+          <div class="meeting-meta-row">
+            <span class="meeting-badge" id="meetingBadge">PHASE 01 // MEETING 1</span>
+            <button class="meeting-link-share" onclick="document.getElementById('shareLinkBtn').click()">📋 Copy Client Meeting URL</button>
+          </div>
+          <h1 class="meeting-card-title" id="meetingTitle">Meeting 1: Core Problem Definition</h1>
+          <p class="meeting-card-obj" id="meetingObjective">Objective: Find the root problem, baseline metrics, and set the 1-year 'Ziddi' goal.</p>
+        </div>
+
+        <!-- Strategy Callouts -->
+        <div class="callout-box callout-trainer">
+          <div>💡</div>
+          <div>
+            <div class="callout-title">Coach Action & Strategy</div>
+            <div id="trainerCallout">Have the client fill out Parts 1 & 2 before the call to jump straight into Root Cause Analysis.</div>
+          </div>
+        </div>
+
+        <div class="callout-box callout-microtask">
+          <div>⚡</div>
+          <div>
+            <div class="callout-title">Weekly Micro-Task</div>
+            <div id="microtaskCallout">Complete the 5-Whys worksheet.</div>
+          </div>
+        </div>
+
+        <!-- Meeting Form -->
+        <form id="mastermindForm">
+          
+          <!-- Client Identity Inputs -->
+          <div class="client-info-bar">
+            <div>
+              <label for="clientName" style="font-family: var(--font-mono); font-size: 0.8rem; font-weight: 700; color: var(--accent-amber);">
+                CLIENT FULL NAME *
+              </label>
+              <input type="text" id="clientName" class="form-control" placeholder="e.g. Rahul Sharma" required style="margin-top: 4px;">
+            </div>
+            <div>
+              <label for="companyName" style="font-family: var(--font-mono); font-size: 0.8rem; font-weight: 700; color: var(--accent-amber);">
+                COMPANY / BUSINESS NAME
+              </label>
+              <input type="text" id="companyName" class="form-control" placeholder="e.g. Acme Enterprises" style="margin-top: 4px;">
+            </div>
+          </div>
+
+          <!-- Dynamic Form Fields (Rendered per meeting) -->
+          <div id="dynamicFormFields">
+            <!-- Fields inserted dynamically -->
+          </div>
+
+          <!-- Submit & Actions -->
+          <div class="form-actions">
+            <button type="submit" class="btn btn-solid" style="padding: 12px 24px; font-size: 1rem;">
+              💾 Save Submission & Generate Card
+            </button>
+            <button type="button" class="btn btn-ghost" id="exportCsvBtn">
+              📊 Export CSV
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Right Sidebar Column -->
+      <div class="sidebar-panel">
+        
+        <!-- Progress Widget -->
+        <div class="side-card">
+          <div class="side-card-title">
+            <span>CLIENT PROGRESS</span>
+            <span style="font-size: 0.8rem; color: var(--accent-amber); font-family: var(--font-mono);">DMAIC TRACK</span>
+          </div>
+          <div class="progress-stat-box">
+            <span class="stat-big-num" id="progressStatNum">0/18</span>
+            <span style="font-size: 0.85rem; color: var(--text-muted);">Meetings Completed</span>
+          </div>
+          <div class="progress-bar-outer">
+            <div class="progress-bar-inner" id="progressBarInner"></div>
+          </div>
+          <p style="font-size: 0.78rem; color: var(--text-muted);">
+            Progress updates automatically when you submit meeting entries for the selected client.
+          </p>
+        </div>
+
+        <!-- Google Sheets Integration Box -->
+        <div class="side-card">
+          <div class="side-card-title">
+            <span>GOOGLE SHEETS SYNC</span>
+            <span style="font-size: 0.75rem; background: var(--border-color); padding: 2px 6px; border-radius: 4px;">LIVE</span>
+          </div>
+          <div class="webhook-status" id="webhookStatus">
+            STATUS: NOT CONNECTED (LOCAL STORAGE ONLY)
+          </div>
+          <div class="form-group" style="margin-bottom: 12px;">
+            <label for="webhookUrlInput" style="font-size: 0.75rem;">GOOGLE APPS SCRIPT WEBHOOK URL</label>
+            <input type="url" id="webhookUrlInput" class="form-control" placeholder="https://script.google.com/macros/s/..." style="font-size: 0.8rem;">
+          </div>
+          <button type="button" class="btn btn-ghost btn-sm" id="saveWebhookBtn" style="width: 100%;">
+            Connect Google Sheet
+          </button>
+          <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 8px;">
+            💡 Connect your Google Webhook to receive instant live rows in your Mastermind Sheet whenever a client submits a meeting form!
+          </div>
+        </div>
+
+        <!-- Client Submissions List -->
+        <div class="side-card">
+          <div class="side-card-title">
+            <span>SAVED CLIENTS</span>
+          </div>
+          <ul class="sub-list" id="submissionsList">
+            <!-- Client items loaded dynamically -->
+          </ul>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Visual Card Image Modal -->
+  <div id="visualCardModal">
+    <div class="modal-content-card">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h3 style="font-family: var(--font-heading); font-size: 1.4rem; color: var(--accent-amber);">
+          📸 VISUAL DECK CARD GENERATED
+        </h3>
+        <button class="btn btn-ghost btn-sm" id="closeCardModalBtn">✕ Close</button>
+      </div>
+      
+      <!-- Target Element rendered for html2canvas screenshot -->
+      <div id="previewCardTarget"></div>
+
+      <div style="margin-top: 20px; display: flex; justify-content: flex-end; gap: 12px;">
+        <button class="btn btn-solid" id="downloadImgBtn">
+          📥 Download Image Card (.PNG)
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast-msg" id="toastMsg">Notification message</div>
+
+  <!-- Footer -->
+  <footer class="app-footer">
+    <div class="container">
+      <p>© 2026 <a href="../index.html">Ziddi Founder</a> — 18-Meeting DMAIC Mastermind Framework | Created for Gaurav Sharma</p>
+    </div>
+  </footer>
+
+  <!-- App Scripts -->
+  <script src="meetings-data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
