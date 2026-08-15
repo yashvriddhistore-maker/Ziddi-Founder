@@ -1,0 +1,552 @@
+/* Yashvriddhi Thermal Shipping Label Generator Stylesheet */
+
+:root {
+  --bg-dark: #0B1118;
+  --bg-card: #151D28;
+  --border-color: #263548;
+  --accent-amber: #FFB23F;
+  --accent-gold: #F59E0B;
+  --text-main: #F1F5F9;
+  --text-muted: #94A3B8;
+  
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-heading: 'Barlow Condensed', sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--bg-dark);
+  color: var(--text-main);
+  min-height: 100vh;
+}
+
+/* Background Grid Pattern */
+.bg-grid-pattern {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 32px 32px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 20px;
+  position: relative;
+  z-index: 1;
+}
+
+/* App Header */
+.app-header {
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border-color);
+  padding: 16px 0;
+}
+
+.header-flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  font-family: var(--font-heading);
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #fff;
+  text-decoration: none;
+  letter-spacing: 1px;
+}
+
+.logo span {
+  color: var(--accent-amber);
+}
+
+.logo-tag {
+  font-size: 0.85rem;
+  background: rgba(255, 178, 63, 0.15);
+  color: var(--accent-amber);
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  border: 1px solid rgba(255, 178, 63, 0.3);
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border-radius: 6px;
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--text-muted);
+  border: 1px solid var(--border-color);
+}
+
+.btn-ghost:hover {
+  background: var(--border-color);
+  color: #fff;
+}
+
+.btn-solid {
+  background: var(--accent-amber);
+  color: #000;
+  font-weight: 700;
+}
+
+.btn-solid:hover {
+  background: #f59e0b;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+  color: #fff;
+  font-weight: 700;
+  font-size: 1rem;
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.3);
+}
+
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(16, 185, 129, 0.45);
+}
+
+.btn-large {
+  padding: 14px 28px;
+  width: 100%;
+  justify-content: center;
+}
+
+/* Main Layout Grid */
+.main-content-layout {
+  display: grid;
+  grid-template-columns: 1fr 480px;
+  gap: 28px;
+  margin-top: 24px;
+  margin-bottom: 40px;
+}
+
+@media (max-width: 992px) {
+  .main-content-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Control Panel */
+.control-panel {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 24px;
+}
+
+.panel-header h2 {
+  font-family: var(--font-heading);
+  font-size: 1.6rem;
+  color: var(--accent-amber);
+  margin-bottom: 4px;
+}
+
+.panel-header p {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 20px;
+}
+
+/* Mode Tabs */
+.mode-tabs {
+  display: flex;
+  gap: 8px;
+  background: var(--bg-dark);
+  padding: 4px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  border: 1px solid var(--border-color);
+}
+
+.mode-btn {
+  flex: 1;
+  padding: 8px;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.mode-btn.active {
+  background: var(--border-color);
+  color: #fff;
+}
+
+/* Form Styling */
+.form-section-title {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--accent-amber);
+  letter-spacing: 1px;
+  margin-bottom: 12px;
+}
+
+.form-group {
+  margin-bottom: 14px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+
+.form-control {
+  width: 100%;
+  background: #0D141F;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  padding: 10px 14px;
+  color: #fff;
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  transition: border-color 0.2s ease;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: var(--accent-amber);
+}
+
+.form-row-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.hint-text {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 6px;
+}
+
+.action-bar {
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border-color);
+}
+
+/* Preview Panel */
+.preview-panel {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.preview-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.preview-header h3 {
+  font-family: var(--font-heading);
+  font-size: 1.2rem;
+  color: #fff;
+}
+
+.paper-badge {
+  font-size: 0.75rem;
+  font-family: var(--font-mono);
+  background: rgba(255, 178, 63, 0.1);
+  color: var(--accent-amber);
+  padding: 3px 8px;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 178, 63, 0.2);
+}
+
+.label-preview-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+  align-items: center;
+  max-height: 720px;
+  overflow-y: auto;
+  padding: 10px;
+}
+
+/* -------------------------------------------------------------
+   THERMAL SHIPPING LABEL CARD COMPONENT (100mm x 150mm Ratio)
+   On Screen scale: 380px width x 570px height (Exact 1:1.5 ratio)
+   ------------------------------------------------------------- */
+.thermal-label {
+  width: 380px;
+  min-height: 570px;
+  background: #ffffff;
+  color: #000000;
+  padding: 18px 20px;
+  font-family: 'Arial', 'Helvetica', sans-serif;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  border-radius: 4px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border: 2px solid #000;
+}
+
+/* Top Border Line */
+.label-top-border {
+  border-top: 3px solid #000;
+  margin-bottom: 8px;
+}
+
+.label-salutation {
+  font-size: 1.25rem;
+  font-weight: 900;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+}
+
+.label-cust-name {
+  font-size: 1.5rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  letter-spacing: 0.5px;
+  line-height: 1.2;
+}
+
+.label-address-box {
+  font-size: 1.05rem;
+  line-height: 1.4;
+  font-weight: 600;
+  margin-bottom: 14px;
+}
+
+.label-dist-pin-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.1rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.label-state-row {
+  font-size: 1.1rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+.label-mobile-row {
+  font-size: 1.15rem;
+  font-weight: 900;
+  margin-bottom: 16px;
+  border-bottom: 2px dashed #000;
+  padding-bottom: 10px;
+}
+
+/* Unboxing Video Disclaimer Box */
+.label-disclaimer-box {
+  border: 2px solid #000;
+  border-radius: 4px;
+  padding: 10px 12px;
+  text-align: center;
+  font-size: 0.85rem;
+  font-weight: 800;
+  line-height: 1.35;
+  margin-bottom: 16px;
+  background: #FAFAFA;
+}
+
+/* Sender Bottom Section */
+.label-sender-box {
+  border: 1px solid #000;
+  padding: 10px 12px;
+  font-size: 0.8rem;
+  line-height: 1.3;
+}
+
+.label-sender-title {
+  font-weight: 900;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.label-sender-address {
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.label-sender-mobile {
+  font-weight: 800;
+}
+
+/* -------------------------------------------------------------
+   PRINT CSS (Rules executed when 🖨️ window.print() is clicked)
+   ------------------------------------------------------------- */
+@media print {
+  @page {
+    size: 100mm 150mm;
+    margin: 0;
+  }
+  
+  html, body {
+    width: 100mm;
+    height: 150mm;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  .print-only {
+    display: block !important;
+  }
+
+  .thermal-label-print {
+    width: 100mm;
+    height: 150mm;
+    padding: 5mm 6mm;
+    box-sizing: border-box;
+    page-break-after: always;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    font-family: 'Arial', sans-serif;
+    border: none;
+    background: #fff;
+    color: #000;
+  }
+
+  .label-top-border-print {
+    border-top: 2px solid #000;
+    margin-bottom: 3mm;
+  }
+
+  .label-salutation-print {
+    font-size: 14pt;
+    font-weight: 900;
+    margin-bottom: 1mm;
+    text-transform: uppercase;
+  }
+
+  .label-cust-name-print {
+    font-size: 18pt;
+    font-weight: 900;
+    text-transform: uppercase;
+    margin-bottom: 3mm;
+    line-height: 1.1;
+  }
+
+  .label-address-box-print {
+    font-size: 12pt;
+    line-height: 1.3;
+    font-weight: 700;
+    margin-bottom: 3mm;
+  }
+
+  .label-dist-pin-row-print {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13pt;
+    font-weight: 900;
+    text-transform: uppercase;
+    margin-bottom: 2mm;
+  }
+
+  .label-state-row-print {
+    font-size: 13pt;
+    font-weight: 900;
+    text-transform: uppercase;
+    margin-bottom: 3mm;
+  }
+
+  .label-mobile-row-print {
+    font-size: 13pt;
+    font-weight: 900;
+    margin-bottom: 3mm;
+    border-bottom: 1.5pt dashed #000;
+    padding-bottom: 2mm;
+  }
+
+  .label-disclaimer-box-print {
+    border: 1.5pt solid #000;
+    border-radius: 2mm;
+    padding: 2mm 3mm;
+    text-align: center;
+    font-size: 9.5pt;
+    font-weight: 800;
+    line-height: 1.3;
+    margin-bottom: 3mm;
+  }
+
+  .label-sender-box-print {
+    border: 1pt solid #000;
+    padding: 2mm 3mm;
+    font-size: 8.5pt;
+    line-height: 1.25;
+  }
+
+  .label-sender-title-print {
+    font-weight: 900;
+    font-size: 10pt;
+    text-transform: uppercase;
+    margin-bottom: 1mm;
+  }
+
+  .label-sender-address-print {
+    font-weight: 700;
+    margin-bottom: 1mm;
+  }
+
+  .label-sender-mobile-print {
+    font-weight: 900;
+  }
+}
