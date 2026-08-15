@@ -16,10 +16,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const tabSingle = document.getElementById('tabSingle');
   const tabBulk = document.getElementById('tabBulk');
+  const tabSheet = document.getElementById('tabSheet');
   const labelForm = document.getElementById('labelForm');
   const bulkContainer = document.getElementById('bulkContainer');
   const bulkInput = document.getElementById('bulkInput');
   const processBulkBtn = document.getElementById('processBulkBtn');
+
+  const sheetApiContainer = document.getElementById('sheetApiContainer');
+  const sheetWebhookUrlInput = document.getElementById('sheetWebhookUrl');
+  const fetchSheetOrdersBtn = document.getElementById('fetchSheetOrdersBtn');
+  const sheetSyncStatus = document.getElementById('sheetSyncStatus');
 
   const previewWrapper = document.getElementById('previewWrapper');
   const printContainer = document.getElementById('printContainer');
@@ -27,6 +33,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let isBulkMode = false;
   let bulkParsedItems = [];
+
+  // Load saved webhook URL
+  if (sheetWebhookUrlInput) {
+    sheetWebhookUrlInput.value = localStorage.getItem('yashvriddhi_shipping_webhook') || '';
+  }
 
   init();
 
@@ -48,6 +59,15 @@ document.addEventListener('DOMContentLoaded', () => {
         input.addEventListener('input', () => {
           if (!isBulkMode) {
             renderLivePreview();
+          } else if (bulkParsedItems.length > 0) {
+            // Update sender/disclaimer on all bulk parsed items
+            bulkParsedItems.forEach(item => {
+              item.disclaimerText = disclaimerTextInput.value.trim();
+              item.senderBrand = senderBrandInput.value.trim();
+              item.senderAddress = senderAddressInput.value.trim();
+              item.senderMobile = senderMobileInput.value.trim();
+            });
+            renderBulkPreview();
           }
         });
       }
@@ -58,8 +78,10 @@ document.addEventListener('DOMContentLoaded', () => {
       isBulkMode = false;
       tabSingle.classList.add('active');
       tabBulk.classList.remove('active');
+      tabSheet.classList.remove('active');
       labelForm.style.display = 'block';
       bulkContainer.style.display = 'none';
+      sheetApiContainer.style.display = 'none';
       renderLivePreview();
     });
 
@@ -67,8 +89,23 @@ document.addEventListener('DOMContentLoaded', () => {
       isBulkMode = true;
       tabBulk.classList.add('active');
       tabSingle.classList.remove('active');
+      tabSheet.classList.remove('active');
       labelForm.style.display = 'none';
       bulkContainer.style.display = 'block';
+      sheetApiContainer.style.display = 'none';
+      if (bulkParsedItems.length > 0) {
+        renderBulkPreview();
+      }
+    });
+
+    tabSheet.addEventListener('click', () => {
+      isBulkMode = true;
+      tabSheet.classList.add('active');
+      tabSingle.classList.remove('active');
+      tabBulk.classList.remove('active');
+      labelForm.style.display = 'none';
+      bulkContainer.style.display = 'none';
+      sheetApiContainer.style.display = 'block';
       if (bulkParsedItems.length > 0) {
         renderBulkPreview();
       }
@@ -84,10 +121,67 @@ document.addEventListener('DOMContentLoaded', () => {
       parseBulkInput(text);
     });
 
+    // Fetch Live Orders from Google Sheet Webhook
+    fetchSheetOrdersBtn.addEventListener('click', () => {
+      const url = sheetWebhookUrlInput.value.trim();
+      if (!url) {
+        alert('Please enter your Shipping Google Sheet Apps Script URL');
+        return;
+      }
+      localStorage.setItem('yashvriddhi_shipping_webhook', url);
+      fetchLiveSheetOrders(url);
+    });
+
     // Print Action
     printBtn.addEventListener('click', () => {
       prepareAndPrint();
     });
+  }
+
+  // Fetch Live Orders from Google Sheet Endpoint
+  function fetchLiveSheetOrders(url) {
+    sheetSyncStatus.textContent = '🔄 Fetching orders from Google Sheet...';
+    fetch(url)
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data)) {
+          bulkParsedItems = data.map(row => ({
+            custName: row.name || row.custName || row[0] || '',
+            custAddress: row.address || row.custAddress || row[1] || '',
+            custDistrict: row.district || row.custDistrict || row[2] || '',
+            custPincode: row.pincode || row.custPincode || row[3] || '',
+            custState: row.state || row.custState || row[4] || '',
+            custMobile: row.mobile || row.custMobile || row[5] || '',
+            disclaimerText: disclaimerTextInput.value.trim(),
+            senderBrand: senderBrandInput.value.trim(),
+            senderAddress: senderAddressInput.value.trim(),
+            senderMobile: senderMobileInput.value.trim()
+          }));
+          sheetSyncStatus.textContent = `✅ Successfully fetched ${bulkParsedItems.length} order(s)!`;
+          renderBulkPreview();
+        } else if (data.orders && Array.isArray(data.orders)) {
+          bulkParsedItems = data.orders.map(row => ({
+            custName: row.name || row.custName || '',
+            custAddress: row.address || row.custAddress || '',
+            custDistrict: row.district || row.custDistrict || '',
+            custPincode: row.pincode || row.custPincode || '',
+            custState: row.state || row.custState || '',
+            custMobile: row.mobile || row.custMobile || '',
+            disclaimerText: disclaimerTextInput.value.trim(),
+            senderBrand: senderBrandInput.value.trim(),
+            senderAddress: senderAddressInput.value.trim(),
+            senderMobile: senderMobileInput.value.trim()
+          }));
+          sheetSyncStatus.textContent = `✅ Successfully fetched ${bulkParsedItems.length} order(s)!`;
+          renderBulkPreview();
+        } else {
+          sheetSyncStatus.textContent = '⚠️ Sheet returned data in unexpected format.';
+        }
+      })
+      .catch(err => {
+        console.error('Fetch error:', err);
+        sheetSyncStatus.textContent = '⚠️ Error fetching from Google Sheet Webhook.';
+      });
   }
 
   // Get current single label data object
